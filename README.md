@@ -19,7 +19,6 @@
 | David (Jun) Chang | dchang6@mail.sfsu.edu | JunN0tJune |
 | Alexis Perez      | aperez75@sfsu.edu              | Alexis283 |
 | Athan Cheung      | acheung4@mail.sfsu.edu     | athanc2 |
-| member5      |               |                 |
-| member6      |               |                 |
+| Yu-Ming Chen      | ychen88@sfsu.edu              | JimboRumbleCadumbo | 
 
 ## NO code needs to be stored in the root of your repository. You may rename the application folder if you like to your team's application name. But all source code related to your team's application should be stored inside the application folder.
