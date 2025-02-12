@@ -15,10 +15,10 @@
 
 | Student Name | School Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
-| member1      |               |                 |
-| member2      |               |                 |
-| member3      |               |                 |
-| member4      |               |                 |
+| David Cabanela | dcabanel@mail.sfsu.edu | davidcabanela |
+| member2      |               | JunN0tJune |
+| member3      |               | Alexis283 |
+| member4      |               | athanc2 |
 | member5      |               |                 |
 | member6      |               |                 |
 
