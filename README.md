@@ -17,7 +17,7 @@
 |    :---:     |     :---:     |     :---:       |
 | David Cabanela | dcabanel@mail.sfsu.edu | davidcabanela |
 | David (Jun) Chang | dchang6@mail.sfsu.edu | JunN0tJune |
-| member3      |               | Alexis283 |
+| Alexis Perez      | aperez75@sfsu.edu              | Alexis283 |
 | member4      |               | athanc2 |
 | member5      |               |                 |
 | member6      |               |                 |
