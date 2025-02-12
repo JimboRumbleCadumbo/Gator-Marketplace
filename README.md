@@ -16,7 +16,7 @@
 | Student Name | School Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
 | David Cabanela | dcabanel@mail.sfsu.edu | davidcabanela |
-| member2      |               | JunN0tJune |
+| David (Jun) Chang | dchang6@mail.sfsu.edu | JunN0tJune |
 | member3      |               | Alexis283 |
 | member4      |               | athanc2 |
 | member5      |               |                 |
