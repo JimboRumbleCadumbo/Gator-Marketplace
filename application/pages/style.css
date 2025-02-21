@@ -85,7 +85,7 @@ body {
     margin-bottom: 20px;
 }
 
-.about-box p{
+.about-box {
     width: 550px;
     min-height: 225px;
     position: absolute;
@@ -97,14 +97,14 @@ body {
     color: white;
     font-size: 18px;
     font-family: 'Open Sans', sans-serif;
-    display: flex;
     letter-spacing: .5px;
-    margin: 0;
     line-height: 1.25;
+}
+
+.about-box p {
+    margin: 0px 0px 10px 0px;
     overflow: hidden;
     word-wrap: break-word;
-    display: flex;
-    justify-content: center;
 }
 
 .profile {
@@ -113,16 +113,25 @@ body {
     position: absolute;
 }
 
-.profile-circle {
-    width: 320px;
-    height: 312px;
-    background: #0D1117;
-    border-radius: 50%;
-    position: absolute;
-}
-
 .profile-svg {
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 324px; 
+    height: 316px; 
+    background: #0D1117; 
+    border-radius: 50%; 
+}
+
+.profile-svg-icon {
+    width: 100%;
+    height: auto;
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .github-button {
@@ -138,7 +147,7 @@ body {
     border: none; 
     cursor: pointer;
     position: absolute; 
-    left: 100px;
+    left: 96px;
     top: 350px;
     letter-spacing: .5px;
 }
