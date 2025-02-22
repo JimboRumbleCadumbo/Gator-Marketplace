@@ -9,9 +9,9 @@
 
 1. Server URL or IP
     Public IPv4:
-        34.219.32.122
+        44.243.25.57
     Public IPv4 DNS:
-        ec2-34-219-32-122.us-west-2.compute.amazonaws.com
+        ec2-44-243-25-57.us-west-2.compute.amazonaws.com
 2. SSH username
     ubuntu
 3. SSH password or key.
@@ -27,7 +27,7 @@
     Loggin into EC2 instance: 
         1) Download the key and save it to your linux based system (Ubuntu preferred)
         2) Type:
-            ssh -i "team5ubtu.pem" ubuntu@ec2-34-219-32-122.us-west-2.compute.amazonaws.com
+            ssh -i "team5ubtu.pem" ubuntu@ec2-44-243-25-57.us-west-2.compute.amazonaws.com
         3) Yes to everything and you're in.
 
     Loggin into DB instance:
