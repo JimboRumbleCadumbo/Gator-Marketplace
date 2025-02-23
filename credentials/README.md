@@ -23,6 +23,7 @@
 6. Database password
     team5!250127
 7. Database name (basically the name that contains all your tables)
+    marketplace
 8. Instructions on how to use the above information.
     Loggin into EC2 instance: 
         1) Download the key and save it to your linux based system (Ubuntu preferred)
