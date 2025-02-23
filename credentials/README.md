@@ -17,11 +17,11 @@
 3. SSH password or key.
     team5ubtu.pem
 4. Database URL or IP and port used.
-
+    44.243.25.57:3306
 5. Database username
-    
+    t5db
 6. Database password
-    
+    team5!250127
 7. Database name (basically the name that contains all your tables)
 8. Instructions on how to use the above information.
     Loggin into EC2 instance: 
@@ -31,7 +31,12 @@
         3) Yes to everything and you're in.
 
     Loggin into DB instance:
-
+        1) Open Ubuntu terminal
+        2) Type:
+            mysql -u t5db -h 44.243.25.57 -p
+        3) Enter password:
+            team5!250127
+        4) You're in.
 
 
 # Most important things to Remember
