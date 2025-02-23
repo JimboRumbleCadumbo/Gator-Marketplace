@@ -6,7 +6,7 @@
 
 
 # Below is a list of items required. Missing items will causes points to be deducted from multiple milestone submissions.
-
+<pre>
 1. Server URL or IP
     Public IPv4:
         44.243.25.57
@@ -37,7 +37,7 @@
         3) Enter password:
             team5!250127
         4) You're in.
-
+</pre>
 
 # Most important things to Remember
 ## These values need to kept update to date throughout the semester. <br>
