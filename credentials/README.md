@@ -17,7 +17,7 @@
 3. SSH password or key.
     team5ubtu.pem
 4. Database URL or IP and port used.
-     [[IN MAINTENANCE]]
+     team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com (Port 3306)
 5. Database username
     t5db
 6. Database password
@@ -31,11 +31,11 @@
             ssh -i "team5ubtu.pem" ubuntu@ec2-44-243-25-57.us-west-2.compute.amazonaws.com
         3) Yes to everything and you're in.
 
-    Loggin into DB instance: [[IN MAINTENANCE]]
+    Loggin into DB instance: 
         1) Open Ubuntu terminal
         2) Type:
-            mysql -u t5db -h 44.243.25.57 -p
-        3) Enter password:
+	    mysql -u t5db -h team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com -p        
+	3) Enter password:
             team5!250127
         4) You're in.
 </pre>
