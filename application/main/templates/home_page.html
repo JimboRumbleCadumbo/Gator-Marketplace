@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home_Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.0/dist/vue.global.prod.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="content">
+                <h1>CSC 648-Spring 2025 Team 05</h1>
+                    
+                <!-- Search Bar and Filters Dropdown in Flexbox -->
+                <div class="search-bar-container">
+                    <!-- Filters Dropdown -->
+                    <div class="dropdown" :class="{ open: isDropdownVisible }">
+                        <button @click="toggleDropdown" class="dropbtn">Filters</button>
+                        <div class="dropdown-content">
+                            <div v-for="filter in filters" :key="filter">
+                                <label>
+                                    <input type="checkbox" v-model="selectedFilters" :value="filter" /> {{ filter }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Search Bar -->
+                    <div class="search-bar">
+                        <input 
+                            type="text" 
+                            v-model="searchQuery" 
+                            placeholder="Search..." 
+                            @keyup.enter="submitSearch" 
+                        />
+                        <button @click="submitSearch">Search</button>
+                    </div>
+                </div>
+
+                <!-- Display Selected Filters -->
+                <div v-if="selectedFilters.length">
+                    <h3>Applied Filters:</h3>
+                    <ul>
+                        <li v-for="filter in selectedFilters" :key="filter">{{ filter }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    searchQuery: '',  //search query entered by the user
+                    isDropdownVisible: false, //toggle filter box
+                    selectedFilters: [] ,   //selected filters
+                    filters: ['Electronics', 'Books', 'Furniture'] //available filters/categories
+                };
+            },
+            methods: {
+                toggleDropdown() {
+                    this.isDropdownVisible = !this.isDropdownVisible;
+                },
+                submitSearch() {
+                    //send search query to the backend
+                    //UPDATE THIS
+                    console.log('Searching for:', this.searchQuery);
+                    console.log('Selected Filters:', this.selectedFilters);
+    
+                }
+            }
+        });
+        app.mount('#app');
+    </script>
+
+    <style>
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        h1 {
+            color: black;
+            margin-top: 20px;
+            align-items: center;
+        }
+        
+        /* Keep the entire search bar connected */
+        .search-bar-container {
+            display: flex;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: fit-content;
+            margin: 20px auto;
+        }
+
+        /* Dropdown Button */
+        .dropdown {
+            position: relative; 
+            display: flex;
+        }
+
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-right: 1px solid #ccc;
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%; /* Positions dropdown directly below the button */
+            background-color: white;
+            border: 1px solid #ccc;
+            min-width: 200px;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Ensure dropdown is visible when button is clicked */
+        .dropdown.open .dropdown-content {
+            display: block;
+        }
+
+        /* Checkbox styling inside the dropdown */
+        .dropdown-content div {
+            padding: 5px 10px;
+        }
+
+        .dropdown-content label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .dropdown-content input {
+            margin-right: 8px;
+        }
+
+        .search-bar input {
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-bar button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+    </style>
+</body>
+</html>
