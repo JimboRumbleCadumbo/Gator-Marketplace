@@ -2,6 +2,17 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+# app.jinja_options = {
+#     'variable_start_string': '[[',
+#     'variable_end_string': ']]',
+#     'block_start_string': '{%',
+#     'block_end_string': '%}'
+# }
+# Might have an issue where some pages will use {{}} double curly braces and python won't be able to render it.
+# Only works now because the search bar that had that syntax is now a vue component.
+# 
+# STILL HAVE TO UPDATE THIS PAGE TO LOAD THE VP PAGE!!
+
 @app.route('/')
 def index():
     return render_template('index.html')  # Render the index.html file

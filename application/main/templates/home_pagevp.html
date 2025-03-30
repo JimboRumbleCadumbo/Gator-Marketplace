@@ -4,66 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home_Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.0/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue@3.5.13"></script>
 </head>
 <body>
     <div id="app">
         <div class="container">
+            <nav class="nav-bar">
+                <a href="/" class="nav-link">Home</a>
+            </nav>
             <div class="content">
                 <h1>CSC 648-Spring 2025 Team 05</h1>
                 
-                <!-- Search Bar and Filters Dropdown in Flexbox -->
-                <div class="search-bar-container">
-                    <!-- Filters Dropdown -->
-                    <div class="dropdown" :class="{ open: isDropdownVisible }">
-                        <button @click="toggleDropdown" class="dropbtn">{{ selectedFilter || "All" }}</button>
-                        <div class="dropdown-content">
-                            <div v-for="filter in filters" :key="filter" @click="selectFilter(filter)">
-                                {{ filter }}
-                            </div>
-                        </div>
-                    </div>
-                
-                    <!-- Search Bar -->
-                    <div class="search-bar">
-                        <input 
-                            type="text" 
-                            v-model="searchQuery" 
-                            placeholder="Search..." 
-                            @keyup.enter="submitSearch" 
-                        />
-                        <button @click="submitSearch">Search</button>
-                    </div>
-                </div>
+                <search-bar></search-bar>
             </div>
         </div>
     </div>
 
-    <script>
-        const app = Vue.createApp({
-            data() {
-                return {
-                    searchQuery: '',
-                    isDropdownVisible: false,
-                    selectedFilter: '',
-                    filters: ['Books', 'Electronics', 'Furniture']
-                };
-            },
-            methods: {
-                toggleDropdown() {
-                    this.isDropdownVisible = !this.isDropdownVisible;
-                },
-                selectFilter(filter) {
-                    this.selectedFilter = filter;
-                    this.isDropdownVisible = false;
-                },
-                submitSearch() {
-                    console.log('Searching for:', this.searchQuery);
-                    console.log('Selected Filter:', this.selectedFilter);
-                }
-            }
-        });
+    <script type ="module">
+        import SearchBar from '/static/searchbar.js';
+        const app = Vue.createApp({});
+        app.component('search-bar', SearchBar);
         app.mount('#app');
     </script>
 
