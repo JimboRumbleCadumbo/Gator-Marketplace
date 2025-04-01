@@ -9,15 +9,15 @@
 <pre>
 1. Server URL or IP
     Public IPv4:
-        44.243.25.57
+        [[IN MAINTENANCE]]
     Public IPv4 DNS:
-        ec2-44-243-25-57.us-west-2.compute.amazonaws.com
+         [[IN MAINTENANCE]]
 2. SSH username
     ubuntu
 3. SSH password or key.
     team5ubtu.pem
 4. Database URL or IP and port used.
-    44.243.25.57:3306
+     team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com (Port 3306)
 5. Database username
     t5db
 6. Database password
@@ -25,17 +25,17 @@
 7. Database name (basically the name that contains all your tables)
     marketplace
 8. Instructions on how to use the above information.
-    Loggin into EC2 instance: 
+    Loggin into EC2 instance:  [[IN MAINTENANCE]]
         1) Download the key and save it to your linux based system (Ubuntu preferred)
-        2) Type:
+        2) Type: 
             ssh -i "team5ubtu.pem" ubuntu@ec2-44-243-25-57.us-west-2.compute.amazonaws.com
         3) Yes to everything and you're in.
 
-    Loggin into DB instance:
+    Loggin into DB instance: 
         1) Open Ubuntu terminal
         2) Type:
-            mysql -u t5db -h 44.243.25.57 -p
-        3) Enter password:
+	    mysql -u t5db -h team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com -p        
+	3) Enter password:
             team5!250127
         4) You're in.
 </pre>

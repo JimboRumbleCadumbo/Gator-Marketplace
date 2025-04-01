@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pop-up Card</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.0/dist/vue.global.prod.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="content">
+          <h1>CSC 648-Spring 2025 Team 05</h1>
+
+          <!-- Search Bar and Filters Dropdown in Flexbox -->
+          <div class="search-bar-container">
+            <!-- Filters Dropdown -->
+            <div class="dropdown" :class="{ open: isDropdownVisible }">
+              <button @click="toggleDropdown" class="dropbtn">Filters</button>
+              <div class="dropdown-content">
+                <div v-for="filter in filters" :key="filter">
+                  <label>
+                    <input
+                      type="checkbox"
+                      v-model="selectedFilters"
+                      :value="filter"
+                    />
+                    {{ filter }}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+              <input
+                type="text"
+                v-model="searchQuery"
+                placeholder="Search..."
+                @keyup.enter="submitSearch"
+              />
+              <button @click="submitSearch">Search</button>
+            </div>
+          </div>
+
+          <!-- Display Selected Filters -->
+          <div v-if="selectedFilters.length">
+            <h3>Applied Filters:</h3>
+            <ul>
+              <li v-for="filter in selectedFilters" :key="filter">
+                {{ filter }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-grid">
+
+        <div class="card">
+          <img src="https://via.placeholder.com/150" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+        <div class="card">
+        <img src="" alt="Item Image" />
+        <h3>Product Name</h3>
+        <p>Product description</p>
+      </div>
+
+    </div>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            searchQuery: "",
+            isDropdownVisible: false,
+            selectedFilters: [],
+            filters: ["Electronics", "Books", "Furniture"],
+            item: {
+              name: "Example Item",
+              description: "This is a sample item description.",
+              image: "",
+            },
+          };
+        },
+        methods: {
+          toggleDropdown() {
+            this.isDropdownVisible = !this.isDropdownVisible;
+          },
+          submitSearch() {
+            console.log("Searching for:", this.searchQuery);
+            console.log("Selected Filters:", this.selectedFilters);
+          },
+          showCard() {
+            this.item = {
+              name: "Example Item",
+              description: "This is a sample item description.",
+              image: "https://via.placeholder.com/300",
+            };
+          },
+        },
+      });
+      app.mount("#app");
+    </script>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        margin: 0;
+        background-color: #f7f7f7;
+      }
+      .main-container {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+      }
+      .sidebar {
+        width: 25%;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      .dropbtn {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 15px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 6px;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        min-width: 200px;
+        border-radius: 4px;
+        padding: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .dropdown.open .dropdown-content {
+        display: block;
+      }
+      .search-bar-container {
+  display: flex; /* Align elements in a row */
+  align-items: center; /* Align items vertically */
+  gap: 10px; /* Space between elements */
+  width: 100%; /* Ensures it doesn't shrink */
+  max-width: 600px; /* Adjust as needed */
+}
+
+.dropdown {
+  flex-shrink: 0; /* Prevents it from shrinking */
+}
+
+.search-bar {
+  display: flex;
+  flex-grow: 1; /* Makes search bar take available space */
+}
+
+.search-bar input {
+  flex-grow: 1; /* Expands to fill available space */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.search-bar button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  flex-shrink: 0; /* Prevents button from shrinking */
+}
+      /* Product Grid */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Cards */
+      .card {
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 8px;
+        background: #fff;
+        text-align: center;
+      }
+
+      /* Product Image */
+      .card img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
+      }
+
+      /* Product Title */
+      .card h3 {
+        margin: 10px 0 5px;
+        font-size: 16px;
+      }
+
+      /* Product Description */
+      .card p {
+        font-size: 14px;
+        color: #555;
+        margin: 0 10px 10px;
+      }
+    </style>
+  </body>
+</html>
