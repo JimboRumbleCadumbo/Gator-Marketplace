@@ -4,29 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home_Page</title>
-    <script src="https://unpkg.com/vue@3.5.13"></script>
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4.2.5/dist/vue-router.global.js"></script>
 </head>
 <body>
     <div id="app">
-        <div class="container">
-            <nav class="nav-bar">
-                <a href="/" class="nav-link">Home</a>
-            </nav>
-            <div class="content">
-                <h1>CSC 648-Spring 2025 Team 05</h1>
-                
-                <search-bar></search-bar>
-            </div>
-        </div>
+        <nav>
+            <router-link to="/">Home</router-link>
+            <router-link to="/test">Test Page</router-link>
+        </nav>
+        <router-view></router-view>
     </div>
 
-    <script type ="module">
-        import SearchBar from '/static/searchbar.js';
-        const app = Vue.createApp({});
-        app.component('search-bar', SearchBar);
-        app.mount('#app');
-    </script>
-
+    <script type="module" src="/static/main.js"></script>
 
     <style>
         .container {
