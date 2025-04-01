@@ -1,11 +1,18 @@
 export default {
     template: `
         <div class="container">
-            <h1>Testing Page</h1>
-            <p>This is a test page to check if Vue and Vue Router are working correctly.</p>
-            
-            <p>Try navigating back to the Home page using Vue Router.</p>
-            <router-link to="/">Go to Home</router-link>
+            <navbar></navbar>
+
+            <div class="content">
+                <h1>CSC-648 Group 5<h1>
+                <div class="group-buttons">
+                    <router-link to="/about/alexis" class="button">Alexis Perez</router-link>
+                    <router-link to="/about/david" class="button">David Cabanela</router-link>
+                    <router-link to="/about/jun" class="button">David Chang</router-link>
+                    <router-link to="/about/athan" class="button">Athan Cheung</router-link>
+                    <router-link to="/about/yuming" class="button">Yu-Ming Chen</router-link>
+                </div>
+            </div>
         </div>
     `
 };
