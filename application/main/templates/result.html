@@ -145,7 +145,6 @@
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
       }
-
       .dropbtn {
         background-color: #4caf50;
         color: white;
@@ -169,42 +168,39 @@
         display: block;
       }
       .search-bar-container {
-  display: flex; /* Align elements in a row */
-  align-items: center; /* Align items vertically */
-  gap: 10px; /* Space between elements */
-  width: 100%; /* Ensures it doesn't shrink */
-  max-width: 600px; /* Adjust as needed */
-}
+        display: flex; 
+        align-items: center; 
+        gap: 10px;
+        width: 100%; 
+        max-width: 600px;
+      } 
 
-.dropdown {
-  flex-shrink: 0; /* Prevents it from shrinking */
-}
+      .dropdown {
+        flex-shrink: 0;
+      }
 
-.search-bar {
-  display: flex;
-  flex-grow: 1; /* Makes search bar take available space */
-}
-
-.search-bar input {
-  flex-grow: 1; /* Expands to fill available space */
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  outline: none;
-}
-
-.search-bar button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 6px;
-  flex-shrink: 0; /* Prevents button from shrinking */
-}
-      /* Product Grid */
+      .search-bar {
+        display: flex;
+        flex-grow: 1; 
+      }
+      .search-bar input {
+        flex-grow: 1; 
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+      }
+      .search-bar button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
       .product-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
