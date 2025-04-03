@@ -1,6 +1,6 @@
-from flask import Flask, render_template #request, jsonify 
-# from flask_mysqldb import MySQL
-# import MySQLdb.cursors 
+from flask import Flask, render_template, request, jsonify 
+from flask_mysqldb import MySQL
+import MySQLdb.cursors 
 
 app = Flask(__name__)
 
@@ -15,14 +15,12 @@ app = Flask(__name__)
 # 
 # STILL HAVE TO UPDATE THIS PAGE TO LOAD THE VP PAGE!!
 
-# not sure if this is needed, but will leave it for now
-# MySQL configuration (replace with your own credentials)
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'your_mysql_user'
-# app.config['MYSQL_PASSWORD'] = 'your_mysql_password'
-# app.config['MYSQL_DB'] = 'your_database_name'
+app.config['MYSQL_HOST'] = 'team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 't5db'
+app.config['MYSQL_PASSWORD'] = 'team5!250127'
+app.config['MYSQL_DB'] = 'marketplace'
 
-# mysql = MySQL(app)
+mysql = MySQL(app)
 
 @app.route('/')
 def index():
