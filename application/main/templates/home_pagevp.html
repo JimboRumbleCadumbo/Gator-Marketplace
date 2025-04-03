@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home_Page</title>
-    <script src="https://unpkg.com/vue@3.5.13"></script>
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
   </head>
   <body>
     <div id="app">
@@ -18,37 +18,40 @@
           <search-bar></search-bar>
         </div>
       </div>
+
+      <div class="product-grid">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+  
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+  
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+      </div>
+
     </div>
 
-    <div class="product-grid">
-      <div class="card">
-        <img src="https://via.placeholder.com/150" alt="Item Image" />
-        <h3>Product Name</h3>
-        <p>Product description</p>
-      </div>
 
-      <div class="card">
-        <img src="" alt="Item Image" />
-        <h3>Product Name</h3>
-        <p>Product description</p>
-      </div>
-
-      <div class="card">
-        <img src="" alt="Item Image" />
-        <h3>Product Name</h3>
-        <p>Product description</p>
-      </div>
-      <div class="card">
-        <img src="" alt="Item Image" />
-        <h3>Product Name</h3>
-        <p>Product description</p>
-      </div>
-      <div class="card">
-        <img src="" alt="Item Image" />
-        <h3>Product Name</h3>
-        <p>Product description</p>
-      </div>
-    </div>
     <script type="module">
       import SearchBar from "/static/searchbar.js";
       const app = Vue.createApp({});
