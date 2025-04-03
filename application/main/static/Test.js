@@ -1,8 +1,7 @@
 export default {
     template: `
+    <navbar></navbar>
         <div class="container">
-            <navbar></navbar>
-
             <div class="content">
                 <h1>CSC-648 Group 5<h1>
                 <div class="group-buttons">

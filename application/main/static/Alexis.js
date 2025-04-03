@@ -1,8 +1,8 @@
 export default {
     template: `
+        <navbar></navbar>
         <div class="container">
-            <navbar></navbar>
-            <div class="content">
+            <div class="about-content">
                 <!-- Left Section -->
                 <div class="left-section">
                     <div class="profile">
