@@ -1,156 +1,158 @@
 body {
-    margin: 0;
-    background: white;
-    border: 0px solid black;
+  margin: 0;
+  background: white;
+  border: 0px solid black;
+  font-family: "Open Sans", sans-serif;
 }
 
 .container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* border: 2px solid red; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 2px solid red; */
 }
 
 .content {
-    text-align: center;
-    width: 100%; 
-    padding: 20px;
-    /* border: 2px solid blue; */
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+  /* border: 2px solid blue; */
 }
 
 .about-content {
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    text-align: center;
-    width: 90%; 
-    max-width: 1120px; 
-    padding: 20px;
-    /* border: 2px solid blue; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 90%;
+  max-width: 1120px;
+  padding: 20px;
+  /* border: 2px solid blue; */
 }
 
 .left-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* Right Section (Name, About, About Box) */
 .right-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    width: 60%;
-    margin-left: 250px;
-    gap: 50px;
-    padding-top: 175px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 60%;
+  margin-left: 250px;
+  gap: 50px;
+  padding-top: 175px;
 }
 
 h1 {
-    color: black;
-    margin-top: 20px;
-    align-items: center;
+  color: black;
+  margin-top: 20px;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Keep the entire search bar connected */
 .search-bar-container {
-    position: relative;
-    display: flex;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 600px;
-    margin: 20px auto;
+  position: relative;
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 600px;
+  margin: 20px auto;
 }
 
 /* Dropdown Button */
 .dropdown {
-    display: flex;
-    flex-grow: 0;
-    transition: width 0.2s ease-in-out;
+  display: flex;
+  flex-grow: 0;
+  transition: width 0.2s ease-in-out;
 }
 
 .dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 15px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-right: 1px solid #ccc;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    width: 100%;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-right: 1px solid #ccc;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  width: 100%;
 }
 
 /* Dropdown Menu */
 .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    background-color: white;
-    border: 1px solid #ccc;
-    min-width: 120px;
-    border-radius: 4px;
-    padding: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+  position: absolute;
+  top: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 120px;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Ensure dropdown is visible when button is clicked */
 .dropdown.open .dropdown-content {
-    display: block;
+  display: block;
 }
 
 .dropdown-content div {
-    padding: 10px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .dropdown-content div:hover {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
 
 .search-bar {
-    display: flex;
-    flex-grow: 1;
-    transition: width 0.2s ease-in-out;
+  display: flex;
+  flex-grow: 1;
+  transition: width 0.2s ease-in-out;
 }
 
 .search-bar input {
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    outline: none;
-    width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  width: 100%;
 }
 .search-bar button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 15px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 15px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .nav-bar {
   width: 100%;
-  height: 100px; 
-  background: grey; 
+  height: 100px;
+  background: grey;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .nav-link {
   color: black;
   font-size: 28px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   text-decoration: none;
-  padding: 0 160px;
+  padding: 0 50px;
 }
 
 .nav-link:hover {
@@ -158,182 +160,185 @@ h1 {
 }
 
 .group-text {
-    color: black;
-    font-size: 40px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    margin-bottom: 20px;
+  color: black;
+  font-size: 40px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
 }
 .group-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    gap: 30px; 
-    padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding-top: 30px;
 }
 
 .button {
   display: inline-block;
   width: 190px;
   height: 50px;
-  background: #171E28;
+  background: #171e28;
   border-radius: 15px;
   color: white;
   font-size: 20px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 500;
   text-align: center;
   text-decoration: none;
   line-height: 50px;
   cursor: pointer;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
 }
 
 .button:hover {
-  background: #1D2733;
+  background: #1d2733;
   transform: scale(1.05);
 }
 
 .name-text {
-    left: 570px;
-    top: 65px;
-    color: black;
-    font-size: 32px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
+  left: 570px;
+  top: 65px;
+  color: black;
+  font-size: 32px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
 }
 
 .about-text {
-    left: 570px;
-    top: 179px;
-    color: black;
-    font-size: 32px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
+  left: 570px;
+  top: 179px;
+  color: black;
+  font-size: 32px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
 }
 .about-box {
-    width: 550px;
-    min-height: 225px;
-    left: 570px;
-    top: 254px;
-    background: #0D1117;
-    border-radius: 10px;
-    padding: 20px; 
-    color: white;
-    font-size: 18px;
-    font-family: 'Open Sans', sans-serif;
-    letter-spacing: .5px;
-    line-height: 1.25;
+  width: 550px;
+  min-height: 225px;
+  left: 570px;
+  top: 254px;
+  background: #0d1117;
+  border-radius: 10px;
+  padding: 20px;
+  color: white;
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 0.5px;
+  line-height: 1.25;
 }
 
 .about-box p {
-    margin: 0px 0px 10px 0px;
-    overflow: hidden;
-    word-wrap: break-word;
+  margin: 0px 0px 10px 0px;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 .profile {
-    width: 324px;
-    max-width: 324px; 
-    height: auto; 
-    background: #0D1117;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
+  width: 324px;
+  max-width: 324px;
+  height: auto;
+  background: #0d1117;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }
 
 .profile-icon {
-    width: 100%;
-    height: auto;
-    fill: none;
-    stroke: white;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    border-radius: 50%;
+  width: 100%;
+  height: auto;
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  border-radius: 50%;
 }
 
 .github-button {
-    width: 135px;
-    height: 40px;
-    line-height: 40px;
-    background: #171E28;
-    border-radius: 15px;
-    color: white;
-    font-size: 18px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 500;
-    border: none; 
-    cursor: pointer;
-    letter-spacing: .5px;
+  width: 135px;
+  height: 40px;
+  line-height: 40px;
+  background: #171e28;
+  border-radius: 15px;
+  color: white;
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.5px;
 }
 
 .github-button:hover {
-    background: #1D2733;
-    transform: scale(1.05);
+  background: #1d2733;
+  transform: scale(1.05);
 }
 
 .linkedin-button {
-    width: 135px;
-    height: 40px;
-    line-height: 40px;
-    background: #171E28;
-    border-radius: 15px;
-    color: white;
-    font-size: 18px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 500;
-    border: none; 
-    cursor: pointer;
-    letter-spacing: .5px;
+  width: 135px;
+  height: 40px;
+  line-height: 40px;
+  background: #171e28;
+  border-radius: 15px;
+  color: white;
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.5px;
 }
 
 .linkedin-button:hover {
-    background: #1D2733;
-    transform: scale(1.05);
+  background: #1d2733;
+  transform: scale(1.05);
 }
-
-/* Product Grid */
+/* Product Grid Styles */
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    justify-content: center;
-    padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
 }
 
 /* Cards */
 .card {
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 8px;
-    background: #fff;
-    text-align: center;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Product Image */
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
 .card img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
-/* Product Title */
 .card h3 {
-    margin: 10px 0 5px;
-    font-size: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-/* Product Description */
 .card p {
-    font-size: 14px;
-    color: #555;
-    margin: 0 10px 10px;
+  font-size: 14px;
+  color: #666;
+  margin: 0;
 }
