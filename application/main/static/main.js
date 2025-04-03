@@ -9,7 +9,7 @@ import David from '/static/pages/David.js';
 import Jun from '/static/pages/Jun.js';
 import Yuming from '/static/pages/Yuming.js';
 
-import SearchBar from "/static/Searchbar.js"; 
+import SearchBar from "/static/searchbar.js"; 
 import Navbar from '/static/Navbar.js';
 
 const routes = [
