@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template #request, jsonify 
+# from flask_mysqldb import MySQL
+# import MySQLdb.cursors 
 
 app = Flask(__name__)
 
@@ -12,6 +14,15 @@ app = Flask(__name__)
 # Only works now because the search bar that had that syntax is now a vue component.
 # 
 # STILL HAVE TO UPDATE THIS PAGE TO LOAD THE VP PAGE!!
+
+# not sure if this is needed, but will leave it for now
+# MySQL configuration (replace with your own credentials)
+# app.config['MYSQL_HOST'] = 'localhost'
+# app.config['MYSQL_USER'] = 'your_mysql_user'
+# app.config['MYSQL_PASSWORD'] = 'your_mysql_password'
+# app.config['MYSQL_DB'] = 'your_database_name'
+
+# mysql = MySQL(app)
 
 @app.route('/')
 def index():
@@ -40,6 +51,31 @@ def about_yuming():
 @app.route('/about/athan')
 def about_athan():
     return render_template('about-athan.html') # Render the about-athan.html file
+
+# Search API route for Vue to fetch results
+@app.route('/api/search', methods=['POST'])
+def api_search():
+    data = request.get_json()
+    query = data.get('query', '')
+    filter_by = data.get('filter', '')
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Query based on selected filter
+    if filter_by == 'Books':
+        cursor.execute("SELECT * FROM books WHERE title LIKE %s", ('%' + query + '%',))
+    elif filter_by == 'Electronics':
+        cursor.execute("SELECT * FROM electronics WHERE name LIKE %s", ('%' + query + '%',))
+    elif filter_by == 'Furniture':
+        cursor.execute("SELECT * FROM furniture WHERE name LIKE %s", ('%' + query + '%',))
+    else:
+        # Default or no filter (Books as fallback)
+        cursor.execute("SELECT * FROM books WHERE title LIKE %s", ('%' + query + '%',))
+
+    results = cursor.fetchall()
+    cursor.close()
+
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)  # Default Flask server (not for production)
