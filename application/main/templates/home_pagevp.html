@@ -1,135 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home_Page</title>
-    <script src="https://unpkg.com/vue@3.5.13"></script>
-</head>
-<body>
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+  </head>
+  <body>
     <div id="app">
-        <div class="container">
-            <nav class="nav-bar">
-                <a href="/" class="nav-link">Home</a>
-            </nav>
-            <div class="content">
-                <h1>CSC 648-Spring 2025 Team 05</h1>
-                
-                <search-bar></search-bar>
-            </div>
+      <div class="container">
+        <nav class="nav-bar">
+          <a href="/" class="nav-link">Home</a>
+        </nav>
+        <div class="content">
+          <h1>CSC 648-Spring 2025 Team 05</h1>
+
+          <search-bar></search-bar>
         </div>
+      </div>
+
+      <div class="product-grid">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+  
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+  
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+        <div class="card">
+          <img src="" alt="Item Image" />
+          <h3>Product Name</h3>
+          <p>Product description</p>
+        </div>
+      </div>
+
     </div>
 
-    <script type ="module">
-        import SearchBar from '/static/searchbar.js';
-        const app = Vue.createApp({});
-        app.component('search-bar', SearchBar);
-        app.mount('#app');
+
+    <script type="module">
+      import SearchBar from "/static/searchbar.js";
+      const app = Vue.createApp({});
+      app.component("search-bar", SearchBar);
+      app.mount("#app");
     </script>
 
-
     <style>
-        .container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        margin: 0;
+        background-color: #f7f7f7;
+      }
+      .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
+      .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
 
-        h1 {
-            color: black;
-            margin-top: 20px;
-            align-items: center;
-        }
-        
-        /* Keep the entire search bar connected */
-        .search-bar-container {
-            display: flex;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            width: 600px;
-            margin: 20px auto;
-        }
+      h1 {
+        color: black;
+        margin-top: 20px;
+        align-items: center;
+      }
 
-        /* Dropdown Button */
-        .dropdown {
-            display: flex;
-            flex-grow: 0;
-            transition: width 0.2s ease-in-out;
-        }
+      /* Keep the entire search bar connected */
+      .search-bar-container {
+        display: flex;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        width: 600px;
+        margin: 20px auto;
+      }
 
-        .dropbtn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 15px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-right: 1px solid #ccc;
-            border-top-left-radius: 6px;
-            border-bottom-left-radius: 6px;
-            width: 100%;
-        }
+      /* Dropdown Button */
+      .dropdown {
+        display: flex;
+        flex-grow: 0;
+        transition: width 0.2s ease-in-out;
+      }
 
-        /* Dropdown Menu */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 90%;
-            background-color: white;
-            border: 1px solid #ccc;
-            min-width: 120px;
-            border-radius: 4px;
-            padding: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
+      .dropbtn {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 15px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-right: 1px solid #ccc;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        width: 100%;
+      }
 
-        /* Ensure dropdown is visible when button is clicked */
-        .dropdown.open .dropdown-content {
-            display: block;
-        }
+      /* Dropdown Menu */
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 90%;
+        background-color: white;
+        border: 1px solid #ccc;
+        min-width: 120px;
+        border-radius: 4px;
+        padding: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
-        .dropdown-content div {
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
-        }
+      /* Ensure dropdown is visible when button is clicked */
+      .dropdown.open .dropdown-content {
+        display: block;
+      }
 
-        .dropdown-content div:hover {
-            background-color: #f1f1f1;
-        }
+      .dropdown-content div {
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
 
-        .search-bar {
-            display: flex;
-            flex-grow: 1;
-            transition: width 0.2s ease-in-out;
-        }
+      .dropdown-content div:hover {
+        background-color: #f1f1f1;
+      }
 
-        .search-bar input {
-            padding: 12px;
-            font-size: 16px;
-            border: none;
-            outline: none;
-            width: 100%;
-        }
-        .search-bar button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 15px;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
-        }
+      .search-bar {
+        display: flex;
+        flex-grow: 1;
+        transition: width 0.2s ease-in-out;
+      }
+
+      .search-bar input {
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        width: 100%;
+      }
+      .search-bar button {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 15px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+      }
+
+      .search-bar-container {
+        display: flex; /* Align elements in a row */
+        align-items: center; /* Align items vertically */
+        gap: 10px; /* Space between elements */
+        width: 100%; /* Ensures it doesn't shrink */
+        max-width: 600px; /* Adjust as needed */
+      }
+
+      .dropdown {
+        flex-shrink: 0; /* Prevents it from shrinking */
+      }
+
+      /* Product Grid */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Cards */
+      .card {
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 8px;
+        background: #fff;
+        text-align: center;
+      }
+
+      /* Product Image */
+      .card img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
+      }
+
+      /* Product Title */
+      .card h3 {
+        margin: 10px 0 5px;
+        font-size: 16px;
+      }
+
+      /* Product Description */
+      .card p {
+        font-size: 14px;
+        color: #555;
+        margin: 0 10px 10px;
+      }
     </style>
-</body>
+  </body>
 </html>
