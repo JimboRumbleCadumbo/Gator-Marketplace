@@ -24,7 +24,7 @@ mysql = MySQL(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Render the index.html file
+    return render_template('home_pagevp.html')  # Render the index.html file
 
 @app.route('/test/search-test')
 def search_test():
@@ -61,14 +61,17 @@ def api_search():
 
     # Query based on selected filter
     if filter_by == 'Books':
-        cursor.execute("SELECT * FROM books WHERE title LIKE %s", ('%' + query + '%',))
+        cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 2", ('%' + query + '%',))
+        print("You choosed books")
     elif filter_by == 'Electronics':
-        cursor.execute("SELECT * FROM electronics WHERE name LIKE %s", ('%' + query + '%',))
+        cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 1", ('%' + query + '%',))
+        print("You choosed electronics")
     elif filter_by == 'Furniture':
-        cursor.execute("SELECT * FROM furniture WHERE name LIKE %s", ('%' + query + '%',))
+        cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 4", ('%' + query + '%',))
+        print("You choosed furniture")
     else:
         # Default or no filter (Books as fallback)
-        cursor.execute("SELECT * FROM books WHERE title LIKE %s", ('%' + query + '%',))
+        cursor.execute("SELECT * FROM Category WHERE name LIKE %s", ('%' + query + '%',))
 
     results = cursor.fetchall()
     cursor.close()

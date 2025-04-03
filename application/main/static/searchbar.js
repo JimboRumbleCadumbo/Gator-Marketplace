@@ -35,7 +35,7 @@ const SearchBar = {
                 searchQuery: '',
                 isDropdownVisible: false,
                 selectedFilter: '',
-                filters: ['Books', 'Electronics', 'Furniture'],
+                filters: ['All','Books', 'Electronics', 'Furniture'],
                 results: []
             };
         },
@@ -48,10 +48,10 @@ const SearchBar = {
             this.isDropdownVisible = false;
          },
         submitSearch() {
-            // console.log('Searching for:', this.searchQuery);
-            // console.log('Selected Filter:', this.selectedFilter);
+            console.log('Searching for:', this.searchQuery);
+            console.log('Selected Filter:', this.selectedFilter);
             if (!this.searchQuery) return;
-
+            
             fetch('/api/search', {
                 method: 'POST',
                 headers: {
