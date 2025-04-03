@@ -9,14 +9,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }
 
 .content {
     text-align: center;
     width: 100%; 
     padding: 20px;
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
 }
 
 .about-content {
@@ -27,7 +27,7 @@ body {
     width: 90%; 
     max-width: 1120px; 
     padding: 20px;
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
 }
 
 .left-section {
@@ -297,4 +297,43 @@ h1 {
 .linkedin-button:hover {
     background: #1D2733;
     transform: scale(1.05);
+}
+
+/* Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Cards */
+.card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff;
+    text-align: center;
+}
+
+/* Product Image */
+.card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Product Title */
+.card h3 {
+    margin: 10px 0 5px;
+    font-size: 16px;
+}
+
+/* Product Description */
+.card p {
+    font-size: 14px;
+    color: #555;
+    margin: 0 10px 10px;
 }
