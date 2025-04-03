@@ -3,24 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Home_Page</title>
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4.2.5/dist/vue-router.global.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <nav class="nav-bar">
-            <a href="/" class="nav-link">Home</a>
-        </nav>
-        <div class="content">
-            <div class="group-text">CSC-648 Group 5</div>
-            <div class="group-buttons">
-                <!-- Replace href with respective about page -->
-                <a href="about/alexis" class="button">Alexis Perez</a>
-                <a href="about/david" class="button">David Cabanela</a>
-                <a href="about/jun" class="button">David Chang</a>
-                <a href="about/athan" class="button">Athan Cheung</a>
-                <a href="about/yuming" class="button">Yu-Ming Chen</a>
-            </div>
-        </div>
+    <div id="app">
+        <router-view></router-view>
     </div>
-</body>
+
+    <script type="module" src="/static/main.js"></script>
+
+  </body>
+</html>

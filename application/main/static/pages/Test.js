@@ -3,7 +3,7 @@ export default {
     <navbar></navbar>
         <div class="container">
             <div class="content">
-                <h1>CSC-648 Group 5<h1>
+                <h1>CSC-648 Group 5</h1>
                 <div class="group-buttons">
                     <router-link to="/about/alexis" class="button">Alexis Perez</router-link>
                     <router-link to="/about/david" class="button">David Cabanela</router-link>

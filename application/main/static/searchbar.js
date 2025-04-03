@@ -29,7 +29,7 @@ const SearchBar = {
                 searchQuery: '',
                 isDropdownVisible: false,
                 selectedFilter: '',
-                filters: ['Books', 'Electronics', 'Furniture']
+                filters: ['All', 'Books', 'Electronics', 'Furniture']
             };
         },
     methods: {

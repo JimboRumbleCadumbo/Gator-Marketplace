@@ -1,11 +1,7 @@
 body {
     margin: 0;
-    background: #010409;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-bottom: 300px;
+    background: white;
+    border: 0px solid black;
 }
 
 .container {
@@ -13,68 +9,156 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 100px;
-}
-
-.nav-bar {
-    width: 100%;
-    height: 100px; 
-    background: #0D1117; 
-    display: flex;
-    align-items: center; 
-}
-
-.nav-link {
-    color: white;
-    font-size: 28px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    text-decoration: none;
-    padding: 0 160px;
-}
-
-.nav-link:hover {
-    text-decoration: underline;
-}
-
-.home-link {
-    position: absolute;
-    left: 160px;
-    top: 38px;
-    color: white;
-    font-size: 32px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    text-decoration: none;
+    border: 2px solid red;
 }
 
 .content {
-    width: 1120px;
+    text-align: center;
+    width: 100%; 
+    padding: 20px;
+    border: 2px solid blue;
+}
+
+.about-content {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    text-align: center;
+    width: 90%; 
+    max-width: 1120px; 
+    padding: 20px;
+    border: 2px solid blue;
+}
+
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Right Section (Name, About, About Box) */
+.right-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 60%;
+    margin-left: 250px;
+    gap: 50px;
+    padding-top: 175px;
+}
+
+h1 {
+    color: black;
+    margin-top: 20px;
+    align-items: center;
+}
+
+/* Keep the entire search bar connected */
+.search-bar-container {
     position: relative;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 600px;
+    margin: 20px auto;
 }
 
-.name-text {
-    position: absolute;
-    left: 570px;
-    top: 65px;
-    color: white;
-    font-size: 32px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
+/* Dropdown Button */
+.dropdown {
+    display: flex;
+    flex-grow: 0;
+    transition: width 0.2s ease-in-out;
 }
 
-.about-text {
-    position: absolute;
-    left: 570px;
-    top: 179px;
+.dropbtn {
+    background-color: #4CAF50;
     color: white;
-    font-size: 32px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
+    padding: 12px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-right: 1px solid #ccc;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    width: 100%;
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    min-width: 120px;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure dropdown is visible when button is clicked */
+.dropdown.open .dropdown-content {
+    display: block;
+}
+
+.dropdown-content div {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-content div:hover {
+    background-color: #f1f1f1;
+}
+
+.search-bar {
+    display: flex;
+    flex-grow: 1;
+    transition: width 0.2s ease-in-out;
+}
+
+.search-bar input {
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    width: 100%;
+}
+.search-bar button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.nav-bar {
+  width: 100%;
+  height: 100px; 
+  background: grey; 
+  display: flex;
+  align-items: center; 
+}
+
+.nav-link {
+  color: black;
+  font-size: 28px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+  padding: 0 160px;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
 }
 
 .group-text {
-    color: white;
+    color: black;
     font-size: 40px;
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
@@ -84,11 +168,56 @@ body {
     height: 100%;
     margin-bottom: 20px;
 }
+.group-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 30px; 
+    padding-top: 30px;
+}
 
+.button {
+  display: inline-block;
+  width: 190px;
+  height: 50px;
+  background: #171E28;
+  border-radius: 15px;
+  color: white;
+  font-size: 20px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  line-height: 50px;
+  cursor: pointer;
+  letter-spacing: .5px;
+}
+
+.button:hover {
+  background: #1D2733;
+  transform: scale(1.05);
+}
+
+.name-text {
+    left: 570px;
+    top: 65px;
+    color: black;
+    font-size: 32px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
+
+.about-text {
+    left: 570px;
+    top: 179px;
+    color: black;
+    font-size: 32px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
 .about-box {
     width: 550px;
     min-height: 225px;
-    position: absolute;
     left: 570px;
     top: 254px;
     background: #0D1117;
@@ -108,14 +237,15 @@ body {
 }
 
 .profile {
-    position: absolute;
+    width: 324px;
+    max-width: 324px; 
+    height: auto; 
+    background: #0D1117;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 324px; 
-    height: 316px; 
-    background: #0D1117; 
-    border-radius: 50%; 
+    margin: 20px 0;
 }
 
 .profile-icon {
@@ -141,9 +271,6 @@ body {
     font-weight: 500;
     border: none; 
     cursor: pointer;
-    position: absolute; 
-    left: 96px;
-    top: 350px;
     letter-spacing: .5px;
 }
 
@@ -164,43 +291,10 @@ body {
     font-weight: 500;
     border: none; 
     cursor: pointer;
-    position: absolute; 
-    left: 96px;
-    top: 415px;
     letter-spacing: .5px;
 }
 
 .linkedin-button:hover {
-    background: #1D2733;
-    transform: scale(1.05);
-}
-
-.group-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    gap: 30px; 
-    padding-top: 30px;
-}
-
-.button {
-    display: inline-block;
-    width: 190px;
-    height: 50px;
-    background: #171E28;
-    border-radius: 15px;
-    color: white;
-    font-size: 20px;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 500;
-    text-align: center;
-    text-decoration: none;
-    line-height: 50px;
-    cursor: pointer;
-    letter-spacing: .5px;
-}
-
-.button:hover {
     background: #1D2733;
     transform: scale(1.05);
 }

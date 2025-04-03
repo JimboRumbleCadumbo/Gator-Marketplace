@@ -5,7 +5,7 @@ app = Flask(__name__, static_folder="static", template_folder="templates")
 @app.route("/")
 @app.route("/<path:path>")  # Catch all routes and serve the SPA
 def index(path=""):
-    return render_template("home_pagevp.html")  # The single entry point for Vue
+    return render_template("index.html")  # The single entry point for Vue
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)  # Default Flask server (not for production)
