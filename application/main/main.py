@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, jsonify 
 from flask_mysqldb import MySQL
 import MySQLdb.cursors 
+from dotenv import load_dotenv
+import os
+
+
 
 app = Flask(__name__)
 
@@ -10,15 +14,15 @@ app.jinja_options = {
     'block_start_string': '{%',
     'block_end_string': '%}'
 }
-# Might have an issue where some pages will use {{}} double curly braces and python won't be able to render it.
-# Only works now because the search bar that had that syntax is now a vue component.
-# 
-# STILL HAVE TO UPDATE THIS PAGE TO LOAD THE VP PAGE!!
 
-app.config['MYSQL_HOST'] = 'team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com'
-app.config['MYSQL_USER'] = 't5db'
-app.config['MYSQL_PASSWORD'] = 'team5!250127'
-app.config['MYSQL_DB'] = 'marketplace'
+# credentials for MySQL DB
+# Use the .env file to store credentials; usually, .env should not be uploaded to 
+# GitHub at all times. This is only a test senerio and for proper usage.
+load_dotenv()
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 
 mysql = MySQL(app)
 
