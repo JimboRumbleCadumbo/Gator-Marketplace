@@ -35,7 +35,7 @@ const SearchBar = {
                 searchQuery: '',
                 isDropdownVisible: false,
                 selectedFilter: '',
-                filters: ['All','Books', 'Electronics', 'Furniture'],
+                filters: ['All', 'Electronics', 'Books', 'Clothing,', 'Furniture', 'Sports Equipment'],
                 results: []
             };
         },
@@ -46,20 +46,20 @@ const SearchBar = {
         selectFilter(filter) {
             this.selectedFilter = filter;
             this.isDropdownVisible = false;
-         },
+        },
         submitSearch() {
+        
             console.log('Searching for:', this.searchQuery);
             console.log('Selected Filter:', this.selectedFilter);
-            if (!this.searchQuery) return;
-            
+        
             fetch('/api/search', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    query: this.searchQuery,
-                    filter: this.selectedFilter
+                    query: this.searchQuery || '',
+                    filter: this.selectedFilter || 'All'
                 })
             })
             .then(response => response.json())

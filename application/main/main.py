@@ -60,19 +60,37 @@ def api_search():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
     # Query based on selected filter
-    if filter_by == 'Books':
-        cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 2", ('%' + query + '%',))
-        print("You choosed books")
+    if filter_by == 'All':
+        if query == '':
+            cursor.execute("SELECT * FROM Item_Listing")
+        else:
+            cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s", ('%' + query + '%',))
     elif filter_by == 'Electronics':
-        cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 1", ('%' + query + '%',))
-        print("You choosed electronics")
+        if query == '':
+            cursor.execute("SELECT * FROM Item_Listing WHERE category_id = 1")
+        else:
+            cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 1", ('%' + query + '%',))
+    elif filter_by == 'Books':
+        if query == '':
+            cursor.execute("SELECT * FROM Item_Listing WHERE category_id = 2")
+        else:
+            cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 2", ('%' + query + '%',))
+    elif filter_by == 'Clothing':
+        if query == '':
+            cursor.execute("SELECT * FROM Item_Listing WHERE category_id = 3")
+        else:
+            cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 3", ('%' + query + '%',))
     elif filter_by == 'Furniture':
-        cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 4", ('%' + query + '%',))
-        print("You choosed furniture")
-    else:
-        # Default or no filter (Books as fallback)
-        cursor.execute("SELECT * FROM Category WHERE name LIKE %s", ('%' + query + '%',))
-
+        if query == '':
+            cursor.execute("SELECT * FROM Item_Listing WHERE category_id = 4")
+        else:
+            cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 4", ('%' + query + '%',))
+    elif filter_by == 'Sports Equipment':
+        if query == '':
+            cursor.execute("SELECT * FROM Item_Listing WHERE category_id = 5")
+        else:
+            cursor.execute("SELECT * FROM Item_Listing WHERE name LIKE %s AND category_id = 5", ('%' + query + '%',))
+            
     results = cursor.fetchall()
     cursor.close()
 
