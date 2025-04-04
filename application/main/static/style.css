@@ -1,22 +1,187 @@
 body {
     margin: 0;
-    background: #010409;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-bottom: 300px;
-}
-
-.container {
+    background: white;
+    border: 0px solid black;
+    font-family: "Open Sans", sans-serif;
+  }
+  
+  .container {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 100px;
-}
+    /* border: 2px solid red; */
+  }
+  
+  .content {
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    /* border: 2px solid blue; */
+  }
+  
+  .about-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 90%;
+    max-width: 1120px;
+    padding: 20px;
+    /* border: 2px solid blue; */
+  }
+  
+  .left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Right Section (Name, About, About Box) */
+  .right-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 60%;
+    margin-left: 250px;
+    gap: 50px;
+    padding-top: 175px;
+  }
+  
+  h1 {
+    color: black;
+    margin-top: 20px;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  /* Keep the entire search bar connected */
+  .search-bar-container {
+    position: relative;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 600px;
+    margin: 20px auto;
+  }
+  
+  /* Dropdown Button */
+  .dropdown {
+    display: flex;
+    flex-grow: 0;
+    transition: width 0.2s ease-in-out;
+  }
+  
+  .dropbtn {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-right: 1px solid #ccc;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    width: 100%;
+  }
+  
+  /* Dropdown Menu */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    min-width: 120px;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Ensure dropdown is visible when button is clicked */
+  .dropdown.open .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown-content div {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .dropdown-content div:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .search-bar {
+    display: flex;
+    flex-grow: 1;
+    transition: width 0.2s ease-in-out;
+  }
+  
+  .search-bar input {
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    width: 100%;
+  }
+  .search-bar button {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  
+  /* Product Grid Styles */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  /* Cards */
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
 
-.nav-bar {
+/* .nav-bar {
     width: 100%;
     height: 100px; 
     background: #0D1117; 
@@ -35,7 +200,7 @@ body {
 
 .nav-link:hover {
     text-decoration: underline;
-}
+} */
 
 .home-link {
     position: absolute;
@@ -48,10 +213,6 @@ body {
     text-decoration: none;
 }
 
-.content {
-    width: 1120px;
-    position: relative;
-}
 
 .name-text {
     position: absolute;

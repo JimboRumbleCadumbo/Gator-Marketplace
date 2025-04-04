@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home_Page</title>
     <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="[[ url_for('static', filename='style.css') ]]">
+
   </head>
   <body>
     <div id="app">
@@ -12,19 +14,20 @@
         <nav class="nav-bar">
           <a href="/" class="nav-link">Home</a>
         </nav>
-        <div class="content">
           <h1>CSC 648-Spring 2025 Team 05</h1>
-
           <search-bar @update-results="updateResults"></search-bar>
 
-          <div class="product-grid" v-if="results.length > 0">
+        <div class="content">
+          <div class="product-grid" v-show="results.length > 0">
             <div class="card" v-for="result in results" :key="result.id">
               <img :src="result.image || 'https://via.placeholder.com/150'" alt="Item Image" />
               <h3>{{ result.name || result.title }}</h3>
+              <p>{{ result.price || result.cost }}</p>
               <p>{{ result.description || 'No description available' }}</p>
             </div>
           </div>    
         </div>
+        
       </div>
     </div>
 
@@ -46,190 +49,5 @@
       app.component("search-bar", SearchBar);
       app.mount("#app");
     </script>
-
-    <style>
-      body {
-        margin: 0;
-        background: white;
-        border: 0px solid black;
-        font-family: "Open Sans", sans-serif;
-      }
-
-      .container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* border: 2px solid red; */
-      }
-
-      .content {
-        text-align: center;
-        width: 100%;
-        padding: 20px;
-        /* border: 2px solid blue; */
-      }
-
-      .about-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        width: 90%;
-        max-width: 1120px;
-        padding: 20px;
-        /* border: 2px solid blue; */
-      }
-
-      .left-section {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      /* Right Section (Name, About, About Box) */
-      .right-section {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-        width: 60%;
-        margin-left: 250px;
-        gap: 50px;
-        padding-top: 175px;
-      }
-
-      h1 {
-        color: black;
-        margin-top: 20px;
-        align-items: center;
-        font-family: "Poppins", sans-serif;
-      }
-
-      /* Keep the entire search bar connected */
-      .search-bar-container {
-        position: relative;
-        display: flex;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        width: 600px;
-        margin: 20px auto;
-      }
-
-      /* Dropdown Button */
-      .dropdown {
-        display: flex;
-        flex-grow: 0;
-        transition: width 0.2s ease-in-out;
-      }
-
-      .dropbtn {
-        background-color: #4caf50;
-        color: white;
-        padding: 12px 15px;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        border-right: 1px solid #ccc;
-        border-top-left-radius: 6px;
-        border-bottom-left-radius: 6px;
-        width: 100%;
-      }
-
-      /* Dropdown Menu */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 100%;
-        background-color: white;
-        border: 1px solid #ccc;
-        min-width: 120px;
-        border-radius: 4px;
-        padding: 10px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Ensure dropdown is visible when button is clicked */
-      .dropdown.open .dropdown-content {
-        display: block;
-      }
-
-      .dropdown-content div {
-        padding: 10px;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-      }
-
-      .dropdown-content div:hover {
-        background-color: #f1f1f1;
-      }
-
-      .search-bar {
-        display: flex;
-        flex-grow: 1;
-        transition: width 0.2s ease-in-out;
-      }
-
-      .search-bar input {
-        padding: 12px;
-        font-size: 16px;
-        border: none;
-        outline: none;
-        width: 100%;
-      }
-      .search-bar button {
-        background-color: #4caf50;
-        color: white;
-        padding: 12px 15px;
-        border: none;
-        font-size: 16px;
-        cursor: pointer;
-        border-top-right-radius: 6px;
-        border-bottom-right-radius: 6px;
-      }
-
-      .dropdown {
-        flex-shrink: 0; /* Prevents it from shrinking */
-      }
-
-      /* Product Grid */
-      .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
-        justify-content: center;
-        padding: 20px;
-      }
-
-      /* Cards */
-      .card {
-        border: 1px solid #ddd;
-        padding: 10px;
-        border-radius: 8px;
-        background: #fff;
-        text-align: center;
-      }
-
-      /* Product Image */
-      .card img {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin-bottom: 10px;
-      }
-
-      /* Product Title */
-      .card h3 {
-        margin: 10px 0 5px;
-        font-size: 16px;
-      }
-
-      /* Product Description */
-      .card p {
-        font-size: 14px;
-        color: #555;
-        margin: 0 10px 10px;
-      }
-    </style>
   </body>
 </html>

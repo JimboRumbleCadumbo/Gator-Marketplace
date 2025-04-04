@@ -28,7 +28,7 @@ const SearchBar = {
                 searchQuery: '',
                 isDropdownVisible: false,
                 selectedFilter: '',
-                filters: ['All', 'Electronics', 'Books', 'Clothing,', 'Furniture', 'Sports Equipment'],
+                filters: ['All', 'Electronics', 'Books', 'Clothing', 'Furniture', 'Sports Equipment'],
                 results: []
             };
         },
