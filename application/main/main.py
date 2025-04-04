@@ -4,12 +4,12 @@ import MySQLdb.cursors
 
 app = Flask(__name__)
 
-# app.jinja_options = {
-#     'variable_start_string': '[[',
-#     'variable_end_string': ']]',
-#     'block_start_string': '{%',
-#     'block_end_string': '%}'
-# }
+app.jinja_options = {
+    'variable_start_string': '[[',
+    'variable_end_string': ']]',
+    'block_start_string': '{%',
+    'block_end_string': '%}'
+}
 # Might have an issue where some pages will use {{}} double curly braces and python won't be able to render it.
 # Only works now because the search bar that had that syntax is now a vue component.
 # 

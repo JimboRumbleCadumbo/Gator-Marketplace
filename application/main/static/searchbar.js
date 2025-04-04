@@ -21,13 +21,6 @@ const SearchBar = {
                 />
                 <button @click="submitSearch">Search</button>
             </div>
-
-            <!-- Results (optional) -->
-            <div class="search-results" v-if="results.length > 0">
-                <div v-for="result in results" :key="result.id">
-                    {{ result.name || result.title }} <!-- adjust based on DB schema -->
-                </div>
-            </div>
         </div>
     `,
     data() {
@@ -65,7 +58,8 @@ const SearchBar = {
             .then(response => response.json())
             .then(data => {
                 console.log('Search results:', data);
-                this.results = data;
+                this.$emit('update-results', data);
+                //this.results = data;
             })
             .catch(error => console.error('Search error:', error));
         }
