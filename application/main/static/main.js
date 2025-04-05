@@ -10,7 +10,6 @@ import Jun from '/static/pages/Jun.js';
 import Yuming from '/static/pages/Yuming.js';
 
 import SearchBar from "/static/searchbar.js"; 
-import Navbar from '/static/Navbar.js';
 
 const routes = [
     { path: "/", component: Home },
@@ -30,6 +29,5 @@ const router = createRouter({
 
 const app = createApp({});
 app.component("search-bar", SearchBar);
-app.component("navbar", Navbar);
 app.use(router);
 app.mount("#app");

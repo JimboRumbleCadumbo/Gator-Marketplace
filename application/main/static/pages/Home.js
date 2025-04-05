@@ -2,7 +2,11 @@ console.log("Home.js Loaded!");
 
 export default {
     template: `
-        <navbar></navbar>
+        <nav class="nav-bar">
+            <router-link to="/" class="nav-link">Home</router-link>
+            <search-bar></search-bar>
+            <router-link to="/test" class="nav-link">Test Page</router-link>
+        </nav>
         <div class="container">
             <div class="content">
                 <h1>CSC 648-Spring 2025 Team 05</h1>
