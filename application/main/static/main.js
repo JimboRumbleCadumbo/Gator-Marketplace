@@ -1,4 +1,4 @@
-const { createApp } = Vue;
+const { createApp, reactive} = Vue;
 const { createRouter, createWebHistory } = VueRouter;
 
 import Home from '/static/pages/Home.js';
@@ -10,6 +10,11 @@ import Jun from '/static/pages/Jun.js';
 import Yuming from '/static/pages/Yuming.js';
 
 import SearchBar from "/static/searchbar.js"; 
+
+//Search results/data are made global so that all pages can access it.
+const searchData = reactive({
+   results: []
+});
 
 const routes = [
     { path: "/", component: Home },
@@ -28,6 +33,7 @@ const router = createRouter({
 });
 
 const app = createApp({});
+app.provide('searchData', searchData);
 app.component("search-bar", SearchBar);
 app.use(router);
 app.mount("#app");

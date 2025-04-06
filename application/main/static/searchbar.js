@@ -1,4 +1,5 @@
-const SearchBar = {
+
+export default{
     template: `
         <!-- Search Bar and Filters Dropdown in Flexbox -->
             <div class="search-bar-container">
@@ -24,27 +25,41 @@ const SearchBar = {
                 </div>
             </div>
             `,
-    data() {
-            return {
-                searchQuery: '',
-                isDropdownVisible: false,
-                selectedFilter: '',
-                filters: ['All', 'Books', 'Electronics', 'Furniture']
-            };
-        },
-    methods: {
-        toggleDropdown() {
-            this.isDropdownVisible = !this.isDropdownVisible;
-        },
-        selectFilter(filter) {
-            this.selectedFilter = filter;
-            this.isDropdownVisible = false;
-         },
-        submitSearch() {
-            console.log('Searching for:', this.searchQuery);
-            console.log('Selected Filter:', this.selectedFilter);
-        }
-    }
+            setup() {
+                const searchData = Vue.inject('searchData'); 
+                const searchQuery = Vue.ref('');
+                const selectedFilter = Vue.ref('');
+                const isDropdownVisible = Vue.ref(false);
+            
+                function submitSearch() {
+                    fetch('/api/search', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            query: searchQuery.value,
+                            filter: selectedFilter.value || 'All'
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        searchData.results = data;
+                        console.log(searchData) // Update global state
+                    });
+                }
+            
+                return {
+                    searchQuery,
+                    selectedFilter,
+                    isDropdownVisible,
+                    filters: ['All', 'Electronics', 'Books', 'Clothing', 'Furniture', 'Sports Equipment'],
+                    submitSearch,
+                    toggleDropdown() {
+                        isDropdownVisible.value = !isDropdownVisible.value;
+                    },
+                    selectFilter(filter) {
+                        selectedFilter.value = filter;
+                        isDropdownVisible.value = false;
+                    }
+                };
+            }
 };
-
-export default SearchBar;
