@@ -1,4 +1,5 @@
-const SearchBar = {
+
+export default{
     template: `
         <div class="search-bar-container">
             <!-- Filters Dropdown -->
@@ -10,60 +11,42 @@ const SearchBar = {
                     </div>
                 </div>
             </div>
+            `,
+            setup() {
+                const searchData = Vue.inject('searchData'); 
+                const searchQuery = Vue.ref('');
+                const selectedFilter = Vue.ref('');
+                const isDropdownVisible = Vue.ref(false);
             
-            <!-- Search Bar -->
-            <div class="search-bar">
-                <input 
-                    type="text" 
-                    v-model="searchQuery" 
-                    placeholder="Search..." 
-                    @keyup.enter="submitSearch" 
-                />
-                <button @click="submitSearch">Search</button>
-            </div>
-        </div>
-    `,
-    data() {
-            return {
-                searchQuery: '',
-                isDropdownVisible: false,
-                selectedFilter: '',
-                filters: ['All', 'Electronics', 'Books', 'Clothing', 'Furniture', 'Sports Equipment'],
-                results: []
-            };
-        },
-    methods: {
-        toggleDropdown() {
-            this.isDropdownVisible = !this.isDropdownVisible;
-        },
-        selectFilter(filter) {
-            this.selectedFilter = filter;
-            this.isDropdownVisible = false;
-        },
-        submitSearch() {
-        
-            console.log('Searching for:', this.searchQuery);
-            console.log('Selected Filter:', this.selectedFilter);
-        
-            fetch('/api/search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: this.searchQuery || '',
-                    filter: this.selectedFilter || 'All'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Search results:', data);
-                this.$emit('update-results', data);
-                //this.results = data;
-            })
-            .catch(error => console.error('Search error:', error));
-        }
-    }
+                function submitSearch() {
+                    fetch('/api/search', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            query: searchQuery.value,
+                            filter: selectedFilter.value || 'All'
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        searchData.results = data;
+                        console.log(searchData) // Update global state
+                    });
+                }
+            
+                return {
+                    searchQuery,
+                    selectedFilter,
+                    isDropdownVisible,
+                    filters: ['All', 'Electronics', 'Books', 'Clothing', 'Furniture', 'Sports Equipment'],
+                    submitSearch,
+                    toggleDropdown() {
+                        isDropdownVisible.value = !isDropdownVisible.value;
+                    },
+                    selectFilter(filter) {
+                        selectedFilter.value = filter;
+                        isDropdownVisible.value = false;
+                    }
+                };
+            }
 };
-
-export default SearchBar;

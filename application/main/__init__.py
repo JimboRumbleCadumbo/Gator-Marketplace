@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 import os
 from main import search
 
@@ -16,9 +16,12 @@ app.jinja_options = {
 # Initialize routes from search module
 search.init_search_routes(app)
 
-@app.route('/about/alexis')
-def about_alexis():
-    return render_template('about-alexis.html') # Render the about_alexis.html file
+# Search API route for Vue to fetch results
+@app.route('/api/search', methods=['POST'])
+def api_search():
+    data = request.get_json()
+    query = data.get('query', '')
+    filter_by = data.get('filter', '')
 
 @app.route('/about/david')
 def about_david():
