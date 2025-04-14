@@ -1,4 +1,3 @@
-
 export default{
     template: `
         <!-- Search Bar and Filters Dropdown in Flexbox -->
@@ -40,10 +39,21 @@ export default{
                             filter: selectedFilter.value || 'All'
                         })
                     })
-                    .then(res => res.json())
+                    .then(res => {
+                        if (!res.ok) {
+                            return res.json().then(err => {
+                                throw new Error(`Server error: ${err.error || res.statusText}`);
+                            });
+                        }
+                        return res.json();
+                    })
                     .then(data => {
                         searchData.results = data;
-                        console.log(searchData) // Update global state
+                        console.log('Search results:', data); // Update global state
+                    })
+                    .catch(error => {
+                        console.error('Search error:', error);
+                        alert(`Search failed: ${error.message}`);
                     });
                 }
             

@@ -13,7 +13,7 @@ export default {
 
             <div class="product-grid" v-show="searchData.results.length > 0">
                 <div class="card" v-for="result in searchData.results" :key="result.id">
-                <img :src="result.image || 'https://via.placeholder.com/150'" alt="Item Image" />
+                <img :src="result.image_base64 || 'https://via.placeholder.com/150'" alt="Item Image" />
                 <h3>{{ result.name || result.title }}</h3>
                 <p>{{ result.price || result.cost }}</p>
                 <p>{{ result.description || 'No description available' }}</p>
