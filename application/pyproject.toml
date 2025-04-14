@@ -5,6 +5,8 @@ description = "Application for the Marketplace project"
 dependencies = [
     "flask",
     "python-dotenv",
+    "flask-mysqldb",
+    "mysqlclient",
 ]
 
 [build-system]
