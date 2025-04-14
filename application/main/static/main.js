@@ -8,6 +8,7 @@ import Athan from '/static/pages/Athan.js';
 import David from '/static/pages/David.js';
 import Jun from '/static/pages/Jun.js';
 import Yuming from '/static/pages/Yuming.js';
+import Postings from '/static/pages/Postings.js';
 
 import SearchBar from "/static/searchbar.js"; 
 
@@ -19,12 +20,12 @@ const searchData = reactive({
 const routes = [
     { path: "/", component: Home },
     { path: "/test", component: Test },
+    { path: "/postings", component: Postings },
     { path: "/about/alexis", component: Alexis },
     { path: "/about/athan", component: Athan },
     { path: "/about/david", component: David },
     { path: "/about/jun", component: Jun },
     { path: "/about/yuming", component: Yuming },
-
 ];
 
 const router = createRouter({
