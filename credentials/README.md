@@ -17,7 +17,7 @@
 3. SSH password or key.
     team5ubtu.pem
 4. Database URL or IP and port used.
-     team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com (Port 3306)
+     127.0.0.1:3306 (localhost on EC2)
 5. Database username
     t5db
 6. Database password
@@ -32,12 +32,18 @@
         3) Yes to everything and you're in.
 
     Loggin into DB instance: 
-        1) Open Ubuntu terminal
-        2) Type:
-	    mysql -u t5db -h team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com -p        
-	3) Enter password:
-            team5!250127
-        4) You're in.
+        0) **USE MYSQL WORKBENCH OR OTHER 3RD PARTY MYSQL GUI**
+        1) Type in the following info
+            - SSH Hostname: ec2-35-94-172-233.us-west-2.compute.amazonaws.com (Port 22)
+            - SSH Username: ubuntu
+            - SSH Password: (None)
+            - SSH Keyfile: (use "team5ubtu.pem")
+            - MySQL Hostname: 127.0.0.1
+            - MySQL Server Port: 3306
+            - User: t5db
+            - Password: team5!250127
+            - Default Schema: marketplace 
+        2) You're in.
 </pre>
 
 # Most important things to Remember
