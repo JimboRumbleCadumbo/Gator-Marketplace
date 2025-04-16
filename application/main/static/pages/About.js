@@ -3,7 +3,7 @@ export default {
         <nav class="nav-bar">
             <router-link to="/" class="nav-link">Home</router-link>
             <search-bar></search-bar>
-            <router-link to="/test" class="nav-link">About</router-link>
+            <router-link to="/about" class="nav-link">About</router-link>
         </nav>
         <div class="container">
             <div class="content">

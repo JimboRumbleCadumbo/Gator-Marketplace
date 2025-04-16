@@ -2,13 +2,14 @@ const { createApp, reactive} = Vue;
 const { createRouter, createWebHistory } = VueRouter;
 
 import Home from '/static/pages/Home.js';
-import Test from '/static/pages/Test.js';
+import About from '/static/pages/About.js';
 import Alexis from '/static/pages/Alexis.js';
 import Athan from '/static/pages/Athan.js';
 import David from '/static/pages/David.js';
 import Jun from '/static/pages/Jun.js';
 import Yuming from '/static/pages/Yuming.js';
 import Postings from '/static/pages/Postings.js';
+import Item from '/static/pages/Item.js';
 
 import SearchBar from "/static/searchbar.js"; 
 
@@ -19,8 +20,9 @@ const searchData = reactive({
 
 const routes = [
     { path: "/", component: Home },
-    { path: "/test", component: Test },
+    { path: "/about", component: About },
     { path: "/postings", component: Postings },
+    { path: "/item", component: Item },
     { path: "/about/alexis", component: Alexis },
     { path: "/about/athan", component: Athan },
     { path: "/about/david", component: David },
