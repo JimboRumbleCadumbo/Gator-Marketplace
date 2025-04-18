@@ -6,5 +6,5 @@ export default {
             <router-link to="/postings" class="nav-link">Create Listing</router-link>
             <router-link to="/test" class="nav-link">Test Page</router-link>
         </nav>
-    `
+    `,
 };

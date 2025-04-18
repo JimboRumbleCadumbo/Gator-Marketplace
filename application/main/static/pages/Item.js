@@ -1,5 +1,5 @@
 export default {
-    template: `
+  template: `
     <div>
       <nav class="nav-bar">
         <router-link to="/" class="nav-link">Home</router-link>
@@ -57,40 +57,39 @@ export default {
     </div>
     `,
 
-    data(){
-        return{
-            chatVisible: false,
-            item: {}
-        };
+  data() {
+    return {
+      chatVisible: false,
+      item: {},
+    };
+  },
+  methods: {
+    showChat() {
+      this.chatVisible = true;
     },
-    methods: {
-        showChat() {
-            this.chatVisible = true;
-        },
-        hideChat() {
-            this.chatVisible = false;
-        },
-        goToSellerProfile() {
-            console.log("Go to seller profile clicked");
-        },
-        loadItemDetails() {
-            this.item = {
-                name: "Sample Item",
-                price: "$100",
-                location: "New York, NY",
-                condition: "Used",
-                categories: ["Electronics", "Gadgets"],
-                description: "This is a sample item description.",
-                seller: {
-                    name: "John Doe",
-                    verified: true,
-                    rating: 4.5
-                }
-            };
-        }
+    hideChat() {
+      this.chatVisible = false;
     },
-    created() { 
-        this.loadItemDetails();
-    }
-
+    goToSellerProfile() {
+      console.log("Go to seller profile clicked");
+    },
+    loadItemDetails() {
+      this.item = {
+        name: "Sample Item",
+        price: "$100",
+        location: "New York, NY",
+        condition: "Used",
+        categories: ["Electronics", "Gadgets"],
+        description: "This is a sample item description.",
+        seller: {
+          name: "John Doe",
+          verified: true,
+          rating: 4.5,
+        },
+      };
+    },
+  },
+  created() {
+    this.loadItemDetails();
+  },
 };

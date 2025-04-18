@@ -27,17 +27,17 @@ export default {
     setup() {
         //Added to make sure searchresults are reset if you hit home page
         const route = VueRouter.useRoute();
-        const searchData = Vue.inject('searchData');
+        const searchData = Vue.inject("searchData");
 
         Vue.watchEffect(() => {
             //Reset the results when on the home page
-            if (route.path === '/') {
+            if (route.path === "/") {
                 searchData.results = [];
             }
         });
 
         return {
-            searchData
+            searchData,
         };
-    }
+    },
 };
