@@ -1,16 +1,37 @@
 from flask import Flask, render_template, request, jsonify
 import os
-from main import search #Still having issues when running like this - Alexis
-from main import postings #Still having issues when running like this - Alexis
+from main import search
+from main import postings
+from flask_mysqldb import MySQL
+from dotenv import load_dotenv
 
 __version__ = "0.1.0" 
 
 app = Flask(__name__)
 
+# Load environment variables
+load_dotenv()
+
+# Configure MySQL with connection pool settings
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
+
+# Add connection pool settings to prevent connection timeouts
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['MYSQL_AUTOCOMMIT'] = True
+app.config['MYSQL_POOL_NAME'] = 'mypool'
+app.config['MYSQL_POOL_SIZE'] = 10
+
+# Initialize MySQL once for the whole application
+mysql = MySQL(app)
+app.config['MYSQL_CONNECTION'] = mysql
+
 # Initialize routes from search module
 search.init_search_routes(app)
 
-# # Initialize routes from postings module
+# Initialize routes from postings module
 postings.init_posting_routes(app)
 
 @app.route('/', defaults={'path': ''})

@@ -21,16 +21,19 @@ def init_search_routes(app):
     Args:
         app: Flask application instance
     """
-    # Load environment variables
-    load_dotenv()
-    
-    # Configure MySQL connection
-    app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
-    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
-    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
-    app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
+    # Get the shared MySQL connection
+    mysql = app.config.get('MYSQL_CONNECTION')
+    if not mysql:
+        # Fallback if shared connection is not available
+        load_dotenv()
+        
+        # Configure MySQL connection
+        app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+        app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+        app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+        app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 
-    mysql = MySQL(app)
+        mysql = MySQL(app)
 
     @app.route('/api/search', methods=['POST'])
     def api_search():
