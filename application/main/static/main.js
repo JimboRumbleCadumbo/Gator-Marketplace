@@ -10,6 +10,7 @@ import Jun from "/static/pages/Jun.js";
 import Yuming from "/static/pages/Yuming.js";
 import Postings from "/static/pages/Postings.js";
 import Item from "/static/pages/Item.js";
+import Dashboard from "/static/pages/Dashboard.js";
 
 import SearchBar from "/static/searchbar.js";
 
@@ -23,6 +24,7 @@ const routes = [
     { path: "/about", component: About },
     { path: "/postings", component: Postings },
     { path: "/item", component: Item },
+    { path: "/dashboard", component: Dashboard},
     { path: "/about/alexis", component: Alexis },
     { path: "/about/athan", component: Athan },
     { path: "/about/david", component: David },
