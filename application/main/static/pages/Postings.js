@@ -1,7 +1,4 @@
-import Navbar from "/static/components/Navbar.js";
-
 export default {
-    components: { Navbar },
     template: `
         <Navbar />
         <div class="postings-container">

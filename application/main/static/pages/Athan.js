@@ -1,9 +1,8 @@
-import Navbar from "/static/components/Navbar.js";
+
 
 export default {
-    components: { Navbar },
     template: `
-        <Navbar />
+        <Navbar></Navbar>
         <div class="container">
             <div class="about-content">
                 <!-- Left Section -->

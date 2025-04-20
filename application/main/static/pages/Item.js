@@ -1,9 +1,6 @@
-import Navbar from "/static/components/Navbar.js";
-
 export default {
-  components: { Navbar },
   template: `
-    <Navbar />
+      <Navbar></Navbar>
       <div class="container">
         <div class="item-layout">
           <div class="item-image"></div>

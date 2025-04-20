@@ -1,6 +1,7 @@
 const { createApp, reactive } = Vue;
 const { createRouter, createWebHistory } = VueRouter;
 
+//Page imports
 import Home from "/static/pages/Home.js";
 import About from "/static/pages/About.js";
 import Alexis from "/static/pages/Alexis.js";
@@ -10,9 +11,10 @@ import Jun from "/static/pages/Jun.js";
 import Yuming from "/static/pages/Yuming.js";
 import Postings from "/static/pages/Postings.js";
 import Item from "/static/pages/Item.js";
-import Dashboard from "/static/pages/dashboard.js";
+import Dashboard from "/static/pages/Dashboard.js";
 
-import SearchBar from "/static/searchbar.js";
+//Component imports
+import Navbar from "/static/components/Navbar.js";
 
 //Search results/data are made global so that all pages can access it.
 const searchData = reactive({
@@ -39,6 +41,6 @@ const router = createRouter({
 
 const app = createApp({});
 app.provide("searchData", searchData);
-app.component("search-bar", SearchBar);
+app.component("Navbar", Navbar);
 app.use(router);
 app.mount("#app");
