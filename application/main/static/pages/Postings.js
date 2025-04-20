@@ -1,11 +1,9 @@
+import Navbar from "/static/components/Navbar.js";
+
 export default {
+    components: { Navbar },
     template: `
-        <nav class="nav-bar">
-            <router-link to="/" class="nav-link">Home</router-link>
-            <search-bar></search-bar>
-            <router-link to="/postings" class="nav-link">Create Listing</router-link>
-            <router-link to="/about" class="nav-link">About</router-link>
-        </nav>
+        <Navbar />
         <div class="postings-container">
             <h1>Create New Item Listing</h1>
             
@@ -170,4 +168,4 @@ export default {
             resetForm
         };
     }
-}; 
+};
