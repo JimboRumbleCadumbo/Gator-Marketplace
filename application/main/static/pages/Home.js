@@ -17,6 +17,8 @@ export default {
                     <p>Browse items from students at SFSU.</p>
                 </div>
 
+                <h1>Featured Items</h1>
+
                 <div class="product-grid" v-show="searchData.results.length > 0">
                     <div class="card" v-for="result in searchData.results" :key="result.id">
                     <img :src="result.image_base64 || 'https://via.placeholder.com/150'" alt="Item Image" />
@@ -25,7 +27,8 @@ export default {
                     <p>{{ result.description || 'No description available' }}</p>
                     </div>
                 </div>
-                
+
+
             </div>
         </div>
 
