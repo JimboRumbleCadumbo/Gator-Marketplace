@@ -10,7 +10,7 @@ import Jun from "/static/pages/Jun.js";
 import Yuming from "/static/pages/Yuming.js";
 import Postings from "/static/pages/Postings.js";
 import Item from "/static/pages/Item.js";
-import Dashboard from "/static/pages/Dashboard.js";
+import Dashboard from "/static/pages/dashboard.js";
 
 import SearchBar from "/static/searchbar.js";
 
