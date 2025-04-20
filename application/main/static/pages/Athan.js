@@ -1,5 +1,3 @@
-
-
 export default {
     template: `
         <Navbar></Navbar>

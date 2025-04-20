@@ -1,6 +1,6 @@
 export default {
     template: `
-        <Navbar />
+        <Navbar></Navbar>
         <div class="container">
             <div class="about-content">
                 <!-- Left Section -->

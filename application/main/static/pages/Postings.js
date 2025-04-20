@@ -1,6 +1,6 @@
 export default {
     template: `
-        <Navbar />
+        <Navbar></Navbar>
         <div class="postings-container">
             <h1>Create New Item Listing</h1>
             
