@@ -1,4 +1,7 @@
 export default {
+  //The item.location and item.category are currently id in the return value from searchData.
+  //Same thing for seller only currently and id.
+
   template: `
       <Navbar></Navbar>
       <div class="container">
@@ -9,7 +12,7 @@ export default {
             <p><strong>Price:</strong> {{ item.price }}</p>
             <p><strong>Location:</strong> {{ item.location }}</p>
             <p><strong>Condition:</strong> {{ item.condition }}</p>
-            <p><strong>Categories:</strong> {{ item.categories.join(", ") }}</p>
+            <p><strong>Categories:</strong> {{ item.categories}}</p>
             <div class="buttons">
               <button @click="showChat">Rent</button>
               <button @click="showChat">Buy</button>
@@ -26,9 +29,9 @@ export default {
           <div class="seller-section">
             <div class="seller-info">
               <p class="seller-profile">
-                <strong @click="goToSellerProfile">Seller:</strong> {{ item.seller.name }}
-                <span v-if="item.seller.verified" class="badge">Verified</span>
-                <span>{{ item.seller.rating }} ★</span>
+                <strong @click="goToSellerProfile">Seller:</strong> {{ item.seller?.name }}
+                <span v-if="item.seller?.verified" class="badge">Verified</span>
+                <span>{{ item.seller?.rating }} ★</span>
               </p>
               <p>^Can Click to go seller page^</p>
             </div>
@@ -48,42 +51,66 @@ export default {
           </div>
         </div>
       </div>
-    </div>
     `,
 
-  data() {
-    return {
-      chatVisible: false,
-      item: {},
-    };
-  },
-  methods: {
-    showChat() {
-      this.chatVisible = true;
+    data() {
+        return {
+            chatVisible: false,
+            item: {},
+        };
     },
-    hideChat() {
-      this.chatVisible = false;
-    },
-    goToSellerProfile() {
-      console.log("Go to seller profile clicked");
-    },
-    loadItemDetails() {
-      this.item = {
-        name: "Sample Item",
-        price: "$100",
-        location: "New York, NY",
-        condition: "Used",
-        categories: ["Electronics", "Gadgets"],
-        description: "This is a sample item description.",
-        seller: {
-          name: "John Doe",
-          verified: true,
-          rating: 4.5,
+    methods: {
+        showChat() {
+            this.chatVisible = true;
         },
-      };
+        hideChat() {
+            this.chatVisible = false;
+        },
+        goToSellerProfile() {
+            console.log("Go to seller profile clicked");
+        },
+        loadItemDetails() {
+            const route = VueRouter.useRoute();
+            const itemId = route.query.id;
+
+            const searchData = Vue.inject("searchData");
+            const found = searchData.results.find(i => String(i.item_id) === String(itemId));
+
+            this.item = {
+                name: "Sample Item",
+                price: "$100",
+                location: "New York, NY",
+                condition: "Used",
+                categories: ["Electronics", "Gadgets"],
+                description: "This is a sample item description.",
+                seller: {
+                name: "John Doe",
+                verified: true,
+                rating: 4.5,
+                },
+            };
+            //Example for how we could do it in the future
+            // if(found) {
+            //   this.item = found;
+            // } else {
+            //   this.item = {
+            //     name: "Sample Item",
+            //     price: "$100",
+            //     location: "New York, NY",
+            //     condition: "Used",
+            //     categories: ["Electronics", "Gadgets"],
+            //     description: "This is a sample item description.",
+            //     seller: {
+            //       name: "John Doe",
+            //       verified: true,
+            //       rating: 4.5,
+            //     },
+            //   };
+            // }
+
+        },
     },
-  },
-  created() {
-    this.loadItemDetails();
-  },
+    created() {
+        this.loadItemDetails();
+    },
 };
