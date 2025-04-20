@@ -1,12 +1,9 @@
-export default {
-  template: `
-    <div>
-      <nav class="nav-bar">
-        <router-link to="/" class="nav-link">Home</router-link>
-        <search-bar></search-bar>
-        <router-link to="/about" class="nav-link">About</router-link>
-      </nav>
+import Navbar from "/static/components/Navbar.js";
 
+export default {
+  components: { Navbar },
+  template: `
+    <Navbar />
       <div class="container">
         <div class="item-layout">
           <div class="item-image"></div>
