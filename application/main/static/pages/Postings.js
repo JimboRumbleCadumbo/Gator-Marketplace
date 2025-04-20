@@ -30,48 +30,62 @@ export default {
                 </div>
                 
                 <div class="form-group">
+                <label for="itemCondition">Condition</label>
+                <select id="itemCondition" v-model="itemData.condition" required>
+                <option value="" disabled selected>Select condition</option>
+                <option value="NW">New (NW)</option>
+                <option value="NM">Near Mint (NM)</option>
+                <option value="MU">Medium Used (MU)</option>
+                <option value="UD">Used Daily (UD)</option>
+                <option value="DM">Damaged (DM)</option>
+                </select>
+                </div>
+                
+                <div class="form-group">
+                <label for="itemLocation">Location</label>
+                <select id="itemLocation" v-model="itemData.location" required>
+                <option value="" disabled selected>Select location</option>
+                <option value="CC">Caesar Chavez</option>
+                <option value="HUM">Humanities</option>
+                <option value="HSS">HSS</option>
+                <option value="LIB">Library</option>
+                <option value="MWC">Mashouf Wellness Center</option>
+                <option value="PU">Pick Up &emsp;**chat with owner</option>
+                <option value="MAIL">Mail &ensp;&emsp;&emsp;**chat with owner</option>
+                </select>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                <input 
+                type="checkbox" 
+                id="isRental" 
+                v-model="itemData.isRental"
+                />
+                <label for="isRental">This item is available for rental</label>
+                </div>
+                
+                <div class="form-group">
+                <label for="itemImage">Item Image</label>
+                <input 
+                type="file" 
+                id="itemImage" 
+                @change="handleImageUpload" 
+                accept="image/*"
+                />
+                <div v-if="imagePreview" class="image-preview">
+                <img :src="imagePreview" alt="Preview" />
+                </div>
+                </div>
+                
+                <div class="form-group">
                     <label for="itemDescription">Description</label>
                     <textarea 
                         id="itemDescription" 
                         v-model="itemData.description" 
                         required 
-                        placeholder="Describe your item"
+                        placeholder="Describe your item. (*If choose mail, please specify your mailing method)"
                         rows="4"
                     ></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="itemCondition">Condition</label>
-                    <select id="itemCondition" v-model="itemData.condition" required>
-                        <option value="" disabled selected>Select condition</option>
-                        <option value="NW">New (NW)</option>
-                        <option value="NM">Near Mint (NM)</option>
-                        <option value="MU">Medium Used (MU)</option>
-                        <option value="UD">Used Daily (UD)</option>
-                        <option value="DM">Damaged (DM)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group checkbox-group">
-                    <input 
-                        type="checkbox" 
-                        id="isRental" 
-                        v-model="itemData.isRental"
-                    />
-                    <label for="isRental">This item is available for rental</label>
-                </div>
-                
-                <div class="form-group">
-                    <label for="itemImage">Item Image</label>
-                    <input 
-                        type="file" 
-                        id="itemImage" 
-                        @change="handleImageUpload" 
-                        accept="image/*"
-                    />
-                    <div v-if="imagePreview" class="image-preview">
-                        <img :src="imagePreview" alt="Preview" />
-                    </div>
                 </div>
                 
                 <div class="form-actions">
@@ -87,10 +101,11 @@ export default {
             price: '',
             description: '',
             condition: '',
+            location: '',
             isRental: false,
             image: null
         });
-
+        
         const imagePreview = Vue.ref(null);
 
         function handleImageUpload(event) {
@@ -117,6 +132,7 @@ export default {
             formData.append('price', itemData.value.price);
             formData.append('description', itemData.value.description);
             formData.append('condition', itemData.value.condition);
+            formData.append('location', itemData.value.location);
             formData.append('isRental', itemData.value.isRental);
 
             if (itemData.value.image) {
@@ -151,6 +167,7 @@ export default {
                 price: '',
                 description: '',
                 condition: '',
+                location: '',
                 isRental: false,
                 image: null
             };
