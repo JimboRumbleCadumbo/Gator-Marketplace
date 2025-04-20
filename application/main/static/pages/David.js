@@ -25,9 +25,15 @@ export default {
                     <div class="name-text">David Cabanela</div>
                     <div class="about-text">About Me</div>
                     <div class="about-box">
-                        <p>Hello, my name is David Cabanela. My background as a Twitch game streamer, web developer, and filmmaker has shaped my passion for technology and creativity. In this class, I want to deepen my understanding of databases and programming, especially Java, Python, SQL, and more. I plan to graduate by Fall 2025 or Spring 2026 and pursue a career as a Software Engineer. My goal is to use technology to make a meaningful impact—helping senior citizens, supporting people with disabilities, and evolving younger generations' perceptive learning experiences. I am excited to continue learning and developing innovative solutions that benefit the community.
-
-                            </p>
+                        <p>Hello, my name is David Cabanela. My background as a Twitch game streamer, web developer,
+                            and filmmaker has shaped my passion for technology and creativity. In this class, 
+                            I want to deepen my understanding of databases and programming, especially Java,
+                            Python, SQL, and more. I plan to graduate by Fall 2025 or Spring 2026 and pursue a
+                            career as a Software Engineer. My goal is to use technology to make a meaningful 
+                            impact—helping senior citizens, supporting people with disabilities, and evolving
+                            younger generations' perceptive learning experiences. I am excited to continue 
+                            learning and developing innovative solutions that benefit the community.
+                        </p>
                     </div>
                 </div>
             </div>
