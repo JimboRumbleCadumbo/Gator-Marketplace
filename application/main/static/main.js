@@ -2,7 +2,7 @@ const { createApp, reactive } = Vue;
 const { createRouter, createWebHistory } = VueRouter;
 
 //Page imports
-import Home from "/static/pages/Home.js";
+//import Home from "/static/pages/Home.js";
 import About from "/static/pages/About.js";
 import Alexis from "/static/pages/Alexis.js";
 import Athan from "/static/pages/Athan.js";
@@ -23,7 +23,7 @@ const searchData = reactive({
 });
 
 const routes = [
-    { path: "/", component: Home },
+    { path: "/", component: Dashboard },
     { path: "/about", component: About },
     { path: "/postings", component: Postings },
     { path: "/item", component: Item },

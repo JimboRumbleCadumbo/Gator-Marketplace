@@ -29,8 +29,10 @@ export default {
         const searchQuery = Vue.ref('');
         const selectedFilter = Vue.ref('');
         const isDropdownVisible = Vue.ref(false);
+        const router = VueRouter.useRouter();
 
         function submitSearch() {
+
             fetch('/api/search', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -50,11 +52,13 @@ export default {
                 .then(data => {
                     searchData.results = data;
                     console.log('Search results:', data); // Update global state
+                    router.push('/results'); // Navigate to results page
                 })
                 .catch(error => {
                     console.error('Search error:', error);
                     alert(`Search failed: ${error.message}`);
                 });
+
         }
 
         return {

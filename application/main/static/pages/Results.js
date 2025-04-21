@@ -3,74 +3,88 @@ console.log("Dashboard.js Loaded!");
 export default {
   template: `
     <Navbar></Navbar>
-
     <div class="container">
-      <div class="content">    
-    <h1> Results </h1>
-        <!-- Product Grid -->
-        <div class="result-product-grid">
-          <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-
-          <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-
-          <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-
-          <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-
-          <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
+        <div class="content">    
+            <h1> Results </h1>
+            <!-- Product Grid -->
+            <div class="result-product-grid" v-show="searchData.results.length > 0">
+    
+                <router-link v-for="result in searchData.results"
+                    :key="result.id"
+                    :to="'/item?id=' + result.item_id"
+                    class="card-link"
+                    >
                     <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-                    <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-                    <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-                    <div class="result-card">
-            <img src="https://placehold.co/600x400" alt="Item Image" />
-            <h3> Sample Item</h3>
-            <p>$10</p>
-            <p>Sample description Sample description</p>
-          </div>
-        </div>
+                        <img :src="result.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                        <h3>{{ result.name || result.title }}</h3>
+                        <p>{{ result.price || result.cost }}</p>
+                        <p>{{ result.description || 'No description available' }}</p>
+                    </div>
+                </router-link>
+                               
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
 
-      </div>
-      
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+                <div class="result-card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+            </div>
+        </div>     
     </div>
             <footer class="footer">
             <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>

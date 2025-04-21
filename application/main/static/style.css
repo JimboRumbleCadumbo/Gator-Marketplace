@@ -319,6 +319,7 @@ h1 {
 }
 
 /* Product Grid and Cards */
+/* Might not need this css anymore */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -373,7 +374,6 @@ h1 {
 }
 
 /* Result page cards*/
-
 .result-product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
