@@ -16,27 +16,25 @@ export default {
         </p>
       </form>
     </div>
-  `, 
-}
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.getElementById("login-form");
+  `,
+  setup() {
+    const email = Vue.ref('');
+    const password = Vue.ref('');
 
-  loginForm.addEventListener("submit", (e) => {
-    const email = document.getElementById("login-email").value;
-    if (!email.endsWith("@sfsu.edu")) {
-      e.preventDefault();
-      alert("Please use your @sfsu.edu email to log in.");
+    function handleLogin() {
+      if (!email.value.endsWith('@sfsu.edu')) {
+        alert('Please use your @sfsu.edu email address.');
+        return;
+      }
+
+      // TODO: Replace with actual login API request
+      console.log('Logging in with', email.value, password.value);
     }
-  });
 
-  // Toggle to Signup Form
-  document
-    .querySelectorAll('.toggle-link[data-target="signup"]')
-    .forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        document.getElementById("login-form").classList.add("hidden");
-        document.getElementById("signup-form").classList.remove("hidden");
-      });
-    });
-});
+    return {
+      email,
+      password,
+      handleLogin
+    };
+  }
+};
