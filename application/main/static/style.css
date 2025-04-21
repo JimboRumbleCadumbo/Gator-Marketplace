@@ -583,7 +583,8 @@ h1 {
   padding: 0.5rem 1rem;
   border-radius: 15px;
   min-width: 100px;
-  background-color: #C99700;
+  background-color: #ffdc74;
+  border: none
 }
 
 .buttons button:hover {

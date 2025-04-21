@@ -13,8 +13,8 @@ import Postings from "/static/pages/Postings.js";
 import Item from "/static/pages/Item.js";
 import Dashboard from "/static/pages/Dashboard.js";
 import Results from "/static/pages/Results.js";
-import Login from "/static/login.js";
-import Signup from "/static/signup.js";
+import Login from "/static/pages/Login.js";
+import Signup from "/static/pages/Signup.js";
 
 //Component imports
 import Navbar from "/static/components/Navbar.js";
