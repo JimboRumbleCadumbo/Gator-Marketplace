@@ -135,7 +135,7 @@ h1 {
 /* Dashboard banner */
 .banner {
   background-color: #ffdc74;
-  color: black;
+  color: #383838;
   padding: 40px 20px;
   text-align: center;
   border-radius: 12px;
@@ -372,6 +372,64 @@ h1 {
   font-size: 16px;
 }
 
+/* Result page cards*/
+
+.result-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
+  width: 100%;
+  max-width: 90%;
+}
+
+
+.result-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  background-color: white;
+  text-align: center;
+}
+
+.result-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.result-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.result-card h3 {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.result-card p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.result-card p:first-of-type {
+  font-weight: bold;
+  color: #4caf50;
+  font-size: 16px;
+}
+
 /* Postings Form Styles */
 .postings-container {
   max-width: 800px;
@@ -525,8 +583,7 @@ h1 {
   padding: 0.5rem 1rem;
   border-radius: 15px;
   min-width: 100px;
-  background-color: #ffdc74;
-  border: 1px solid grey;
+  background-color: #C99700;
 }
 
 .buttons button:hover {
@@ -649,7 +706,7 @@ h1 {
 
 /* Footer Styles */
 .footer {
-  background-color: #281464;
+  background-color: #686464;
   padding: 1rem;
   text-align: center;
   color: white;

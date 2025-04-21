@@ -12,6 +12,7 @@ import Yuming from "/static/pages/Yuming.js";
 import Postings from "/static/pages/Postings.js";
 import Item from "/static/pages/Item.js";
 import Dashboard from "/static/pages/Dashboard.js";
+import Results from "/static/pages/Results.js";
 
 //Component imports
 import Navbar from "/static/components/Navbar.js";
@@ -27,6 +28,7 @@ const routes = [
     { path: "/postings", component: Postings },
     { path: "/item", component: Item },
     { path: "/dashboard", component: Dashboard},
+    { path: "/results", component: Results},
     { path: "/about/alexis", component: Alexis },
     { path: "/about/athan", component: Athan },
     { path: "/about/david", component: David },

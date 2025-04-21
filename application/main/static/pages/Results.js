@@ -3,47 +3,70 @@ console.log("Dashboard.js Loaded!");
 export default {
   template: `
     <Navbar></Navbar>
+
     <div class="container">
-      <div class="content">
-        <h1>CSC 648-Spring 2025 Team 05</h1>
-
-
-    <div class="banner">
-      <h2>Welcome to Our Marketplace!</h2>
-      <p>Browse items from students at SFSU.</p>
-    </div>
-    
-    <h1> Featured Items </h1>
+      <div class="content">    
+    <h1> Results </h1>
         <!-- Product Grid -->
-        <div class="product-grid">
-          <div class="card">
+        <div class="result-product-grid">
+          <div class="result-card">
             <img src="https://placehold.co/600x400" alt="Item Image" />
             <h3> Sample Item</h3>
             <p>$10</p>
             <p>Sample description Sample description</p>
           </div>
 
-          <div class="card">
+          <div class="result-card">
             <img src="https://placehold.co/600x400" alt="Item Image" />
             <h3> Sample Item</h3>
             <p>$10</p>
             <p>Sample description Sample description</p>
           </div>
 
-          <div class="card">
+          <div class="result-card">
             <img src="https://placehold.co/600x400" alt="Item Image" />
             <h3> Sample Item</h3>
             <p>$10</p>
             <p>Sample description Sample description</p>
           </div>
 
-          <div class="card">
+          <div class="result-card">
             <img src="https://placehold.co/600x400" alt="Item Image" />
             <h3> Sample Item</h3>
             <p>$10</p>
             <p>Sample description Sample description</p>
           </div>
 
+          <div class="result-card">
+            <img src="https://placehold.co/600x400" alt="Item Image" />
+            <h3> Sample Item</h3>
+            <p>$10</p>
+            <p>Sample description Sample description</p>
+          </div>
+                    <div class="result-card">
+            <img src="https://placehold.co/600x400" alt="Item Image" />
+            <h3> Sample Item</h3>
+            <p>$10</p>
+            <p>Sample description Sample description</p>
+          </div>
+                    <div class="result-card">
+            <img src="https://placehold.co/600x400" alt="Item Image" />
+            <h3> Sample Item</h3>
+            <p>$10</p>
+            <p>Sample description Sample description</p>
+          </div>
+                    <div class="result-card">
+            <img src="https://placehold.co/600x400" alt="Item Image" />
+            <h3> Sample Item</h3>
+            <p>$10</p>
+            <p>Sample description Sample description</p>
+          </div>
+                    <div class="result-card">
+            <img src="https://placehold.co/600x400" alt="Item Image" />
+            <h3> Sample Item</h3>
+            <p>$10</p>
+            <p>Sample description Sample description</p>
+          </div>
         </div>
 
       </div>
