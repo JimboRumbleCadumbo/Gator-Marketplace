@@ -1,3 +1,26 @@
+export default {
+  template: `
+    <div id="signup-form">
+      <h1>Create Account</h1>
+      <form @submit.prevent="handleSignup">
+        <label for="signup-email">SFSU Email</label>
+        <input type="email" id="signup-email" v-model="email" required />
+
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" v-model="password" required />
+
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" v-model="confirmPassword" required />
+
+        <button type="submit">Sign Up</button>
+
+        <p class="toggle-link">
+          <router-link to="/login">Already have an account? Log in</router-link>
+        </p>
+      </form>
+    </div>
+  `,
+}
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
 
