@@ -94,6 +94,11 @@ export default {
                 </div>
             </form>
         </div>
+
+        <footer class="footer">
+            <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>
+            <router-link to="/about" class="footer-link">About</router-link>
+        </footer>
     `,
     setup() {
         const itemData = Vue.ref({

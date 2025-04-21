@@ -1,25 +1,30 @@
 export default {
-  template: `
-    <Navbar></Navbar>
-    <div id="signup-form">
-      <h1>Create Account</h1>
-      <form @submit.prevent="handleSignup">
-        <label for="signup-email">SFSU Email</label>
-        <input type="email" id="signup-email" v-model="email" required />
+    template: `
+        <Navbar></Navbar>
+        <div id="signup-form">
+        <h1>Create Account</h1>
+        <form @submit.prevent="handleSignup">
+            <label for="signup-email">SFSU Email</label>
+            <input type="email" id="signup-email" v-model="email" required />
 
-        <label for="signup-password">Password</label>
-        <input type="password" id="signup-password" v-model="password" required />
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" v-model="password" required />
 
-        <label for="confirm-password">Confirm Password</label>
-        <input type="password" id="confirm-password" v-model="confirmPassword" required />
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" v-model="confirmPassword" required />
 
-        <button type="submit">Sign Up</button>
+            <button type="submit">Sign Up</button>
 
-        <p class="toggle-link">
-          <router-link to="/login">Already have an account? Log in</router-link>
-        </p>
-      </form>
-    </div>
+            <p class="toggle-link">
+            <router-link to="/login">Already have an account? Log in</router-link>
+            </p>
+        </form>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>
+            <router-link to="/about" class="footer-link">About</router-link>
+        </footer>
   `,
   setup() {
     const email = Vue.ref('');
