@@ -13,6 +13,8 @@ import Postings from "/static/pages/Postings.js";
 import Item from "/static/pages/Item.js";
 import Dashboard from "/static/pages/Dashboard.js";
 import Results from "/static/pages/Results.js";
+import Login from "/static/login.js";
+import Signup from "/static/signup.js";
 
 //Component imports
 import Navbar from "/static/components/Navbar.js";
@@ -34,6 +36,8 @@ const routes = [
     { path: "/about/david", component: David },
     { path: "/about/jun", component: Jun },
     { path: "/about/yuming", component: Yuming },
+    { path: "/login", component: Login},
+    { path: "/signup", component: Signup}
 ];
 
 const router = createRouter({
