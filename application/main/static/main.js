@@ -13,6 +13,7 @@ import Postings from "/static/pages/Postings.js";
 import Item from "/static/pages/Item.js";
 import Dashboard from "/static/pages/Dashboard.js";
 import Results from "/static/pages/Results.js";
+import UserProfile from "/static/pages/UserProfile.js";
 import Login from "/static/pages/Login.js";
 import Signup from "/static/pages/Signup.js";
 
@@ -37,7 +38,8 @@ const routes = [
     { path: "/about/jun", component: Jun },
     { path: "/about/yuming", component: Yuming },
     { path: "/login", component: Login},
-    { path: "/signup", component: Signup}
+    { path: "/signup", component: Signup},
+    { path: "/profile", component: UserProfile},
 ];
 
 const router = createRouter({
