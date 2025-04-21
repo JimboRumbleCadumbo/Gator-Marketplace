@@ -1,5 +1,6 @@
 export default {
   template: `
+    <Navbar></Navbar>
     <div id="signup-form">
       <h1>Create Account</h1>
       <form @submit.prevent="handleSignup">

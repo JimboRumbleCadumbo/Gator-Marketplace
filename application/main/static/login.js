@@ -1,5 +1,6 @@
 export default {
   template: `
+    <Navbar></Navbar>
     <div id="login-form">
       <h1>SFSU Login</h1>
       <form @submit.prevent="handleLogin">
