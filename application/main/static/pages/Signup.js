@@ -5,22 +5,26 @@ export default {
             <div class="container">
                 <div id="signup-form">
                 <h1>Create Account</h1>
-                <form @submit.prevent="handleSignup">
-                    <label for="signup-email">SFSU Email</label>
-                    <input type="email" id="signup-email" v-model="email" required />
+                    <form @submit.prevent="handleSignup">
 
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" v-model="password" required />
+                        <label for="signup-display-name" class="required-label">Display Name</label>
+                        <input type="text" id="signup-display-name" v-model="displayName" required/>
 
-                    <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" v-model="confirmPassword" required />
+                        <label for="signup-email" class="required-label">SFSU Email</label>
+                        <input type="email" id="signup-email" v-model="email" required/>
 
-                    <button type="submit">Sign Up</button>
+                        <label for="signup-password" class="required-label">Password</label>
+                        <input type="password" id="signup-password" v-model="password" required/>
 
-                    <p class="toggle-link">
-                    <router-link to="/login">Already have an account? Log in</router-link>
-                    </p>
-                </form>
+                        <label for="confirm-password" class="required-label">Confirm Password</label>
+                        <input type="password" id="confirm-password" v-model="confirmPassword" required/>
+
+                        <button type="submit">Sign Up</button>
+
+                        <p class="toggle-link">
+                        <router-link to="/login">Already have an account? Log in</router-link>
+                        </p>
+                    </form>
                 </div>
             </div>
 
@@ -34,6 +38,7 @@ export default {
     const email = Vue.ref('');
     const password = Vue.ref('');
     const confirmPassword = Vue.ref('');
+    const displayName = Vue.ref('');
 
     function handleSignup() {
       if (!email.value.endsWith('@sfsu.edu')) {
@@ -54,6 +59,7 @@ export default {
       email,
       password,
       confirmPassword,
+      displayName,
       handleSignup
     };
   }

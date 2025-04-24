@@ -82,3 +82,9 @@
   text-decoration: underline;
   color: #004080;
 }
+
+.required-label::after {
+    content: " *";
+    color: red;
+    margin-left: 0.2em;
+  }
