@@ -1,38 +1,41 @@
 export default {
     template: `
         <Navbar></Navbar>
-        <div class="user-info-container">
-            <div class="user-header">
-                <img :src="icon" alt="User Icon" class="user-icon" />
-                <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
-                <button @click="triggerIconChange">Change Icon</button>
-            </div>
-            <div class="user-details">
-                <div class="username-section">
-                    <span v-if="!editingUsername">{{ username }}</span>
-                    <input v-else v-model="usernameEdit" @keyup.enter="saveUsername" @blur="saveUsername" />
-                    <button v-if="!editingUsername" @click="editingUsername = true">Change Username</button>
-                    <button v-else @click="saveUsername">Save</button>
+        <div class="page-wrapper">
+        <div class="user-container">
+            <div class="user-info">
+                <div class="user-header">
+                    <img :src="icon" alt="User Icon" class="user-icon" />
+                    <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
+                    <button @click="triggerIconChange">Change Icon</button>
                 </div>
-                <div class="joined-date">Joined: {{ joinedDate }}</div>
-                <div class="rating">
-                    <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
-                    <span>({{ rating }}/5)</span>
+                <div class="user-details">
+                    <div class="username-section">
+                        <span v-if="!editingUsername">{{ username }}</span>
+                        <input v-else v-model="usernameEdit" @keyup.enter="saveUsername" @blur="saveUsername" />
+                        <button v-if="!editingUsername" @click="editingUsername = true">Change Username</button>
+                        <button v-else @click="saveUsername">Save</button>
+                    </div>
+                    <div class="joined-date">Joined: {{ joinedDate }}</div>
+                    <div class="rating">
+                        <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
+                        <span>({{ rating }}/5)</span>
+                    </div>
+                    <div class="description">
+                        <label>Description:</label>
+                        <textarea v-model="description" rows="3"></textarea>
+                    </div>
                 </div>
-                <div class="description">
-                    <label>Description:</label>
-                    <textarea v-model="description" rows="3"></textarea>
+                <div class="liked-items">
+                    <h2>Liked Items</h2>
+                    <ul>
+                        <li v-for="item in likedItems" :key="item.id">
+                            <img :src="item.image" alt="item image" class="liked-item-img" />
+                            <span>{{ item.name }}</span>
+                        </li>
+                        <li v-if="likedItems.length === 0">No liked items yet.</li>
+                    </ul>
                 </div>
-            </div>
-            <div class="liked-items">
-                <h2>Liked Items</h2>
-                <ul>
-                    <li v-for="item in likedItems" :key="item.id">
-                        <img :src="item.image" alt="item image" class="liked-item-img" />
-                        <span>{{ item.name }}</span>
-                    </li>
-                    <li v-if="likedItems.length === 0">No liked items yet.</li>
-                </ul>
             </div>
         </div>
 
@@ -40,6 +43,7 @@ export default {
             <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>
             <router-link to="/about" class="footer-link">About</router-link>
         </footer>
+        </div>
     `,
     setup() {
         const username = Vue.ref("CoolUser123");

@@ -1,6 +1,6 @@
 export default {
     template: `
-        <Navbar></Navbar>
+    <Navbar></Navbar>
         <div class="postings-container">
             <h1>Create New Item Listing</h1>
             
@@ -32,26 +32,24 @@ export default {
                 <div class="form-group">
                 <label for="itemCondition">Condition</label>
                 <select id="itemCondition" v-model="itemData.condition" required>
-                <option value="" disabled selected>Select condition</option>
-                <option value="NW">New (NW)</option>
-                <option value="NM">Near Mint (NM)</option>
-                <option value="MU">Medium Used (MU)</option>
-                <option value="UD">Used Daily (UD)</option>
-                <option value="DM">Damaged (DM)</option>
+                    <option value="" disabled selected>Select condition</option>
+                    <option value="NW">New (NW)</option>
+                    <option value="NM">Near Mint (NM)</option>
+                    <option value="MU">Medium Used (MU)</option>
+                    <option value="UD">Used Daily (UD)</option>
+                    <option value="DM">Damaged (DM)</option>
                 </select>
                 </div>
                 
                 <div class="form-group">
-                <label for="itemLocation">Location</label>
-                <select id="itemLocation" v-model="itemData.location" required>
-                <option value="" disabled selected>Select location</option>
-                <option value="CC">Caesar Chavez</option>
-                <option value="HUM">Humanities</option>
-                <option value="HSS">HSS</option>
-                <option value="LIB">Library</option>
-                <option value="MWC">Mashouf Wellness Center</option>
-                <option value="PU">Pick Up &emsp;**chat with owner</option>
-                <option value="MAIL">Mail &ensp;&emsp;&emsp;**chat with owner</option>
+                <label for="itemCategory">Category</label>
+                <select id="itemCategory" v-model="itemData.category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Books">Books</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Sports Equipment">Sports Equipment</option>
                 </select>
                 </div>
                 
@@ -106,7 +104,7 @@ export default {
             price: '',
             description: '',
             condition: '',
-            location: '',
+            category: '',
             isRental: false,
             image: null
         });

@@ -22,67 +22,6 @@ export default {
                     </div>
                 </router-link>
                                
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-                <div class="result-card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
             </div>
         </div>     
     </div>
