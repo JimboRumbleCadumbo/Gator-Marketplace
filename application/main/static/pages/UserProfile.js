@@ -26,22 +26,13 @@ export default {
                         <textarea v-model="description" rows="3"></textarea>
                     </div>
                 </div>
-                <div class="liked-items">
-                    <h2>Liked Items</h2>
-                    <ul>
-                        <li v-for="item in likedItems" :key="item.id">
-                            <img :src="item.image" alt="item image" class="liked-item-img" />
-                            <span>{{ item.name }}</span>
-                        </li>
-                        <li v-if="likedItems.length === 0">No liked items yet.</li>
-                    </ul>
-                </div>
 
         <!-- Tabs -->
         <div class="tab">
-          <button class="tablinks">Sold Items</button>
-          <button class="tablinks">Rented Items</button>
-          <button class="tablinks">Messages</button>
+            <button class="tablinks">Liked Items</button>
+            <button class="tablinks">Sold Items</button>
+            <button class="tablinks">Rented Items</button>
+            <button class="tablinks">Messages</button>
         </div>
   
         <!-- Tab Contents -->
@@ -59,6 +50,15 @@ export default {
           <h3>Messages</h3>
           <p>This tab is for messages.</p>
         </div>
+
+        <div class="tabcontent">
+            <ul>
+                <li v-for="item in likedItems" :key="item.id">
+                    <img :src="item.image" alt="item image" class="liked-item-img" />
+                        <span>{{ item.name }}</span>
+                    </li>
+                <li v-if="likedItems.length === 0">No liked items yet.</li>
+            </ul>
 
             </div>
         </div>
