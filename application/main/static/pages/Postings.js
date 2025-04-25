@@ -87,8 +87,8 @@ export default {
                 </div>
                 
                 <div class="form-actions">
-                    <button type="submit" class="submit-btn">Create Listing</button>
                     <button type="button" @click="resetForm" class="reset-btn">Reset</button>
+                    <button type="submit" class="submit-btn">Create Listing</button>
                 </div>
             </form>
         </div>

@@ -12,11 +12,11 @@ body {
   font-family: "Arial", sans-serif;
 }
 
-.page-wrapper{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f7f7f7;
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f7f7f7;
 }
 
 .container {
@@ -57,11 +57,17 @@ h1 {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   text-decoration: none;
-  padding: 0 50px;
+  padding: 0 30px;
 }
 
 .nav-link:hover {
   text-decoration: underline;
+}
+
+.demonstration-only {
+  color: white;
+  font-size: 10px;
+  font-family: "Open Sans", sans-serif;
 }
 
 /* Profile Icon in Nav */
@@ -336,11 +342,11 @@ h1 {
   border-radius: 15px;
   min-width: 100px;
   background-color: #ffdc74;
-  border: none
+  border: none;
 }
 
 .buttons button:hover {
-  background-color: #E9D597;
+  background-color: #e9d597;
   cursor: pointer;
 }
 
@@ -435,7 +441,7 @@ h1 {
 
 .chat-input button {
   padding: 8px 12px;
-  background-color: #C99700; /* Darkened brand yellow */
+  background-color: #c99700; /* Darkened brand yellow */
   color: white;
   border: none;
   border-radius: 5px;
@@ -759,8 +765,8 @@ h1 {
 
 /******************* User Profile ******************/
 .user-container {
-    width: 100%;
-    flex: 1;
+  width: 100%;
+  flex: 1;
 }
 
 .user-info {
@@ -771,7 +777,7 @@ h1 {
   border-radius: 16px;
   background: #f7fafc;
   box-shadow: 0 4px 24px #0002;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 /* User header and profile image */
