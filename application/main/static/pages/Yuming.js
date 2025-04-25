@@ -14,7 +14,7 @@ export default {
                         <a href="https://github.com/JimboRumbleCadumbo" target="_blank">
                             <button class="github-button">GitHub</button>
                         </a>
-                        <a href="https://www.linkedin.com/in/yu-ming-jim-chen/" target="_blank">
+                        <a href="https://www.linkedin.com/in/ymc9298/" target="_blank">
                             <button class="linkedin-button">Linkedin</button>
                         </a>
                     </div>
@@ -31,7 +31,6 @@ export default {
                                 <li>Favorite food: Ramen</li>
                                 <li>Favorite month: September</li>
                             </ul>
-                            
                         </div>
                     </div>
                 </div>
