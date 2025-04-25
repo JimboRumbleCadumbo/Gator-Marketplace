@@ -28,39 +28,39 @@ export default {
                 </div>
 
         <!-- Tabs -->
-        <div class="tab">
-            <button class="tablinks">Liked Items</button>
-            <button class="tablinks">Sold Items</button>
-            <button class="tablinks">Rented Items</button>
-            <button class="tablinks">Messages</button>
-        </div>
-  
-        <!-- Tab Contents -->
-        <div class="tabcontent">
-          <h3>Sold items</h3>
-          <p>This tab is for sold items.</p>
-        </div>
-  
-        <div class="tabcontent">
-          <h3>Rented items</h3>
-          <p>This tab is for rented items.</p> 
-        </div>
-  
-        <div class="tabcontent">
-          <h3>Messages</h3>
-          <p>This tab is for messages.</p>
-        </div>
+          <div class="tab">
+            <button @click="activeTab = 'liked'" :class="{ active: activeTab === 'liked' }">Liked Items</button>
+            <button @click="activeTab = 'sold'" :class="{ active: activeTab === 'sold' }">Sold Items</button>
+            <button @click="activeTab = 'rented'" :class="{ active: activeTab === 'rented' }">Rented Items</button>
+            <button @click="activeTab = 'messages'" :class="{ active: activeTab === 'messages' }"> Messages </button>
+          </div>
 
-        <div class="tabcontent">
+          <!-- Tab Content -->
+          <div v-if="activeTab === 'liked'">
+            <h3>Liked Items</h3>
             <ul>
-                <li v-for="item in likedItems" :key="item.id">
-                    <img :src="item.image" alt="item image" class="liked-item-img" />
-                        <span>{{ item.name }}</span>
-                    </li>
-                <li v-if="likedItems.length === 0">No liked items yet.</li>
+              <li v-for="item in likedItems" :key="item.id">
+                <img :src="item.image" alt="item image" class="liked-item-img" />
+                <span>{{ item.name }}</span>
+              </li>
+              <li v-if="likedItems.length === 0">No liked items yet.</li>
             </ul>
+          </div>
 
-            </div>
+          <div v-if="activeTab === 'sold'">
+            <h3>Sold Items</h3>
+            <p>This tab is for sold items.</p>
+          </div>
+
+          <div v-if="activeTab === 'rented'">
+            <h3>Rented Items</h3>
+            <p>This tab is for rented items.</p>
+          </div>
+
+          <div v-if="activeTab === 'messages'">
+            <h3>Messages</h3>
+            <p>This tab is for messages.</p>
+          </div>
         </div>
 
         <footer class="footer">
@@ -119,6 +119,8 @@ export default {
       editingUsername.value = false;
     }
 
+    const activeTab = Vue.ref("liked");
+
     return {
       username,
       usernameEdit,
@@ -132,6 +134,7 @@ export default {
       triggerIconChange,
       onIconChange,
       saveUsername,
+      activeTab,
     };
   },
 };
