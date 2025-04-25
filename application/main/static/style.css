@@ -9,7 +9,7 @@ body {
   height: 100%;
   background: #f7f7f7;
   border: 0px solid black;
-  font-family: "Arial", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .page-wrapper {
@@ -39,7 +39,6 @@ h1 {
   color: black;
   margin-top: 20px;
   align-items: center;
-  font-family: "Poppins", sans-serif;
 }
 
 /******************* Navigation Bar ******************/
@@ -54,7 +53,6 @@ h1 {
 .nav-link {
   color: white;
   font-size: 28px;
-  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   text-decoration: none;
   padding: 0 30px;
@@ -67,7 +65,6 @@ h1 {
 .demonstration-only {
   color: white;
   font-size: 10px;
-  font-family: "Open Sans", sans-serif;
 }
 
 /* Profile Icon in Nav */
@@ -619,7 +616,6 @@ h1 {
 .group-text {
   color: black;
   font-size: 40px;
-  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   display: flex;
   justify-content: center;
@@ -644,7 +640,6 @@ h1 {
   border-radius: 15px;
   color: white;
   font-size: 20px;
-  font-family: "Open Sans", sans-serif;
   font-weight: 500;
   text-align: center;
   text-decoration: none;
@@ -664,7 +659,6 @@ h1 {
   top: 65px;
   color: black;
   font-size: 32px;
-  font-family: "Open Sans", sans-serif;
   font-weight: 400;
 }
 
@@ -673,7 +667,6 @@ h1 {
   top: 179px;
   color: black;
   font-size: 32px;
-  font-family: "Open Sans", sans-serif;
   font-weight: 400;
 }
 
@@ -687,7 +680,6 @@ h1 {
   padding: 20px;
   color: white;
   font-size: 18px;
-  font-family: "Open Sans", sans-serif;
   letter-spacing: 0.5px;
   line-height: 1.25;
 }
@@ -731,7 +723,6 @@ h1 {
   border-radius: 15px;
   color: white;
   font-size: 18px;
-  font-family: "Open Sans", sans-serif;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -751,7 +742,6 @@ h1 {
   border-radius: 15px;
   color: white;
   font-size: 18px;
-  font-family: "Open Sans", sans-serif;
   font-weight: 500;
   border: none;
   cursor: pointer;
