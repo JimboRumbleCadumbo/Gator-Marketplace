@@ -6,7 +6,7 @@ export default {
             
             <form @submit.prevent="submitForm" class="posting-form">
                 <div class="form-group">
-                    <label for="itemName">Item Name</label>
+                    <label for="itemName" class="required-label">Item Name</label>
                     <input 
                         type="text" 
                         id="itemName" 
@@ -17,7 +17,7 @@ export default {
                 </div>
                 
                 <div class="form-group">
-                    <label for="itemPrice">Price ($)</label>
+                    <label for="itemPrice" class="required-label">Price ($)</label>
                     <input 
                         type="number" 
                         id="itemPrice" 
@@ -30,7 +30,7 @@ export default {
                 </div>
                 
                 <div class="form-group">
-                <label for="itemCondition">Condition</label>
+                <label for="itemCondition" class="required-label">Condition</label>
                 <select id="itemCondition" v-model="itemData.condition" required>
                     <option value="" disabled selected>Select condition</option>
                     <option value="NW">New (NW)</option>
@@ -42,7 +42,7 @@ export default {
                 </div>
                 
                 <div class="form-group">
-                <label for="itemCategory">Category</label>
+                <label for="itemCategory" class="required-label">Category</label>
                 <select id="itemCategory" v-model="itemData.category" required>
                     <option value="" disabled selected>Select category</option>
                     <option value="Electronics">Electronics</option>
@@ -63,17 +63,20 @@ export default {
                 </div>
                 
                 <div class="form-group">
-                <label for="itemImage">Item Image</label>
-                <input 
-                type="file" 
-                id="itemImage" 
-                @change="handleImageUpload" 
-                accept="image/*"
-                />
-                <div v-if="imagePreview" class="image-preview">
-                <img :src="imagePreview" alt="Preview" />
-                </div>
-                </div>
+                    <label for="UploadItem" class="required-label">Item Image</label>
+                    <label for="itemImage" class="custom-file-upload">
+                        <div class="upload-placeholder" v-if="!imagePreview">
+                            Click to upload
+                        </div>
+                        <img v-if="imagePreview" :src="imagePreview" alt="Preview" class="preview-img" />
+                    </label>
+                    <input 
+                    type="file" 
+                    id="itemImage" 
+                    @change="handleImageUpload" 
+                    accept="image/*"
+                    style="display: none;"
+                    />
                 
                 <div class="form-group">
                     <label for="itemDescription">Description</label>
@@ -113,16 +116,13 @@ export default {
 
         function handleImageUpload(event) {
             const file = event.target.files[0];
-            if (file) {
-                itemData.value.image = file;
-
-                // Create preview
+            if (file && file.type.startsWith("image/")) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    imagePreview.value = e.target.result;
+                reader.onload = () => {
+                  imagePreview.value = reader.result;
                 };
                 reader.readAsDataURL(file);
-            }
+              }
         }
 
         function submitForm() {
