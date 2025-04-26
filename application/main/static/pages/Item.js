@@ -14,7 +14,7 @@ export default {
                 <p><strong>Condition:</strong> {{ item.condition }}</p>
                 <p><strong>Categories:</strong> {{ item.categories}}</p>
                 <div class="buttons">
-                <button @click="showChat">Rent</button>
+                <button @click="showChat" :disabled="!item.forRent != 1" class="rent-button">Rent</button>
                 <button @click="showChat">Buy</button>
                 </div>
             </div>
@@ -88,6 +88,7 @@ export default {
                 condition: "Used",
                 categories: ["Electronics", "Gadgets"],
                 description: "This is a sample item description.",
+                forRent: 1,
                 seller: {
                 name: "John Doe",
                 verified: true,
@@ -101,10 +102,10 @@ export default {
             //   this.item = {
             //     name: "Sample Item",
             //     price: "$100",
-            //     location: "New York, NY",
             //     condition: "Used",
             //     categories: ["Electronics", "Gadgets"],
             //     description: "This is a sample item description.",
+            //     forRent: 1,
             //     seller: {
             //       name: "John Doe",
             //       verified: true,
