@@ -11,7 +11,6 @@ export default {
             <div class="item-details">
                 <h2>{{ item.name }}</h2>
                 <p><strong>Price:</strong> {{ item.price }}</p>
-                <p><strong>Location:</strong> {{ item.location }}</p>
                 <p><strong>Condition:</strong> {{ item.condition }}</p>
                 <p><strong>Categories:</strong> {{ item.categories}}</p>
                 <div class="buttons">
@@ -86,7 +85,6 @@ export default {
             this.item = {
                 name: "Sample Item",
                 price: "$100",
-                location: "New York, NY",
                 condition: "Used",
                 categories: ["Electronics", "Gadgets"],
                 description: "This is a sample item description.",

@@ -319,6 +319,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   flex: 1;
+  gap: 20px
 }
 
 .item-details h2 {
