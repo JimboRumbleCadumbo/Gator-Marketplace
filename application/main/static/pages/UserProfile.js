@@ -1,9 +1,9 @@
 export default {
   template: `
         <Navbar></Navbar>
+        
         <div class="page-wrapper">
             <div class="user-container">
-                <div class="user-info">
                     <div class="user-header">
                         <img :src="icon" alt="User Icon" class="user-icon" />
                         <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
@@ -26,7 +26,7 @@ export default {
                             <textarea v-model="description" rows="3"></textarea>
                         </div>
                     </div>
-                
+                            </div>
 
                     <!-- Tabs -->
                     <div class="tab">
@@ -37,33 +37,40 @@ export default {
                     </div>
 
                     <!-- Tab Content -->
-                    <div v-if="activeTab === 'liked'">
+                    <div v-if="activeTab === 'liked'" class="tab-content">
                         <h3>Liked Items</h3>
-                        <ul>
-                        <li v-for="item in likedItems" :key="item.id">
-                            <img :src="item.image" alt="item image" class="liked-item-img" />
-                            <span>{{ item.name }}</span>
-                        </li>
-                        <li v-if="likedItems.length === 0">No liked items yet.</li>
-                        </ul>
+                    <div class="card">
+                        <img src="https://placehold.co/600x400" alt="Item Image" />
+                        <h3> Sample Item</h3>
+                        <p>$10</p>
+                        <p>Sample description Sample description</p>
                     </div>
 
-                    <div v-if="activeTab === 'sold'">
+                                        <div class="card">
+                        <img src="https://placehold.co/600x400" alt="Item Image" />
+                        <h3> Sample Item</h3>
+                        <p>$10</p>
+                        <p>Sample description Sample description</p>
+                    </div>
+
+                    
+                    </div>
+
+                    <div v-if="activeTab === 'sold'" class="tab-content">
                         <h3>Sold Items</h3>
                         <p>This tab is for sold items.</p>
                     </div>
 
-                    <div v-if="activeTab === 'rented'">
+                    <div v-if="activeTab === 'rented'" class="tab-content">
                         <h3>Rented Items</h3>
                         <p>This tab is for rented items.</p>
                     </div>
 
-                    <div v-if="activeTab === 'messages'">
+                    <div v-if="activeTab === 'messages'" class="tab-content">
                         <h3>Messages</h3>
                         <p>This tab is for messages.</p>
                     </div>
-                </div>
-            </div>
+
 
             <footer class="footer">
                 <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>

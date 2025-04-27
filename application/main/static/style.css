@@ -805,7 +805,7 @@ h1 {
 /******************* User Profile ******************/
 .user-container {
   width: 100%;
-  flex: 1;
+  padding: 2%;
 }
 
 .user-info {
@@ -918,7 +918,7 @@ h1 {
   display: block;
 }
 .description textarea {
-  width: 100%;
+  width: 50%;
   min-height: 56px;
   border: 1px solid #cbd5e1;
   border-radius: 5px;
@@ -1028,4 +1028,11 @@ h1 {
 
 .tab button.active {
   background-color: #ccc;
+}
+
+.tab-content {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
 }
