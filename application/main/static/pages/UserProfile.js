@@ -1,44 +1,50 @@
 export default {
   template: `
-        <Navbar></Navbar>
-        
+        <Navbar></Navbar>    
         <div class="page-wrapper">
             <div class="user-container">
-                    <div class="user-header">
-                        <img :src="icon" alt="User Icon" class="user-icon" />
-                        <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
-                        <button @click="triggerIconChange">Change Icon</button>
+                <div class="user-header">
+                    <img :src="icon" alt="User Icon" class="user-icon" />
+                    <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
+                    <button @click="triggerIconChange">Change Icon</button>
+                </div>
+                <div class="user-details">
+                    <div class="username-section">
+                        <span class="username">{{ username }}</span>
                     </div>
-                    <div class="user-details">
-                        <div class="username-section">
-                            <span v-if="!editingUsername">{{ username }}</span>
-                            <input v-else v-model="usernameEdit" @keyup.enter="saveUsername" @blur="saveUsername" />
-                            <button v-if="!editingUsername" @click="editingUsername = true">Change Username</button>
-                            <button v-else @click="saveUsername">Save</button>
-                        </div>
-                        <div class="joined-date">Joined: {{ joinedDate }}</div>
-                        <div class="rating">
-                            <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
-                            <span>({{ rating }}/5)</span>
-                        </div>
-                        <div class="description">
-                            <label>Description:</label>
-                            <textarea v-model="description" rows="3"></textarea>
-                        </div>
+                    <div class="joined-date">Joined: {{ joinedDate }}</div>
+                    <div class="rating">
+                        <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
+                        <span>({{ rating }}/5)</span>
                     </div>
-                            </div>
+                    <div class="description">
+                        <label>Description:</label>
+                        <p class="description-text">Description for my profile </p>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Tabs -->
-                    <div class="tab">
-                        <button @click="activeTab = 'liked'" :class="{ active: activeTab === 'liked' }">Liked Items</button>
-                        <button @click="activeTab = 'sold'" :class="{ active: activeTab === 'sold' }">Sold Items</button>
-                        <button @click="activeTab = 'rented'" :class="{ active: activeTab === 'rented' }">Rented Items</button>
-                        <button @click="activeTab = 'messages'" :class="{ active: activeTab === 'messages' }"> Messages </button>
-                    </div>
+            <!-- Tabs -->
+            <div class="tab-container">
+                <div class="tab">
+                    <button @click="activeTab = 'about'" :class="{ active: activeTab === 'about' }">About</button>
+                    <button @click="activeTab = 'liked'" :class="{ active: activeTab === 'liked' }">Liked Items</button>
+                    <button @click="activeTab = 'sold'" :class="{ active: activeTab === 'sold' }">Sold Items</button>
+                    <button @click="activeTab = 'rented'" :class="{ active: activeTab === 'rented' }">Rented Items</button>
+                    <button @click="activeTab = 'messages'" :class="{ active: activeTab === 'messages' }"> Messages </button>
+                </div>
 
-                    <!-- Tab Content -->
-                    <div v-if="activeTab === 'liked'" class="tab-content">
-                        <h3>Liked Items</h3>
+                <!-- Tab Content -->
+    
+                <div v-if="activeTab === 'about'" class="tab-content">
+                    <h3>Change profile info here</h3>
+                    <p>Change display name</p>
+                    <p>Change profile picture</p>
+                    <p>Change description</p>
+                </div>
+
+                <div v-if="activeTab === 'liked'" class="tab-content">
+                    <h3>Liked Items</h3>
                     <div class="card">
                         <img src="https://placehold.co/600x400" alt="Item Image" />
                         <h3> Sample Item</h3>
@@ -46,30 +52,29 @@ export default {
                         <p>Sample description Sample description</p>
                     </div>
 
-                                        <div class="card">
+                    <div class="card">
                         <img src="https://placehold.co/600x400" alt="Item Image" />
                         <h3> Sample Item</h3>
                         <p>$10</p>
                         <p>Sample description Sample description</p>
-                    </div>
+                    </div>                   
+                </div>
 
-                    
-                    </div>
+                <div v-if="activeTab === 'sold'" class="tab-content">
+                    <h3>Sold Items</h3>
+                    <p>This tab is for sold items.</p>
+                </div>
 
-                    <div v-if="activeTab === 'sold'" class="tab-content">
-                        <h3>Sold Items</h3>
-                        <p>This tab is for sold items.</p>
-                    </div>
+                <div v-if="activeTab === 'rented'" class="tab-content">
+                    <h3>Rented Items</h3>
+                    <p>This tab is for rented items.</p>
+                </div>
 
-                    <div v-if="activeTab === 'rented'" class="tab-content">
-                        <h3>Rented Items</h3>
-                        <p>This tab is for rented items.</p>
-                    </div>
-
-                    <div v-if="activeTab === 'messages'" class="tab-content">
-                        <h3>Messages</h3>
-                        <p>This tab is for messages.</p>
-                    </div>
+                <div v-if="activeTab === 'messages'" class="tab-content">
+                    <h3>Messages</h3>
+                    <p>This tab is for messages.</p>
+                </div>
+            </div>
 
 
             <footer class="footer">
@@ -128,7 +133,7 @@ export default {
       editingUsername.value = false;
     }
 
-    const activeTab = Vue.ref("liked");
+    const activeTab = Vue.ref("about");
 
     return {
       username,
