@@ -2,29 +2,8 @@ export default {
   template: `
         <Navbar></Navbar>    
         <div class="page-wrapper">
-            <div class="user-container">
-                <div class="user-header">
-                    <img :src="icon" alt="User Icon" class="user-icon" />
-                    <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
-                    <button @click="triggerIconChange">Change Icon</button>
-                </div>
-                <div class="user-details">
-                    <div class="username-section">
-                        <span class="username">{{ username }}</span>
-                    </div>
-                    <div class="joined-date">Joined: {{ joinedDate }}</div>
-                    <div class="rating">
-                        <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
-                        <span>({{ rating }}/5)</span>
-                    </div>
-                    <div class="description">
-                        <label>Description:</label>
-                        <p class="description-text">Description for my profile </p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Tabs -->
+            <!-- Tabs at the top -->
             <div class="tab-container">
                 <div class="tab">
                     <button @click="activeTab = 'about'" :class="{ active: activeTab === 'about' }">About</button>
@@ -32,50 +11,76 @@ export default {
                     <button @click="activeTab = 'sold'" :class="{ active: activeTab === 'sold' }">Sold Items</button>
                     <button @click="activeTab = 'rented'" :class="{ active: activeTab === 'rented' }">Rented Items</button>
                     <button @click="activeTab = 'messages'" :class="{ active: activeTab === 'messages' }"> Messages </button>
-                </div>
-
-                <!-- Tab Content -->
-    
-                <div v-if="activeTab === 'about'" class="tab-content">
-                    <h3>Change profile info here</h3>
-                    <p>Change display name</p>
-                    <p>Change profile picture</p>
-                    <p>Change description</p>
-                </div>
-
-                <div v-if="activeTab === 'liked'" class="tab-content">
-                    <h3>Liked Items</h3>
-                    <div class="card">
-                        <img src="https://placehold.co/600x400" alt="Item Image" />
-                        <h3> Sample Item</h3>
-                        <p>$10</p>
-                        <p>Sample description Sample description</p>
-                    </div>
-
-                    <div class="card">
-                        <img src="https://placehold.co/600x400" alt="Item Image" />
-                        <h3> Sample Item</h3>
-                        <p>$10</p>
-                        <p>Sample description Sample description</p>
-                    </div>                   
-                </div>
-
-                <div v-if="activeTab === 'sold'" class="tab-content">
-                    <h3>Sold Items</h3>
-                    <p>This tab is for sold items.</p>
-                </div>
-
-                <div v-if="activeTab === 'rented'" class="tab-content">
-                    <h3>Rented Items</h3>
-                    <p>This tab is for rented items.</p>
-                </div>
-
-                <div v-if="activeTab === 'messages'" class="tab-content">
-                    <h3>Messages</h3>
-                    <p>This tab is for messages.</p>
+                    <button @click="activeTab = 'settings'" :class="{ active: activeTab === 'settings' }"> Settings </button>
                 </div>
             </div>
 
+            <!-- Tab Content -->
+            <div v-if="activeTab === 'about'" class="tab-content">
+                <div class="user-container">
+                    <div class="user-header">
+                        <img :src="icon" alt="User Icon" class="user-icon" />
+                        <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
+                        <button @click="triggerIconChange">Change Icon</button>
+                    </div>
+                    <div class="user-details">
+                        <div class="username-section">
+                            <span class="username">{{ username }}</span>
+                        </div>
+                        <div class="joined-date">Joined: {{ joinedDate }}</div>
+                        <div class="rating">
+                            <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
+                            <span>({{ rating }}/5)</span>
+                        </div>
+                        <div class="description">
+                            <label>Description:</label>
+                            <p class="description-text">Description for my profile </p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Change profile info here</h3>
+                <p>Change display name</p>
+                <p>Change profile picture</p>
+                <p>Change description</p>
+            </div>
+
+            <div v-if="activeTab === 'liked'" class="tab-content">
+                <h3>Liked Items</h3>
+                <div class="card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>
+
+                <div class="card">
+                    <img src="https://placehold.co/600x400" alt="Item Image" />
+                    <h3> Sample Item</h3>
+                    <p>$10</p>
+                    <p>Sample description Sample description</p>
+                </div>                   
+            </div>
+
+            <div v-if="activeTab === 'sold'" class="tab-content">
+                <h3>Sold Items</h3>
+                <p>This tab is for sold items.</p>
+            </div>
+
+            <div v-if="activeTab === 'rented'" class="tab-content">
+                <h3>Rented Items</h3>
+                <p>This tab is for rented items.</p>
+            </div>
+
+            <div v-if="activeTab === 'messages'" class="tab-content">
+                <h3>Messages</h3>
+                <p>This tab is for messages.</p>
+            </div>
+
+            <div v-if="activeTab === 'settings'" class="tab-content">
+                <h3>Settings</h3>
+                <p>This tab is for settings.</p>
+            </div>
 
             <footer class="footer">
                 <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>

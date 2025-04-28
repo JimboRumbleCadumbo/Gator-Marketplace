@@ -935,7 +935,7 @@ h1 {
   
 .tab {
   display: flex;
-  background-color: #281464;
+  background-color: #ffdc74;
   padding: 10px 20px;
   gap: 8px;
   margin: 0 auto;
@@ -944,7 +944,7 @@ h1 {
 .tab button {
   flex: 1;
   background-color: transparent;
-  color: white;
+  color: #281464;
   border: none;
   outline: none;
   cursor: pointer;
@@ -954,16 +954,17 @@ h1 {
   transition: background-color 0.3s, color 0.3s;
   border-radius: 8px;
   white-space: nowrap;
+  font-weight: bold;
 }
     
 .tab button:hover {
-  background-color: #ffdc74;
-  color: #383838; 
+  background-color: #281464;
+  color: #ffdc74; 
 }
     
 .tab button.active {
-  background-color: #ffdc74; 
-  color: #383838;
+  background-color: #281464; 
+  color: #ffdc74;
   font-weight: 600;
 }
   
