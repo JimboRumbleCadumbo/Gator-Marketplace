@@ -1,0 +1,14 @@
+[project]
+name = "main"
+version = "0.1.0"
+description = "Application for the Marketplace project"
+dependencies = [
+    "flask",
+    "python-dotenv",
+    "flask-mysqldb",
+    "mysqlclient",
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
