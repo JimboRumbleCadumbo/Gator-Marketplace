@@ -6,10 +6,10 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this to a strong secret key
 
 conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="your_password",
-    database="your_db_name"
+    host="team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com",
+    user="t5db",
+    password="team5!250127",
+    database="marketplace"
 )
 cursor = conn.cursor()
 
