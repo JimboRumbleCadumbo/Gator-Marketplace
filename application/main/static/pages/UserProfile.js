@@ -18,31 +18,26 @@ export default {
             <!-- Tab Content -->
             <div v-if="activeTab === 'about'" class="tab-content">
                 <div class="user-container">
-                    <div class="user-header">
-                        <img :src="icon" alt="User Icon" class="user-icon" />
-                        <input type="file" accept="image/*" @change="onIconChange" ref="iconInput" style="display:none" />
-                        <button @click="triggerIconChange">Change Icon</button>
-                    </div>
-                    <div class="user-details">
-                        <div class="username-section">
-                            <span class="username">{{ username }}</span>
+                    <div class="user-content">
+                        <div class="user-header">
+                            <img :src="icon" alt="User Icon" class="user-icon" />
                         </div>
-                        <div class="joined-date">Joined: {{ joinedDate }}</div>
-                        <div class="rating">
-                            <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
-                            <span>({{ rating }}/5)</span>
-                        </div>
-                        <div class="description">
-                            <label>Description:</label>
-                            <p class="description-text">Description for my profile </p>
+                        <div class="user-details">
+                            <div class="username-section">
+                                <span class="username">{{ username }}</span>
+                            </div>
+                            <div class="joined-date">Joined: {{ joinedDate }}</div>
+                            <div class="rating">
+                                <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
+                                <span class="rating-score">({{ rating }}/5)</span>
+                            </div>
+                            <div class="description">
+                                <label>Description:</label>
+                                <p class="description-text">{{ description }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <h3>Change profile info here</h3>
-                <p>Change display name</p>
-                <p>Change profile picture</p>
-                <p>Change description</p>
             </div>
 
             <div v-if="activeTab === 'liked'" class="tab-content">
@@ -79,7 +74,40 @@ export default {
 
             <div v-if="activeTab === 'settings'" class="tab-content">
                 <h3>Settings</h3>
-                <p>This tab is for settings.</p>
+
+                <div class="user-settings-form">
+                    <!-- Display Name -->
+                    <div class="user-settings-group">
+                        <label for="displayName">Display Name</label>
+                        <input type="text" id="displayName" v-model="usernameEdit" placeholder="Enter new display name" />
+                    </div>
+
+                    <!-- Profile Icon Upload -->
+                    <div class="user-settings-group">
+                    <label>Profile Icon</label>
+                        <div class="user-settings-icon-upload">
+                            <img :src="iconEdit" alt="Profile Preview" class="user-settings-icon-preview" />
+                            <input type="file" accept="image/*" @change="onIconChange" />
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="user-settings-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" v-model="description" placeholder="Write something about yourself..."></textarea>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="user-settings-group">
+                        <label for="password">New Password</label>
+                        <input type="password" id="password" v-model="newPassword" placeholder="Enter new password" />
+                    </div>
+
+                    <!-- Save Button -->
+                    <div class="user-settings-actions">
+                        <button @click="saveSettings">Save Changes</button>
+                    </div>
+                </div>
             </div>
 
             <footer class="footer">
@@ -89,9 +117,9 @@ export default {
         </div>
     `,
   setup() {
+    const activeTab = Vue.ref("about");
     const username = Vue.ref("CoolUser123");
     const usernameEdit = Vue.ref(username.value);
-    const editingUsername = Vue.ref(false);
 
     const joinedDate = Vue.ref("2023-12-01");
     const rating = Vue.ref(4);
@@ -99,6 +127,8 @@ export default {
     const icon = Vue.ref(
       "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123"
     );
+    const iconEdit = Vue.ref(icon.value);
+    const newPassword = Vue.ref("");
 
     // Simulate liked items
     const likedItems = Vue.ref([
@@ -114,21 +144,28 @@ export default {
       },
     ]);
 
-    // Icon change logic
-    const iconInput = Vue.ref(null);
-    function triggerIconChange() {
-      iconInput.value.click();
-    }
-    function onIconChange(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          icon.value = ev.target.result;
-        };
-        reader.readAsDataURL(file);
+    function saveSettings() {
+        if (usernameEdit.value.trim() !== "") {
+          username.value = usernameEdit.value.trim();
+        }
+        if (iconEdit.value) {
+          icon.value = iconEdit.value;
+        }
+        if (newPassword.value.trim() !== "") {
+          console.log("Password changed:", newPassword.value);
+        }
       }
-    }
+
+    function onIconChange(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            iconEdit.value = ev.target.result; // Preview image only
+          };
+          reader.readAsDataURL(file);
+        }
+      }
 
     // Username change logic
     function saveUsername() {
@@ -138,22 +175,19 @@ export default {
       editingUsername.value = false;
     }
 
-    const activeTab = Vue.ref("about");
-
     return {
       username,
       usernameEdit,
-      editingUsername,
       joinedDate,
       rating,
       description,
       icon,
       likedItems,
-      iconInput,
-      triggerIconChange,
       onIconChange,
       saveUsername,
+      saveSettings,
       activeTab,
+      iconEdit
     };
   },
 };
