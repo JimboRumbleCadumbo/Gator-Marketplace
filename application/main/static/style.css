@@ -238,13 +238,7 @@ h1 {
   font-size: 16px;
 }
 
-/* Search Results Styles */
-
-.result-count {
-  font-size: 20px;
-  color: gray;
-}
-
+/* Search Results Grid */
 .result-product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -253,8 +247,7 @@ h1 {
   padding-left: 100px;
   padding-right: 100px;
   width: 100%;
-  max-width: 1400px; 
-  margin: 0 auto; 
+  max-width: 90%;
 }
 
 /* Search Result Card */
@@ -307,45 +300,46 @@ h1 {
 
 .item-layout {
   display: flex;
-  gap: 15rem;
-  margin: 40px 40px 20px 40px;
+  gap: 2rem;
+  margin: 40px auto;
   width: 100%;
   max-width: 1000px;
 }
 
 .item-image {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   background-color: #ccc; /* Placeholder color */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 100px;
+  flex-shrink: 0;
 }
 
 .item-details {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
-  gap: 20px
+  gap: 2rem;
 }
 
 .item-details h2 {
   margin-top: 0;
 }
 
-/* Item action buttons */
 .buttons {
-  margin-top: 1rem;
+  margin-top: 10rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .buttons button {
-  margin-right: 5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 15px;
-  min-width: 100px;
+  min-width: 120px;
   background-color: #ffdc74;
   border: none;
 }
@@ -360,18 +354,32 @@ h1 {
 }
 
 .rent-button:disabled {
-  background-color: #d1d5db; 
-  color: #6b7280; 
+  background-color: #d1d5db;
+  color: #6b7280;
 }
 
 .rent-button:disabled:hover {
-  background-color: #d1d5db; 
-  color: #6b7280; 
+  background-color: #d1d5db;
+  color: #6b7280;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-/* Item description and seller info */
+.category-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.category-badge {
+  background-color: #ffdc74;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
 .description {
   margin-top: 2rem;
 }
@@ -393,15 +401,6 @@ h1 {
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   margin-left: 0.5rem;
-}
-
-.item-lower {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0 40px;
-  max-width: 1000px;
-  width: 100%;
 }
 
 /******************* Chat Feature ******************/
@@ -560,48 +559,48 @@ h1 {
   margin-top: 15px;
   width: 100%;
   max-width: 320px;
-  height: 180px; 
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden; 
-  border: 2px dashed #cbd5e1; 
+  overflow: hidden;
+  border: 2px dashed #cbd5e1;
   border-radius: 10px;
   background: #f8fafc;
   padding: 4px;
 }
 
 .custom-file-upload {
-    display: block;
-    width: 100%;
-    max-width: 190px;
-    border: 2px dashed #cbd5e1;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    padding: 1rem;
-    background: #f8fafc;
-    color: #64748b;
-    transition: border-color 0.3s;
-    position: relative;
-  }
-  .custom-file-upload:hover {
-    border-color: #2563eb;
-  }
-  
-  .upload-placeholder {
-    font-size: 1rem;
-    padding: 10px;
-  }
-  
-  .preview-img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    border-radius: 6px;
-  }
+  display: block;
+  width: 100%;
+  max-width: 190px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  padding: 1rem;
+  background: #f8fafc;
+  color: #64748b;
+  transition: border-color 0.3s;
+  position: relative;
+}
+.custom-file-upload:hover {
+  border-color: #2563eb;
+}
+
+.upload-placeholder {
+  font-size: 1rem;
+  padding: 10px;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+}
 
 /* Form buttons */
 .form-actions {
@@ -811,101 +810,135 @@ h1 {
 
 /******************* User Profile ******************/
 .user-container {
-  border: 1px solid #e5e7eb;
+  width: 50%;
+  padding: 2%;
+  margin: 22px auto 10px;
+}
+
+.user-info {
+  flex: 1;
+  max-width: 480px;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
   border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  width: 45%;
-  height: 250px;
-  margin: 40px auto 10px;
+  background: #f7fafc;
+  box-shadow: 0 4px 24px #0002;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-.user-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
+/* User header and profile image */
 .user-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  min-width: 150px;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .user-icon {
-  width: 125px;
-  height: 125px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #e2e8f0;
-  box-shadow: 0 2px 6px #0001;
+  background: #fff;
+  box-shadow: 0 1px 4px #0001;
 }
 
 .user-header button {
-  padding: 0.4em 1em;
-  background: #2563eb;
+  padding: 0.5em 1.2em;
+  background: #2563eb; /* Blue button */
   color: #fff;
   border: none;
   border-radius: 6px;
-  font-weight: 500;
   cursor: pointer;
-  font-size: 0.9em;
+  font-weight: 500;
+  transition: background 0.2s;
 }
 .user-header button:hover {
   background: #1d4ed8;
 }
 
+/* User details section */
 .user-details {
-  flex: 1;
+  margin-bottom: 2rem;
 }
 
-.username-section .username {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #1e293b;
+.username-section {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+}
+
+.username-section input {
+  font-size: 1.1em;
+  padding: 0.3em 0.6em;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+}
+
+.username-section button {
+  padding: 0.3em 1em;
+  background: #10b981; /* Green success button */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.98em;
+  cursor: pointer;
+  margin-left: 0.5em;
+  transition: background 0.2s;
+}
+.username-section button:hover {
+  background: #059669;
 }
 
 .joined-date {
   color: #64748b;
-  font-size: 0.9em;
-  margin: 0.3em 0 1em;
+  font-size: 0.97em;
+  margin-bottom: 0.7em;
 }
 
+/* Rating stars */
 .rating {
+  margin-bottom: 1em;
+  font-size: 1.15em;
+  color: #fbbf24;
   display: flex;
   align-items: center;
-  font-size: 1.2em;
+  gap: 0.5em;
+}
+
+.star {
+  color: #e5e7eb;
+  font-size: 1.3em;
+}
+.star.filled {
   color: #fbbf24;
-  margin-bottom: 1em;
+  text-shadow: 0 1px 2px #0001;
 }
 
-.rating-score {
-  font-size: 0.95em;
-  color: #f59e0b;
-  margin-left: 0.5em;
-}
-
+/* User description textarea */
 .description label {
-  font-weight: 600;
-  margin-bottom: 0.3em;
-  display: block;
+  font-weight: 500;
   color: #334155;
+  margin-bottom: 0.2em;
+  display: block;
 }
-
 .description-text {
-  padding: 0.6em;
+  width: 100%;
+  min-height: 56px;
+  border-radius: 5px;
+  padding: 0.5em;
   font-size: 1em;
-  color: #475569;
+  margin-top: 0.3em;
+  white-space: pre-wrap;
 }
 
 .tab-container {
   width: 100%;
+  flex: 1;
 }
-  
+
 .tab {
   display: flex;
   background-color: #ffdc74;
@@ -913,7 +946,7 @@ h1 {
   gap: 8px;
   margin: 0 auto;
 }
-    
+
 .tab button {
   flex: 1;
   background-color: transparent;
@@ -929,23 +962,23 @@ h1 {
   white-space: nowrap;
   font-weight: bold;
 }
-    
+
 .tab button:hover {
   background-color: #281464;
-  color: #ffdc74; 
+  color: #ffdc74;
 }
-    
+
 .tab button.active {
-  background-color: #281464; 
+  background-color: #281464;
   color: #ffdc74;
   font-weight: 600;
 }
-  
+
 .tab-content {
   display: flex;
   align-items: center;
+  text-align: center;
   flex-direction: column;
-  flex: 1;
 }
 
 /* Liked items section */
@@ -984,73 +1017,6 @@ h1 {
   border: 1px solid #e5e7eb;
 }
 
-.user-settings-form {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  max-width: 500px;
-  padding: 25px;
-  background: #f9fafb;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  }
-  
-.user-settings-group {
-  display: flex;
-  flex-direction: column;
-}
-  
-.user-settings-group label {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #334155;
-}
-  
-.user-settings-group input,
-.user-settings-group textarea {
-  padding: 0.6rem 0.8rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 1rem;
-  resize: none;
-}
-  
-.user-settings-icon-upload {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-  
-.user-settings-icon-preview {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #e2e8f0;
-}
-  
-.user-settings-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-  
-.user-settings-actions button {
-  background: #10b981;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s ease-in-out;
-}
-  
-.user-settings-actions button:hover {
-  background: #059669;
-}
-  
 /******************* Footer ******************/
 .footer {
   background-color: #686464;
@@ -1084,5 +1050,15 @@ h1 {
   .liked-item-img {
     width: 36px;
     height: 36px;
+  }
+  .item-layout {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .item-image {
+    position: static;
+    width: 100%;
+    height: auto;
   }
 }
