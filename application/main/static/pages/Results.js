@@ -6,7 +6,7 @@ export default {
     <div class="page-wrapper">
         <div class="container">
             <div class="content">    
-                <h1> Results </h1>
+                <h1> Results <span class="result-count">({{ searchData.results.length }})</span> </h1>
                 <!-- Product Grid -->
                 <div class="result-product-grid" v-show="searchData.results.length > 0">
         
