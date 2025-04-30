@@ -1017,6 +1017,73 @@ h1 {
   border: 1px solid #e5e7eb;
 }
 
+.user-settings-form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 500px;
+  padding: 25px;
+  background: #f9fafb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.user-settings-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-settings-group label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #334155;
+}
+
+.user-settings-group input,
+.user-settings-group textarea {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  resize: none;
+}
+
+.user-settings-icon-upload {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-settings-icon-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+.user-settings-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-settings-actions button {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.user-settings-actions button:hover {
+  background: #059669;
+}
+
 /******************* Footer ******************/
 .footer {
   background-color: #686464;
