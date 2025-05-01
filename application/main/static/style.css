@@ -330,7 +330,7 @@ h1 {
 }
 
 .buttons {
-  margin-top: 10rem;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -401,6 +401,35 @@ h1 {
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   margin-left: 0.5rem;
+}
+
+.item-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.item-title h2 {
+  margin: 0;
+  font-size: 24px;
+  flex-grow: 1;
+}
+
+.like-icon {
+  font-size: 40px;
+  margin-left: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.like-icon span {
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.like-icon span.liked {
+  color: red;
 }
 
 /******************* Chat Feature ******************/
@@ -822,9 +851,9 @@ h1 {
 
 .user-content {
   display: flex;
- align-items: flex-start;
+  align-items: flex-start;
   gap: 2rem;
- flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 /* User header and profile image */
@@ -844,7 +873,7 @@ h1 {
   border: 3px solid #e2e8f0;
   box-shadow: 0 2px 6px #0001;
 }
-  
+
 .user-header button {
   padding: 0.4em 1em;
   background: #2563eb;
@@ -858,7 +887,7 @@ h1 {
 .user-header button:hover {
   background: #1d4ed8;
 }
-  
+
 .user-details {
   flex: 1;
 }
@@ -868,13 +897,13 @@ h1 {
   font-weight: bold;
   color: #1e293b;
 }
-  
+
 .joined-date {
   color: #64748b;
   font-size: 0.9em;
   margin: 0.3em 0 1em;
 }
-  
+
 .rating {
   display: flex;
   align-items: center;
@@ -882,20 +911,20 @@ h1 {
   color: #fbbf24;
   margin-bottom: 1em;
 }
-  
+
 .rating-score {
   font-size: 0.95em;
   color: #f59e0b;
   margin-left: 0.5em;
 }
-  
+
 .description label {
   font-weight: 600;
   margin-bottom: 0.3em;
   display: block;
   color: #334155;
 }
-  
+
 .description-text {
   padding: 0.6em;
   font-size: 1em;
@@ -913,7 +942,7 @@ h1 {
   gap: 8px;
   margin: 0 auto;
 }
-      
+
 .tab button {
   flex: 1;
   background-color: transparent;
@@ -929,18 +958,18 @@ h1 {
   white-space: nowrap;
   font-weight: bold;
 }
-      
+
 .tab button:hover {
   background-color: #281464;
-  color: #ffdc74; 
+  color: #ffdc74;
 }
-      
+
 .tab button.active {
- background-color: #281464; 
- color: #ffdc74;
- font-weight: 600;
+  background-color: #281464;
+  color: #ffdc74;
+  font-weight: 600;
 }
-    
+
 .tab-content {
   display: flex;
   align-items: center;
@@ -958,9 +987,9 @@ h1 {
 }
 
 .sold-card {
-    position: relative;
-    overflow: hidden;
-  }
+  position: relative;
+  overflow: hidden;
+}
 
 .sold-banner {
   position: absolute;
@@ -996,7 +1025,7 @@ h1 {
   z-index: 2;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   pointer-events: none;
-  opacity: 0.90;
+  opacity: 0.9;
 }
 
 .messages-container {
@@ -1009,42 +1038,42 @@ h1 {
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-  
-  /* Left column: user list */
+
+/* Left column: user list */
 .user-list {
   width: 150px;
   background-color: #f2f2f2;
   border-right: 1px solid #ddd;
   overflow-y: auto;
 }
-  
+
 .user-list-item {
   padding: 12px;
   cursor: pointer;
   border-bottom: 1px solid #e0e0e0;
 }
-  
+
 .user-list-item:hover,
 .user-list-item.active {
   background-color: #ffdc74;
   color: #281464;
   font-weight: bold;
 }
-  
-  /* Right column: chat panel */
+
+/* Right column: chat panel */
 .chat-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 15px;
 }
-  
+
 .chat-header {
   font-weight: bold;
   margin-bottom: 10px;
   color: #281464;
 }
-  
+
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -1056,18 +1085,18 @@ h1 {
   flex-direction: column;
   gap: 8px;
 }
-  
+
 .message.user {
   background-color: #463077;
   color: white;
   align-self: flex-end;
 }
-  
+
 .message.seller {
   background-color: #e5e5ea;
   align-self: flex-start;
 }
-  
+
 .no-user-selected {
   margin: auto;
   color: #888;
