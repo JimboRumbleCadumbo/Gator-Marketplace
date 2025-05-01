@@ -1,17 +1,21 @@
 export default {
-    //The item.location and item.category are currently id in the return value from searchData.
-    //Same thing for seller only currently and id.
-  
-    template: `
+  //The item.location and item.category are currently id in the return value from searchData.
+  //Same thing for seller only currently and id.
+
+  template: `
       <Navbar></Navbar>
       <div class="page-wrapper">
         <div class="container">
           <div class="item-layout">
             <div class="item-image"></div>
             <div class="item-details">
+            <div class="item-title">
               <h2>{{ item.name }}</h2>
+              <span class="like-icon" @click="toggleLike">
+                <span :class="{ liked: isLiked }">♥</span>
+              </span>
+            </div>
               <p><strong>Price:</strong> {{ item.price }}</p>
-  
               <div class="seller-section">
                 <div class="seller-info">
                   <p class="seller-profile">
@@ -34,7 +38,6 @@ export default {
                 </div>
   
                 <div class="buttons">
-                  <button>Like</button>
                   <button @click="showChat" :disabled="!item.forRent != 1" class="rent-button">Rent</button>
                   <button @click="showChat">Buy</button>
                 </div>
@@ -62,68 +65,71 @@ export default {
         </footer>
       </div>
     `,
-  
-    data() {
-      return {
-        chatVisible: false,
-        item: {},
+
+  data() {
+    return {
+      chatVisible: false,
+      item: {},
+      isLiked: false,
+    };
+  },
+  methods: {
+    toggleLike() {
+      this.isLiked = !this.isLiked;
+    },
+    showChat() {
+      this.chatVisible = true;
+    },
+    hideChat() {
+      this.chatVisible = false;
+    },
+    goToSellerProfile() {
+      console.log("Go to seller profile clicked");
+    },
+    loadItemDetails() {
+      const route = VueRouter.useRoute();
+      const itemId = route.query.id;
+
+      const searchData = Vue.inject("searchData");
+      const found = searchData.results.find(
+        (i) => String(i.item_id) === String(itemId)
+      );
+
+      this.item = {
+        name: "Sample Item",
+        price: "$100",
+        condition: "Used",
+        categories: ["Electronics", "Gadgets"],
+        description: "This is a sample item description.",
+        forRent: 1,
+        seller: {
+          name: "John Doe",
+          verified: true,
+          rating: 4.5,
+        },
       };
+
+      // Example for how we could do it in the future
+      // if(found) {
+      //   this.item = found;
+      // } else {
+      //   this.item = {
+      //     name: "Sample Item",
+      //     price: "$100",
+      //     condition: "Used",
+      //     categories: ["Electronics", "Gadgets"],
+      //     description: "This is a sample item description.",
+      //     forRent: 1,
+      //     seller: {
+      //       name: "John Doe",
+      //       verified: true,
+      //       rating: 4.5,
+      //     },
+      //   };
+      // }
     },
-    methods: {
-      showChat() {
-        this.chatVisible = true;
-      },
-      hideChat() {
-        this.chatVisible = false;
-      },
-      goToSellerProfile() {
-        console.log("Go to seller profile clicked");
-      },
-      loadItemDetails() {
-        const route = VueRouter.useRoute();
-        const itemId = route.query.id;
-  
-        const searchData = Vue.inject("searchData");
-        const found = searchData.results.find(
-          (i) => String(i.item_id) === String(itemId)
-        );
-  
-        this.item = {
-          name: "Sample Item",
-          price: "$100",
-          condition: "Used",
-          categories: ["Electronics", "Gadgets"],
-          description: "This is a sample item description.",
-          forRent: 1,
-          seller: {
-            name: "John Doe",
-            verified: true,
-            rating: 4.5,
-          },
-        };
-  
-        // Example for how we could do it in the future
-        // if(found) {
-        //   this.item = found;
-        // } else {
-        //   this.item = {
-        //     name: "Sample Item",
-        //     price: "$100",
-        //     condition: "Used",
-        //     categories: ["Electronics", "Gadgets"],
-        //     description: "This is a sample item description.",
-        //     forRent: 1,
-        //     seller: {
-        //       name: "John Doe",
-        //       verified: true,
-        //       rating: 4.5,
-        //     },
-        //   };
-        // }
-      },
-    },
-    created() {
-      this.loadItemDetails();
-    },
-  };
-  
+  },
+  created() {
+    this.loadItemDetails();
+  },
+};
