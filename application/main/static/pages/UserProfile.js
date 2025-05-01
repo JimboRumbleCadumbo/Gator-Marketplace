@@ -82,7 +82,47 @@ export default {
 
             <div v-if="activeTab === 'messages'" class="tab-content">
                 <h3>Messages</h3>
-                <p>This tab is for messages.</p>
+                <div class="messages-container">
+                    
+                    <!-- User list on the left -->
+                    <div class="user-list">
+                        <div 
+                            v-for="user in users" 
+                            :key="user.id" 
+                            class="user-list-item" 
+                            :class="{ active: selectedUser && selectedUser.id === user.id }"
+                            @click="selectUser(user)"
+                        >
+                            {{ user.name }}
+                        </div>
+                    </div>
+
+                    <!-- Chat area on the right -->
+                    <div class="chat-panel" v-if="selectedUser">
+                        <div class="chat-header">
+                            <span>{{ selectedUser.name }}</span>
+                        </div>
+                        <div class="chat-messages">
+                            <div 
+                            v-for="msg in selectedUser.messages" 
+                            :key="msg.id" 
+                            class="message" 
+                            :class="msg.from === 'user' ? 'user' : 'seller'"
+                            >
+                            {{ msg.text }}
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
+                            <button @click="sendMessage">Send</button>
+                        </div>
+                    </div>
+
+                    <!-- Optional placeholder if no user selected -->
+                    <div class="chat-panel" v-else>
+                        <p class="no-user-selected">Select a user to start chatting</p>
+                    </div>
+                </div>
             </div>
 
             <div v-if="activeTab === 'settings'" class="tab-content">
@@ -129,88 +169,102 @@ export default {
             </footer>
         </div>
     `,
-  setup() {
-    const activeTab = Vue.ref("about");
-    const username = Vue.ref("CoolUser123");
-    const usernameEdit = Vue.ref(username.value);
-
-    const joinedDate = Vue.ref("2023-12-01");
-    const rating = Vue.ref(4);
-    const description = Vue.ref("This is my profile description!");
-    const icon = Vue.ref(
-      "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123"
-    );
-    const iconEdit = Vue.ref(icon.value);
-    const newPassword = Vue.ref("");
-
-    // Simulate liked items
-    const likedItems = Vue.ref([
-      {
-        id: 1,
-        name: "Vintage Camera",
-      },
-      {
-        id: 2,
-        name: "Classic Book",
-      },
-    ]);
-
-    const soldItems = Vue.ref([
-      {
-        id: 1,
-        name: "Example Sold",
-      },
-      {
-        id: 2,
-        name: "Calculator",
-      },
-    ]);
-
-    function saveSettings() {
-        if (usernameEdit.value.trim() !== "") {
-          username.value = usernameEdit.value.trim();
-        }
-        if (iconEdit.value) {
-          icon.value = iconEdit.value;
-        }
-        if (newPassword.value.trim() !== "") {
-          console.log("Password changed:", newPassword.value);
-        }
-      }
-
-    function onIconChange(e) {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            iconEdit.value = ev.target.result; // Preview image only
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-
-    // Username change logic
-    function saveUsername() {
-      if (usernameEdit.value.trim() !== "") {
-        username.value = usernameEdit.value.trim();
-      }
-      editingUsername.value = false;
+    setup() {
+        //Example profile related data
+        const username = Vue.ref("CoolUser123");
+        const usernameEdit = Vue.ref(username.value);
+        const icon = Vue.ref(`https://api.dicebear.com/8.x/bottts/svg?seed=${username.value}`);
+        const iconEdit = Vue.ref(icon.value);
+        const newPassword = Vue.ref("");
+        const joinedDate = Vue.ref("2023-12-01");
+        const rating = Vue.ref(4);
+        const description = Vue.ref("This is my profile description!");
+        const activeTab = Vue.ref("about");
+      
+        //Example Chat Data
+        const users = Vue.ref([
+          { id: 1, name: "Alice", messages: [{ id: 1, text: "Hi there!", from: "seller" }] },
+          { id: 2, name: "Bob", messages: [{ id: 2, text: "Hello!", from: "user" }] }
+        ]);
+        const selectedUser = Vue.ref(null);
+        const newMessage = Vue.ref("");
+      
+        const selectUser = (user) => {
+            selectedUser.value = user;
+        };
+      
+        const sendMessage = () => {
+          if (newMessage.value.trim() && selectedUser.value) {
+            selectedUser.value.messages.push({
+                id: Date.now(),
+                text: newMessage.value,
+                from: "user"
+            });
+            newMessage.value = "";
+          }
+        };
+      
+        //Example items
+        const likedItems = Vue.ref([
+            { id: 1, name: "Vintage Camera" },
+            { id: 2, name: "Classic Book" },
+        ]);
+      
+        const soldItems = Vue.ref([
+            { id: 1, name: "Example Sold" },
+            { id: 2, name: "Calculator" },
+        ]);
+      
+        //Profile Settings Handlers
+        const saveSettings = () => {
+            if (usernameEdit.value.trim()) {
+                username.value = usernameEdit.value.trim();
+            }
+            if (iconEdit.value) {
+                icon.value = iconEdit.value;
+            }
+            if (newPassword.value.trim()) {
+                console.log("Password changed:", newPassword.value);
+            }
+        };
+      
+        const onIconChange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                iconEdit.value = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+            }
+        };
+      
+        return {
+          //Profile related data
+          username,
+          usernameEdit,
+          icon,
+          iconEdit,
+          newPassword,
+          joinedDate,
+          rating,
+          description,
+          activeTab,
+      
+          //Chat related data
+          users,
+          selectedUser,
+          newMessage,
+          selectUser,
+          sendMessage,
+      
+          //Item related data
+          likedItems,
+          soldItems,
+      
+          //Profile settings functions
+          saveSettings,
+          onIconChange,
+        };
     }
-
-    return {
-      username,
-      usernameEdit,
-      joinedDate,
-      rating,
-      description,
-      icon,
-      likedItems,
-      soldItems,
-      onIconChange,
-      saveUsername,
-      saveSettings,
-      activeTab,
-      iconEdit
-    };
-  },
 };

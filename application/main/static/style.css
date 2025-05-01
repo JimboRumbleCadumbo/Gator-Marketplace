@@ -999,6 +999,81 @@ h1 {
   opacity: 0.90;
 }
 
+.messages-container {
+  display: flex;
+  height: 600px;
+  width: 600px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+  
+  /* Left column: user list */
+.user-list {
+  width: 150px;
+  background-color: #f2f2f2;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}
+  
+.user-list-item {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #e0e0e0;
+}
+  
+.user-list-item:hover,
+.user-list-item.active {
+  background-color: #ffdc74;
+  color: #281464;
+  font-weight: bold;
+}
+  
+  /* Right column: chat panel */
+.chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+  
+.chat-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #281464;
+}
+  
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  background: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+  
+.message.user {
+  background-color: #463077;
+  color: white;
+  align-self: flex-end;
+}
+  
+.message.seller {
+  background-color: #e5e5ea;
+  align-self: flex-start;
+}
+  
+.no-user-selected {
+  margin: auto;
+  color: #888;
+  font-style: italic;
+}
+
 .user-settings-form {
   margin-top: 10px;
   display: flex;
