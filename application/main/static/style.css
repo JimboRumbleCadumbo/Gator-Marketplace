@@ -810,133 +810,100 @@ h1 {
 
 /******************* User Profile ******************/
 .user-container {
-  width: 50%;
-  padding: 2%;
-  margin: 22px auto 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  width: 45%;
+  height: 250px;
+  margin: 40px auto 10px;
 }
 
-.user-info {
-  flex: 1;
-  max-width: 480px;
-  margin: 2rem auto;
-  padding: 2rem 2.5rem;
-  border-radius: 16px;
-  background: #f7fafc;
-  box-shadow: 0 4px 24px #0002;
-  font-family: "Segoe UI", Arial, sans-serif;
+.user-content {
+  display: flex;
+ align-items: flex-start;
+  gap: 2rem;
+ flex-wrap: wrap;
 }
 
 /* User header and profile image */
 .user-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1rem;
+  min-width: 150px;
 }
 
 .user-icon {
-  width: 84px;
-  height: 84px;
+  width: 125px;
+  height: 125px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #e2e8f0;
-  background: #fff;
-  box-shadow: 0 1px 4px #0001;
+  box-shadow: 0 2px 6px #0001;
 }
-
+  
 .user-header button {
-  padding: 0.5em 1.2em;
-  background: #2563eb; /* Blue button */
+  padding: 0.4em 1em;
+  background: #2563eb;
   color: #fff;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-weight: 500;
-  transition: background 0.2s;
+  cursor: pointer;
+  font-size: 0.9em;
 }
 .user-header button:hover {
   background: #1d4ed8;
 }
-
-/* User details section */
+  
 .user-details {
-  margin-bottom: 2rem;
+  flex: 1;
 }
 
-.username-section {
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.7em;
+.username-section .username {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #1e293b;
 }
-
-.username-section input {
-  font-size: 1.1em;
-  padding: 0.3em 0.6em;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
-}
-
-.username-section button {
-  padding: 0.3em 1em;
-  background: #10b981; /* Green success button */
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 0.98em;
-  cursor: pointer;
-  margin-left: 0.5em;
-  transition: background 0.2s;
-}
-.username-section button:hover {
-  background: #059669;
-}
-
+  
 .joined-date {
   color: #64748b;
-  font-size: 0.97em;
-  margin-bottom: 0.7em;
+  font-size: 0.9em;
+  margin: 0.3em 0 1em;
 }
-
-/* Rating stars */
+  
 .rating {
-  margin-bottom: 1em;
-  font-size: 1.15em;
-  color: #fbbf24;
   display: flex;
   align-items: center;
-  gap: 0.5em;
-}
-
-.star {
-  color: #e5e7eb;
-  font-size: 1.3em;
-}
-.star.filled {
+  font-size: 1.2em;
   color: #fbbf24;
-  text-shadow: 0 1px 2px #0001;
+  margin-bottom: 1em;
 }
-
-/* User description textarea */
+  
+.rating-score {
+  font-size: 0.95em;
+  color: #f59e0b;
+  margin-left: 0.5em;
+}
+  
 .description label {
-  font-weight: 500;
-  color: #334155;
-  margin-bottom: 0.2em;
+  font-weight: 600;
+  margin-bottom: 0.3em;
   display: block;
+  color: #334155;
 }
+  
 .description-text {
-  width: 100%;
-  min-height: 56px;
-  border-radius: 5px;
-  padding: 0.5em;
+  padding: 0.6em;
   font-size: 1em;
-  margin-top: 0.3em;
-  white-space: pre-wrap;
+  color: #475569;
 }
 
 .tab-container {
   width: 100%;
-  flex: 1;
 }
 
 .tab {
@@ -946,7 +913,7 @@ h1 {
   gap: 8px;
   margin: 0 auto;
 }
-
+      
 .tab button {
   flex: 1;
   background-color: transparent;
@@ -962,59 +929,74 @@ h1 {
   white-space: nowrap;
   font-weight: bold;
 }
-
+      
 .tab button:hover {
   background-color: #281464;
-  color: #ffdc74;
+  color: #ffdc74; 
 }
-
+      
 .tab button.active {
-  background-color: #281464;
-  color: #ffdc74;
-  font-weight: 600;
+ background-color: #281464; 
+ color: #ffdc74;
+ font-weight: 600;
 }
-
+    
 .tab-content {
   display: flex;
   align-items: center;
-  text-align: center;
   flex-direction: column;
+  flex: 1;
 }
 
-/* Liked items section */
-.liked-items {
-  margin-top: 2rem;
-}
-.liked-items h2 {
-  font-size: 1.1em;
-  color: #334155;
-  margin-bottom: 0.7em;
-  font-weight: 600;
+.dashboard-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px 100px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.liked-items ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.sold-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+.sold-banner {
+  position: absolute;
+  top: 15px;
+  left: -40px;
+  background-color: #281464;
+  color: #ffdc74;
+  font-weight: bold;
+  padding: 5px 50px;
+  transform: rotate(-45deg);
+  font-size: 14px;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-.liked-items li {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-  padding: 0.5em 0;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 1.02em;
+
+.rented-card {
+  position: relative;
+  overflow: hidden;
 }
-.liked-items li:last-child {
-  border-bottom: none;
-}
-.liked-item-img {
-  width: 44px;
-  height: 44px;
-  border-radius: 7px;
-  object-fit: cover;
-  background: #f1f5f9;
-  border: 1px solid #e5e7eb;
+
+.return-banner {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  background-color: #281464;
+  color: #ffdc74;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+  font-size: 14px;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  opacity: 0.90;
 }
 
 .user-settings-form {

@@ -42,29 +42,42 @@ export default {
 
             <div v-if="activeTab === 'liked'" class="tab-content">
                 <h3>Liked Items</h3>
-                <div class="card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>
-
-                <div class="card">
-                    <img src="https://placehold.co/600x400" alt="Item Image" />
-                    <h3> Sample Item</h3>
-                    <p>$10</p>
-                    <p>Sample description Sample description</p>
-                </div>                   
+                <div class="dashboard-product-grid">
+                    <div class="result-card liked-card" v-for="item in likedItems" :key="item.id">
+                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.price }}</p>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </div>             
             </div>
 
             <div v-if="activeTab === 'sold'" class="tab-content">
                 <h3>Sold Items</h3>
-                <p>This tab is for sold items.</p>
+                <div class="dashboard-product-grid">
+                    <div class="result-card sold-card" v-for="item in soldItems" :key="item.id">
+                        <div class="sold-banner">SOLD</div>
+                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.price }}</p>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </div>
             </div>
 
             <div v-if="activeTab === 'rented'" class="tab-content">
                 <h3>Rented Items</h3>
-                <p>This tab is for rented items.</p>
+                <div class="dashboard-product-grid">
+                    <div class="result-card rented-card" v-for="item in likedItems" :key="item.id">
+                        <div class="return-banner">
+                            Return by: {{ item.return_date || 'TBD' }}
+                        </div>
+                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.price }}</p>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </div>
             </div>
 
             <div v-if="activeTab === 'messages'" class="tab-content">
@@ -135,12 +148,21 @@ export default {
       {
         id: 1,
         name: "Vintage Camera",
-        image: "https://placehold.co/40x40?text=Cam",
       },
       {
         id: 2,
         name: "Classic Book",
-        image: "https://placehold.co/40x40?text=Book",
+      },
+    ]);
+
+    const soldItems = Vue.ref([
+      {
+        id: 1,
+        name: "Example Sold",
+      },
+      {
+        id: 2,
+        name: "Calculator",
       },
     ]);
 
@@ -183,6 +205,7 @@ export default {
       description,
       icon,
       likedItems,
+      soldItems,
       onIconChange,
       saveUsername,
       saveSettings,
