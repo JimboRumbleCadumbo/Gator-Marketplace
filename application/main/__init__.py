@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
 from main import search
-# from main import postings
+from main import postings
 from main import items
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
@@ -33,7 +33,7 @@ app.config['MYSQL_CONNECTION'] = mysql
 search.init_search_routes(app)
 
 # Initialize routes from postings module
-# postings.init_posting_routes(app)
+postings.init_posting_routes(app)
 
 # Initialize routes from items module
 items.init_item_routes(app)
