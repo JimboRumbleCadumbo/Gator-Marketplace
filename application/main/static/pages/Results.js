@@ -19,7 +19,6 @@ export default {
                             <img :src="result.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                             <h3>{{ result.name || result.title }}</h3>
                             <p>{{ result.price || result.cost }}</p>
-                            <p>{{ result.description || 'No description available' }}</p>
                         </div>
                     </router-link>
                                 

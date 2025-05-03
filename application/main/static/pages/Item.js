@@ -32,6 +32,11 @@ export default {
                             <strong>Categories:</strong>
                             <span class="category-badge">{{ item.category }}</span>
                         </p>
+
+                        <p class="description">
+                            <p><strong>Condition:</strong>
+                            {{ item.quality }}</p>
+                        </p>
         
                         <div class="description">
                             <h3>Description</h3>
@@ -39,7 +44,7 @@ export default {
                         </div>
         
                         <div class="buttons">
-                            <button @click="showChat" :disabled="!item.forRent != 1" class="rent-button">Rent</button>
+                            <button @click="showChat" :disabled="item.rentalOption == 'Not for Rent'" class="rent-button">Rent</button>
                             <button @click="showChat">Buy</button>
                         </div>
                     </div>
@@ -71,13 +76,7 @@ export default {
         return {
             chatVisible: false,
             isLiked: false,
-            item: {
-                image: null,
-                name: "",
-                price: "",
-                description: "",
-                category: "",
-            },
+            item: {},
         };
     },
     methods: {
@@ -113,6 +112,7 @@ export default {
                         category: data.category_name, // Use category_name from the API
                         image: data.image ? `data:image/jpeg;base64,${data.image}` : "https://placehold.co/600x400", // Use placeholder if image is missing
                     };
+                    console.log("Item details loaded:", this.item);
                 })
                 .catch((error) => {
                     console.error("Error loading item details:", error);
