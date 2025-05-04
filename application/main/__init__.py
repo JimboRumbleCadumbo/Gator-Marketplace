@@ -4,6 +4,7 @@ from main import search
 # from main import postings
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
+from .login import login_bp
 from .signup import signup_bp
 
 __version__ = "0.1.0" 
@@ -12,6 +13,9 @@ app = Flask(__name__)
 
 # Load environment variables
 load_dotenv()
+
+# Set secret key
+app.secret_key = os.getenv('SECRET_KEY')
 
 # Configure MySQL with connection pool settings
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
@@ -35,6 +39,8 @@ search.init_search_routes(app)
 # Initialize routes from postings module
 # postings.init_posting_routes(app)
 
+# Register the login blueprint
+app.register_blueprint(login_bp)
 # Register the signup blueprint
 app.register_blueprint(signup_bp)  
 

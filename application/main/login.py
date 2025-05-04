@@ -1,19 +1,11 @@
-from flask import Flask, request, jsonify, session
-import mysql.connector
+from flask import Blueprint, request, jsonify, session, current_app
 import bcrypt
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Change this to a strong secret key
+# for tracking logged in users
+login_bp = Blueprint('login', __name__)
+SESSION_KEY = 'user_id'
 
-conn = mysql.connector.connect(
-    host="team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com",
-    user="t5db",
-    password="team5!250127",
-    database="marketplace"
-)
-cursor = conn.cursor()
-
-@app.route('/login', methods=['POST'])
+@login_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
 
@@ -23,20 +15,24 @@ def login():
     if not email or not password:
         return jsonify({"error": "Missing email or password"}), 400
 
-    # Find user
-    cursor.execute("SELECT id, email, password FROM User WHERE email = %s", (email,))
-    user = cursor.fetchone()
+    try:
+        mysql = current_app.config['MYSQL_CONNECTION']
+        cursor = mysql.connection.cursor()
 
-    if user and bcrypt.checkpw(password.encode('utf-8'), user[2].encode('utf-8')):
-        session['user_id'] = user[0]  # Save user session
-        return jsonify({"message": "Logged in successfully"}), 200
-    else:
-        return jsonify({"error": "Invalid credentials"}), 401
+        cursor.execute("SELECT id, email, password FROM User WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
 
-@app.route('/logout', methods=['POST'])
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+            session[SESSION_KEY] = user['id']
+            return jsonify({"message": "Logged in successfully"}), 200
+        else:
+            return jsonify({"error": "Invalid email or password"}), 401
+
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+@login_bp.route('/logout', methods=['POST'])
 def logout():
-    session.pop('user_id', None)
+    session.pop(SESSION_KEY, None)
     return jsonify({"message": "Logged out successfully"}), 200
-
-if __name__ == "__main__":
-    app.run(debug=True)
