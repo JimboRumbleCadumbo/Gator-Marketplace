@@ -27,17 +27,18 @@ def signup():
 
         cursor.execute("SELECT id FROM User WHERE email = %s", (email,))
         if cursor.fetchone():
-            return jsonify({"error": "Email is already registered."}), 409
+            return jsonify({"error": "Email already exists."}), 409
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         cursor.execute(
             "INSERT INTO User (email, password, name, role) VALUES (%s, %s, %s, %s)",
-            (email, hashed_password, name, 'student')
+            (email, hashed_pw, name, 'student')
         )
         mysql.connection.commit()
+        cursor.close()
 
         return jsonify({"message": "Account created successfully!"}), 201
 
     except Exception as e:
-        return jsonify({"error": f"Database error: {str(e)}"}), 500
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
