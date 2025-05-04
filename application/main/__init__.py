@@ -36,7 +36,6 @@ search.init_search_routes(app)
 # postings.init_posting_routes(app)
 
 # Register the signup blueprint
-search.init_search_routes(app)
 app.register_blueprint(signup_bp)  
 
 @app.route('/', defaults={'path': ''})
