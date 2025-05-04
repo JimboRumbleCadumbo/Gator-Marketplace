@@ -4,6 +4,7 @@ from main import search
 # from main import postings
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
+from .signup import signup_bp
 
 __version__ = "0.1.0" 
 
@@ -33,6 +34,10 @@ search.init_search_routes(app)
 
 # Initialize routes from postings module
 # postings.init_posting_routes(app)
+
+# Register the signup blueprint
+search.init_search_routes(app)
+app.register_blueprint(signup_bp)  
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')

@@ -1,45 +1,43 @@
-from flask import Flask, request, jsonify
-import mysql.connector 
+from flask import Blueprint, request, jsonify, current_app
 import bcrypt
 
-app = Flask(__name__)
+signup_bp = Blueprint('signup', __name__)
 
-# Connect to your local database
-conn = mysql.connector.connect(
-    host="team-5-db.crgggaqsqvst.us-west-2.rds.amazonaws.com",
-    user="t5db",
-    password="team5!250127",
-    database="marketplace"
-)
-cursor = conn.cursor()
-
-@app.route('/signup', methods=['POST'])
+@signup_bp.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
 
     email = data.get('email')
     password = data.get('password')
     name = data.get('name')
+    confirm_password = data.get('confirmPassword')
 
     if not email or not password or not name:
-        return jsonify({"error": "Missing required fields"}), 400
+        return jsonify({"error": "Missing required fields."}), 400
 
-    # Check if email already exists
-    cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
-    if cursor.fetchone():
-        return jsonify({"error": "Email already exists"}), 400
+    if not email.endswith("@sfsu.edu"):
+        return jsonify({"error": "Only @sfsu.edu emails are allowed."}), 400
 
-    # Hash the password
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    if confirm_password and password != confirm_password:
+        return jsonify({"error": "Passwords do not match."}), 400
 
-    # Insert new user
-    cursor.execute(
-        "INSERT INTO User (email, password, name) VALUES (%s, %s, %s)",
-        (email, hashed_password, name)
-    )
-    conn.commit()
+    try:
+        mysql = current_app.config['MYSQL_CONNECTION']
+        cursor = mysql.connection.cursor()
 
-    return jsonify({"message": "User created successfully"}), 201
+        cursor.execute("SELECT id FROM User WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"error": "Email is already registered."}), 409
 
-if __name__ == "__main__":
-    app.run(debug=True)
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        cursor.execute(
+            "INSERT INTO User (email, password, name, role) VALUES (%s, %s, %s, %s)",
+            (email, hashed_password, name, 'student')
+        )
+        mysql.connection.commit()
+
+        return jsonify({"message": "Account created successfully!"}), 201
+
+    except Exception as e:
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
