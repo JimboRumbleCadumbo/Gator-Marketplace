@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <script>
+        window.__LOGIN_STATE__ = {{ login_state | tojson }};
+    </script>
 </head>
 <body>
     <div id="app">

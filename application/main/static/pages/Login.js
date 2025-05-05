@@ -36,15 +36,35 @@ export default {
         alert('Please use your @sfsu.edu email address.');
         return;
       }
-
-      // TODO: Replace with actual login API request
-      console.log('Logging in with', email.value, password.value);
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.value, password: password.value }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((err) => {
+              throw new Error(err.error || 'Failed to log in');
+            });
+          }
+          return response.json();
+        })
+        .then((data) => {
+          alert('Login successful');
+          console.log('User:', data.user);
+          // Redirect to dashboard
+          window.location.href = '/dashboard';
+        })
+        .catch((error) => {
+          console.error('Login error:', error);
+          alert('Login failed: ' + error.message);
+        });
     }
 
     return {
       email,
       password,
-      handleLogin
+      handleLogin,
     };
   }
 };
