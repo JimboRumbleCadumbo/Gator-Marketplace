@@ -39,6 +39,46 @@ def init_auth_routes(app):
             "email": user['email'],
         }})
 
+    @app.route('/api/signup', methods=['POST'])
+    def signup():
+        """
+        API endpoint for user signup.
+        """
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+        confirm_password = data.get('confirmPassword')
+        name = data.get('name')
+
+        if not email or not password or not name:
+            return jsonify({"error": "All fields are required"}), 400
+
+        if not email.endswith("@sfsu.edu"):
+            return jsonify({"error": "Must use an @sfsu.edu email"}), 400
+
+        if password != confirm_password:
+            return jsonify({"error": "Passwords do not match"}), 400
+
+        cursor = mysql.connection.cursor()
+
+        # Check if user already exists
+        cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"error": "Email already exists"}), 409
+
+        # Hash the password
+        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        # Insert new user
+        cursor.execute(
+            "INSERT INTO User (email, password_hash, user_name) VALUES (%s, %s, %s)",
+            (email, hashed_pw, name)
+        )
+        mysql.connection.commit()
+        cursor.close()
+
+        return jsonify({"message": "Account created successfully"}), 201
+
     @app.route('/api/logout', methods=['POST'])
     def logout():
         """
