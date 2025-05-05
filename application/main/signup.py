@@ -15,8 +15,8 @@ def signup():
     if not email or not password or not name:
         return jsonify({"error": "Missing required fields."}), 400
 
-    if not email.endswith("@sfsu.edu"):
-        return jsonify({"error": "Only @sfsu.edu emails are allowed."}), 400
+    if not email.endswith("@sfsu.edu") or not email.endswith("@mail.sfsu.edu"):
+        return jsonify({"error": "Only @sfsu.edu and @mail.sfsu.edu emails are allowed."}), 400
 
     if confirm_password and password != confirm_password:
         return jsonify({"error": "Passwords do not match."}), 400
