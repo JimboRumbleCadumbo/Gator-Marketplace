@@ -56,10 +56,10 @@ export default {
                 <div class="form-group checkbox-group">
                 <input 
                 type="checkbox" 
-                id="isRental" 
-                v-model="itemData.isRental"
+                id="rentalOption" 
+                v-model="itemData.rentalOption"
                 />
-                <label for="isRental">This item is available for rental</label>
+                <label for="rentalOption">This item is available for rental</label>
                 </div>
                 
                 <div class="form-group">
@@ -105,7 +105,7 @@ export default {
             description: '',
             condition: '',
             category: '',
-            isRental: false,
+            rentalOption: false,
             image: null
         });
         
@@ -126,42 +126,41 @@ export default {
         }
 
         function submitForm() {
-            // Here you would typically send the data to your backend
-            console.log('Submitting form with data:', itemData.value);
-
             // Create FormData for file upload
             const formData = new FormData();
             formData.append('name', itemData.value.name);
             formData.append('price', itemData.value.price);
             formData.append('description', itemData.value.description);
             formData.append('condition', itemData.value.condition);
-            formData.append('location', itemData.value.location);
-            formData.append('isRental', itemData.value.isRental);
+            formData.append('category', itemData.value.category);
+            formData.append('rentalOption', itemData.value.rentalOption);
 
             if (itemData.value.image) {
                 formData.append('image', itemData.value.image);
             }
 
-            // Example API call (you'll need to implement this endpoint)
+            // Send the request to the backend
             fetch('/api/create-listing', {
                 method: 'POST',
                 body: formData
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to create listing');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Listing created successfully:', data);
-                    alert('Item listing created successfully!');
-                    resetForm();
-                })
-                .catch(error => {
-                    console.error('Error creating listing:', error);
-                    alert('Failed to create listing: ' + error.message);
-                });
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.error || 'Failed to create listing');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Listing created successfully:', data);
+                alert('Item listing created successfully!');
+                resetForm();
+            })
+            .catch(error => {
+                console.error('Error creating listing:', error);
+                alert('Failed to create listing: ' + error.message);
+            });
         }
 
         function resetForm() {
@@ -171,7 +170,7 @@ export default {
                 description: '',
                 condition: '',
                 location: '',
-                isRental: false,
+                rentalOption: false,
                 image: null
             };
             imagePreview.value = null;

@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 import os
 from main import search
-# from main import postings
+from main import postings
+from main import items
+from main import auth
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 from .login import login_bp
@@ -37,7 +39,16 @@ app.config['MYSQL_CONNECTION'] = mysql
 search.init_search_routes(app)
 
 # Initialize routes from postings module
-# postings.init_posting_routes(app)
+postings.init_posting_routes(app)
+
+# Initialize routes from items module
+items.init_item_routes(app)
+
+# Set secret key for session management
+app.secret_key = os.getenv('FLASK_SESSION_SECRET_KEY')
+
+# Initialize routes from auth module
+auth.init_auth_routes(app)
 
 # Register the login blueprint
 app.register_blueprint(login_bp)
@@ -47,7 +58,13 @@ app.register_blueprint(signup_bp)
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return render_template('index.html')
+    user_id = session.get('user_id')
+    user_name = session.get('user_name', '')
+    login_state = {
+        "logged_in": bool(user_id),
+        "user_name": user_name,
+    }
+    return render_template('index.html', login_state=login_state)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)  # Default Flask server (not for production)
