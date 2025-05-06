@@ -42,7 +42,6 @@ def init_item_routes(app):
             "name": item["name"],
             "description": item["description"],
             "price": float(item["price"]),
-            "location": item["location"],
             "quality": item["quality"],
             "rental_option": bool(item["rental_option"]),
             "created_at": item["created_at"],
