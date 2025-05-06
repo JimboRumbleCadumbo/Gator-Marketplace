@@ -53,8 +53,8 @@ def init_auth_routes(app):
         if not email or not password or not name:
             return jsonify({"error": "All fields are required"}), 400
 
-        if not email.endswith("@sfsu.edu"):
-            return jsonify({"error": "Must use an @sfsu.edu email"}), 400
+        if not (email.endswith("@sfsu.edu") or email.endswith("@mail.sfsu.edu")):
+            return jsonify({"error": "Must use an @sfsu.edu or @mail.sfsu.edu email"}), 400
 
         if password != confirm_password:
             return jsonify({"error": "Passwords do not match"}), 400
