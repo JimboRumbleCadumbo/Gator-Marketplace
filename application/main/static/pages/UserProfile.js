@@ -20,7 +20,7 @@ export default {
                 <div class="user-container">
                     <div class="user-content">
                         <div class="user-header">
-                            <img :src="icon" alt="User Icon" class="user-icon" />
+                            <img :src="userIcon" alt="User Icon" class="user-icon" />
                         </div>
                         <div class="user-details">
                             <div class="username-section">
@@ -169,6 +169,11 @@ export default {
             </footer>
         </div>
     `,
+    data() {
+        return {
+            userIcon: window.__LOGIN_STATE__.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123", // Default icon
+        };
+    },
     setup() {
         //Example profile related data
         const username = Vue.ref("CoolUser123");
