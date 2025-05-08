@@ -18,18 +18,18 @@ export default {
             <!-- Tab Content -->
             <div v-if="activeTab === 'about'" class="tab-content">
                 <div class="user-container">
-                    <div class="user-content">
+                    <div class="user-content" v-if="user">
                         <div class="user-header">
-                            <img :src="icon" alt="User Icon" class="user-icon" />
+                            <img :src="user.icon || defaultIcon" alt="User Icon" class="user-icon" />
                         </div>
                         <div class="user-details">
                             <div class="username-section">
-                                <span class="username">{{ username }}</span>
+                                <span class="username">{{ user.username }}</span>
                             </div>
-                            <div class="joined-date">Joined: {{ joinedDate }}</div>
+                            <div class="joined-date">Joined: {{ user.joinedDate }}</div>
                             <div class="rating">
-                                <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
-                                <span class="rating-score">({{ rating }}/5)</span>
+                                <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= user.rating }">&#9733;</span>
+                                <span class="rating-score">({{ user.rating }}/5)</span>
                             </div>
                             <div class="description">
                                 <label>Description:</label>
@@ -37,6 +37,7 @@ export default {
                             </div>
                         </div>
                     </div>
+                    <p v-else>Loading user information...</p>
                 </div>
             </div>
 
@@ -172,14 +173,15 @@ export default {
     setup() {
         //Example profile related data
         const username = Vue.ref("CoolUser123");
+        const icon = Vue.ref(`https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123`);
+        const description = Vue.ref("This is my profile description!");
         const usernameEdit = Vue.ref(username.value);
-        const icon = Vue.ref(`https://api.dicebear.com/8.x/bottts/svg?seed=${username.value}`);
         const iconEdit = Vue.ref(icon.value);
         const newPassword = Vue.ref("");
-        const joinedDate = Vue.ref("2023-12-01");
-        const rating = Vue.ref(4);
-        const description = Vue.ref("This is my profile description!");
         const activeTab = Vue.ref("about");
+
+        const user = Vue.ref(null);
+        const defaultIcon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
       
         //Example Chat Data
         const users = Vue.ref([
@@ -238,6 +240,36 @@ export default {
             reader.readAsDataURL(file);
             }
         };
+
+        // Fetch user data from the API
+        const fetchUserData = async () => {
+            try {
+            // First, check if user is logged in
+            const sessionResponse = await fetch('/api/session');
+            const sessionData = await sessionResponse.json();
+            if (sessionData.logged_in) {
+                // Fetch the full user data using user_id
+                const userId = sessionData.user_id;
+                const userResponse = await fetch(`/api/user/${userId}`);
+                const userData = await userResponse.json();
+                if (userResponse.ok) {
+                user.value = {
+                    username: userData.user_name,
+                    icon: "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
+                    joinedDate: userData.joined_date,
+                    rating: userData.rating,
+                    // description: userData.description,
+                };
+                } else {
+                console.error("Failed to fetch user data:", userData.error);
+                }
+            }
+            } catch (error) {
+            console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
       
         return {
           //Profile related data
@@ -246,10 +278,10 @@ export default {
           icon,
           iconEdit,
           newPassword,
-          joinedDate,
-          rating,
           description,
           activeTab,
+          defaultIcon,
+          user,
       
           //Chat related data
           users,

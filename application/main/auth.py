@@ -60,3 +60,39 @@ def init_auth_routes(app):
                 "user_name": session.get('user_name'),
             })
         return jsonify({"logged_in": False})
+    
+    
+    @app.route('/api/user/<int:user_id>', methods=['GET'])
+    def get_user_info(user_id):
+        """
+        API endpoint to fetch user information by user_id.
+        """
+        mysql = app.config.get('MYSQL_CONNECTION')
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            SELECT 
+                u.user_id, 
+                u.user_name, 
+                u.email, 
+                DATE_FORMAT(u.created_at, '%%M %%d %%Y') AS formatted_date,
+                p.rating 
+            FROM 
+                User u 
+            JOIN 
+                Profile p ON u.profile_id = p.profile_id 
+            WHERE 
+                u.user_id = %s
+        """, (user_id,))
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        return jsonify({
+            "user_id": user['user_id'],
+            "user_name": user['user_name'],
+            "email": user['email'],
+            "joined_date": user['formatted_date'],
+            # "description": user['description'],
+            "rating": user['rating'] 
+        })
