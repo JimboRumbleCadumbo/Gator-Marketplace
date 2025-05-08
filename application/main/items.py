@@ -17,9 +17,11 @@ def init_item_routes(app):
         cursor = mysql.connection.cursor()
         # Join Item_Listing with Category to get the category_name
         cursor.execute("""
-            SELECT il.*, c.category_name
+            SELECT il.*, c.category_name, u.user_name, p.rating
             FROM Item_Listing il
             LEFT JOIN Category c ON il.category_id = c.category_id
+            LEFT JOIN User u on il.seller_id = u.user_id
+            LEFT JOIN Profile p on u.user_id = p.profile_id
             WHERE il.item_id = %s
         """, (item_id,))
         item = cursor.fetchone()
@@ -48,6 +50,8 @@ def init_item_routes(app):
             "updated_at": item["updated_at"],
             "is_active": bool(item["is_active"]),
             "seller_id": item["seller_id"],
+            "seller_rating": item["rating"],
+            "seller_name": item["user_name"],  # Assuming the seller's name is in the same row
             "category_name": item["category_name"],
             "image": image_base64,
         }

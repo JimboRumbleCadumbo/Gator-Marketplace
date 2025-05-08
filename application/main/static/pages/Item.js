@@ -22,9 +22,9 @@ export default {
                     <div class="seller-section">
                         <div class="seller-info">
                             <p class="seller-profile">
-                            <strong @click="goToSellerProfile">Seller:</strong> John Doe
+                            <strong @click="goToSellerProfile">Seller:</strong> {{ item.seller_name }}
+                            <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= item.seller_rating }">&#9733;</span>
                             <span class="badge">Verified</span>
-                            <span>{{ item.seller?.rating }} ★</span>
                             </p>
                         </div>
         
@@ -33,10 +33,10 @@ export default {
                             <span class="category-badge">{{ item.category }}</span>
                         </p>
 
-                        <p class="description">
+                        <div class="description">
                             <p><strong>Condition:</strong>
                             {{ item.quality }}</p>
-                        </p>
+                        </div>
         
                         <div class="description">
                             <h3>Description</h3>
@@ -53,7 +53,7 @@ export default {
   
             <div class="chat-box" v-if="chatVisible">
                 <button @click="hideChat" class="close-btn">×</button>
-                <strong>Seller</strong>
+                <strong>Seller: {{ item.seller_name }}</strong>
                 <div class="chat-messages">
                     <div class="message user">User: Is this still available?</div>
                     <div class="message seller">Seller: Yes, it is!</div>
@@ -101,12 +101,15 @@ export default {
                     return response.json();
                 })
                 .then((data) => {
+                    console.log("Data that can be loaded:", data),
                     this.item = {
                         id: data.item_id,
                         name: data.name,
                         description: data.description,
                         price: `$${data.price.toFixed(2)}`,
-                        location: data.location,
+                        seller_id: data.seller_id,
+                        seller_name: data.seller_name,
+                        seller_rating: data.seller_rating,
                         quality: data.quality,
                         rentalOption: data.rental_option ? "Available for Rent" : "Not for Rent",
                         category: data.category_name, // Use category_name from the API

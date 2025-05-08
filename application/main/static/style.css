@@ -508,6 +508,15 @@ h1 {
   color: red;
 }
 
+.star {
+  color: #ddd;
+  font-size: 18px;
+}
+
+.star.filled {
+  color: #f59e0b;
+}
+
 /******************* Chat Feature ******************/
 /* Chat box for messaging sellers */
 .chat-box {
