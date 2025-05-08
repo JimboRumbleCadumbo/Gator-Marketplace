@@ -41,20 +41,47 @@ export default {
     const displayName = Vue.ref('');
 
     function handleSignup() {
-      if (!email.value.endsWith('@sfsu.edu')) {
+      if (
+        !email.value.endsWith('@sfsu.edu') &&
+        !email.value.endsWith('@mail.sfsu.edu')
+      ) {
         alert('Only SFSU email addresses are allowed.');
         return;
       }
-
+    
       if (password.value !== confirmPassword.value) {
         alert('Passwords do not match.');
         return;
       }
-
-      // TODO: Replace with actual signup API request
-      console.log('Signing up with', email.value);
+    
+      fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: displayName.value,
+          email: email.value,
+          password: password.value,
+          confirmPassword: confirmPassword.value,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            alert(`Signup failed: ${data.error}`);
+          } else {
+            alert('Account created successfully!');
+            // Optional: redirect to login page
+            window.location.href = '/login';
+          }
+        })
+        .catch((err) => {
+          console.error('Signup error:', err);
+          alert('Something went wrong. Please try again.');
+        });
     }
-
+    
     return {
       email,
       password,
