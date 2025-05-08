@@ -1,0 +1,25 @@
+var class_scope_handler =
+[
+    [ "allowDirectSuper", "class_scope_handler.html#abd3c38f275f495e41b88335d1782223f", null ],
+    [ "allowSuper", "class_scope_handler.html#a90aa9f0f6912ecb8f1db11906bbefb51", null ],
+    [ "checkLocalExport", "class_scope_handler.html#a102f49bb01a179261c6390b309e72c88", null ],
+    [ "checkRedeclarationInScope", "class_scope_handler.html#a46189fe4c5300251d5837da3b3572034", null ],
+    [ "constructor", "class_scope_handler.html#a2d84ecfe7911ded2070a6b775566fef0", null ],
+    [ "createScope", "class_scope_handler.html#aaa6f1dbfa318fe0f52e8f02e725678eb", null ],
+    [ "currentScope", "class_scope_handler.html#a88942ad83744827dc45e0c6befa6d9f6", null ],
+    [ "currentThisScopeFlags", "class_scope_handler.html#ab3a47f3024bce6b58819c4d71a52df7e", null ],
+    [ "currentVarScopeFlags", "class_scope_handler.html#afa1f4190ae21a1f9cf27ef7dd5bd07fe", null ],
+    [ "declareName", "class_scope_handler.html#a468e3ea70830b87933d2435937ca4194", null ],
+    [ "enter", "class_scope_handler.html#a6c714c1eb4262a08a690d6309beb9aa1", null ],
+    [ "exit", "class_scope_handler.html#ac922a5f7e2022ce028d1b68a1de03e8c", null ],
+    [ "inClass", "class_scope_handler.html#ac39b59c15f0eb56ee09768fb149bcf25", null ],
+    [ "inClassAndNotInNonArrowFunction", "class_scope_handler.html#a22ec302ae151ad12a45c7138a71b1fd8", null ],
+    [ "inFunction", "class_scope_handler.html#a4120a3d1a9aa05eb0877088e3bc3a1f8", null ],
+    [ "inNonArrowFunction", "class_scope_handler.html#a6a0fd246ee8d1186b276b3a17519ffc0", null ],
+    [ "inStaticBlock", "class_scope_handler.html#a8713823c2a660ad1c8e8299433d1446e", null ],
+    [ "inTopLevel", "class_scope_handler.html#ab19f210ed9c25921dd98889d87b667bc", null ],
+    [ "isRedeclaredInScope", "class_scope_handler.html#a8874ed6fc2c89086554f3bd81d40a427", null ],
+    [ "maybeExportDefined", "class_scope_handler.html#acc9a7eb1a8784bb0d7694c4dd2bf358e", null ],
+    [ "treatFunctionsAsVar", "class_scope_handler.html#a4184f29f795998e6ab95a4a4a183911e", null ],
+    [ "treatFunctionsAsVarInScope", "class_scope_handler.html#a2036008ed6e1eacc3ef44dd357c2a85d", null ]
+];
