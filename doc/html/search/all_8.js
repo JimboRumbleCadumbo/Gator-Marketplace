@@ -1,14 +1,5 @@
 var searchData=
 [
-  ['7_200_0',['0.7.0',['../md_node__modules_2estree-walker_2_c_h_a_n_g_e_l_o_g.html#autotoc_md192',1,'']]],
-  ['7_200_200_20beta_200_202017_2002_2015_1',['7.0.0-beta.0 (2017-02-15)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md40',1,'']]],
-  ['7_200_200_20beta_201_202017_2002_2020_2',['7.0.0-beta.1 (2017-02-20)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md39',1,'']]],
-  ['7_200_200_20beta_202_202017_2002_2020_3',['7.0.0-beta.2 (2017-02-20)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md38',1,'']]],
-  ['7_200_200_20beta_203_202017_2002_2028_4',['7.0.0-beta.3 (2017-02-28)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md37',1,'']]],
-  ['7_200_200_20beta_204_202017_2003_2001_5',['7.0.0-beta.4 (2017-03-01)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md36',1,'']]],
-  ['7_200_200_20beta_205_202017_2003_2021_6',['7.0.0-beta.5 (2017-03-21)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md33',1,'']]],
-  ['7_200_200_20beta_206_202017_2003_2021_7',['7.0.0-beta.6 (2017-03-21)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md29',1,'']]],
-  ['7_200_200_20beta_207_202017_2003_2022_8',['7.0.0-beta.7 (2017-03-22)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md26',1,'']]],
-  ['7_200_200_20beta_208_202017_2004_2004_9',['7.0.0-beta.8 (2017-04-04)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md21',1,'']]],
-  ['7_202017_2003_2022_10',['7.0.0-beta.7 (2017-03-22)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md26',1,'']]]
+  ['go_20here_20in_20the_20corresponding_20folder_0',['This folder is used to store all the necessary documents for each milestone. Some folders may be empty because certain milestones may not contain or need any documents. But certain milestones will required documents to be submitted and then links sent via email to the instructors. These documents should go here in the corresponding folder.',['../C:/Users/athan/Desktop/CODE/csc648-fa25-0104-team05/Milestones/README.md#autotoc_md11',1,'']]],
+  ['grading_20teams_20are_20expected_20to_20keep_20this_20value_20up_20to_20date_1',['Please when ready add your teams application URL or IP to the repository description. This will help with grading. Teams are expected to keep this value up to date.',['../md__r_e_a_d_m_e.html#autotoc_md13',1,'']]]
 ];

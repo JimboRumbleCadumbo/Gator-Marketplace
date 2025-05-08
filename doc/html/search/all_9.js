@@ -1,11 +1,7 @@
 var searchData=
 [
-  ['8_200_0',['0.8.0',['../md_node__modules_2estree-walker_2_c_h_a_n_g_e_l_o_g.html#autotoc_md191',1,'']]],
-  ['8_200_202016_2005_2002_1',['6.8.0 (2016-05-02)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md120',1,'']]],
-  ['8_201_2',['0.8.1',['../md_node__modules_2estree-walker_2_c_h_a_n_g_e_l_o_g.html#autotoc_md190',1,'']]],
-  ['8_201_202016_2006_2006_3',['6.8.1 (2016-06-06)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md116',1,'']]],
-  ['8_202_202016_2006_2024_4',['6.8.2 (2016-06-24)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md112',1,'']]],
-  ['8_202017_2004_2004_5',['7.0.0-beta.8 (2017-04-04)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md21',1,'']]],
-  ['8_203_202016_2007_2002_6',['6.8.3 (2016-07-02)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md110',1,'']]],
-  ['8_204_202016_2007_2006_7',['6.8.4 (2016-07-06)',['../md_node__modules_2_0dbabel_2parser_2_c_h_a_n_g_e_l_o_g.html#autotoc_md108',1,'']]]
+  ['help_20with_20grading_20teams_20are_20expected_20to_20keep_20this_20value_20up_20to_20date_0',['Please when ready add your teams application URL or IP to the repository description. This will help with grading. Teams are expected to keep this value up to date.',['../md__r_e_a_d_m_e.html#autotoc_md13',1,'']]],
+  ['here_20in_20the_20corresponding_20folder_1',['This folder is used to store all the necessary documents for each milestone. Some folders may be empty because certain milestones may not contain or need any documents. But certain milestones will required documents to be submitted and then links sent via email to the instructors. These documents should go here in the corresponding folder.',['../C:/Users/athan/Desktop/CODE/csc648-fa25-0104-team05/Milestones/README.md#autotoc_md11',1,'']]],
+  ['home_2ejs_2',['Home.js',['../_home_8js.html',1,'']]],
+  ['host_3',['host',['../namespacemain.html#a0cf58d9b4a444874a8cf80fdf162b0fb',1,'main']]]
 ];
