@@ -1,3 +1,8 @@
+/**
+ * @file about.js
+ * Displays a list of team members with links to their about pages.
+ * Located in footer's about tab.
+ */
 export default {
     template: `
         <Navbar></Navbar>
