@@ -56,30 +56,34 @@ export default {
     
       fetch('/api/signup', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: displayName.value,
           email: email.value,
           password: password.value,
           confirmPassword: confirmPassword.value,
-        }),
+        })
       })
-        .then((res) => res.json())
-        .then((data) => {
+      .then(async (res) => {
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await res.json();
           if (data.error) {
             alert(`Signup failed: ${data.error}`);
           } else {
             alert('Account created successfully!');
-            // Optional: redirect to login page
             window.location.href = '/login';
           }
-        })
-        .catch((err) => {
-          console.error('Signup error:', err);
-          alert('Something went wrong. Please try again.');
-        });
+        } else {
+          const text = await res.text();
+          console.error("Unexpected response:", text);
+          alert("Unexpected response from server. Check console.");
+        }
+      })
+      .catch((err) => {
+        console.error('Signup error:', err);
+        alert('Something went wrong. Please try again.');
+      });      
     }
     
     return {
