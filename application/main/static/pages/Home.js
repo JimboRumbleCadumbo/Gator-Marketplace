@@ -1,3 +1,7 @@
+/**
+ * @file Home.js
+ * Displays a welcome banner and a grid of items based on search results.
+ */
 console.log("Home.js Loaded!");
 
 export default {

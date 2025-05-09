@@ -1,3 +1,9 @@
+/**
+ * @file Item.js
+ * Fetches and displays individual item, including image, price, category,
+ * quality, seller info, and description. Also includes buttons to 
+ * buy or rent, and a basic chat UI for messaging the seller.
+ */
 export default {
     //The item.location and item.category are currently id in the return value from searchData.
     //Same thing for seller only currently and id.

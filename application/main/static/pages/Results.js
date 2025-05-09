@@ -1,3 +1,8 @@
+/**
+ * @file Results.js
+ * Displays search results from the marketplace.
+ * Shows result cards from searchData.
+ */
 console.log("Dashboard.js Loaded!");
 
 export default {

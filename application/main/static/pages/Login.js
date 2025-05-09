@@ -1,3 +1,8 @@
+/**
+ * @file Login.js
+ * Login Page. Includes a form for email and password input,
+ * with basic validation to ensure use of @sfsu.edu emails.
+ */
 export default {
   template: `
     <Navbar></Navbar>

@@ -1,3 +1,8 @@
+/**
+ * @file Postings.js
+ * Page to create a new item listing.
+ * Includes a form for inputting item details, uploading an image.
+ */
 export default {
     template: `
     <Navbar></Navbar>

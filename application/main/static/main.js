@@ -1,3 +1,8 @@
+/**
+ * @file main.js
+ * This file serves as the main entry point for the Vue application. 
+ * Sets up routes, registers global components
+ */
 const { createApp, reactive } = Vue;
 const { createRouter, createWebHistory } = VueRouter;
 

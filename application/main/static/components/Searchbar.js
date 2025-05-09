@@ -1,3 +1,8 @@
+/**
+ * @file Searchbar.js
+ * The search bar with a filter dropdown for the app. 
+ * Allows users to search items with an optional filter by category.
+ */
 export default {
     template: `
         <!-- Search Bar and Filters Dropdown in Flexbox -->

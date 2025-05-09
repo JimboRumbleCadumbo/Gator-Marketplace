@@ -1,3 +1,7 @@
+/**
+ * @file Dashboard.js
+ * Displays a welcome banner and a grid of featured item cards.
+ */
 console.log("Dashboard.js Loaded!");
 
 export default {

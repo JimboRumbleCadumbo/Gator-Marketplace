@@ -1,3 +1,9 @@
+/**
+ * @file Navbar.js
+ * The navigation bar for the app. 
+ * Includes a logo, links for posting, login/signup, and a dropdown menu 
+ * for logged-in users to access their profile or logout.
+ */
 import Searchbar from "/static/components/Searchbar.js";
 
 export default {

@@ -1,3 +1,15 @@
+/**
+ * @file UserProfile.js
+ * User dashboard page displaying profile information, activity tabs, and messaging.
+ *
+ * Tabs include:
+ *  - About: Displays user profile data (username, join date, rating, description).
+ *  - Liked Items: Shows favorited items.
+ *  - Sold Items: Shows user's sold listings.
+ *  - Rented Items: Displays rented items with return info.
+ *  - Messages: Simple messaging interface with other users.
+ *  - Settings: Allows updates to display name, profile icon, description, and password.
+ */
 export default {
   template: `
         <Navbar></Navbar>    
@@ -169,102 +181,112 @@ export default {
             </footer>
         </div>
     `,
-    setup() {
-        //Example profile related data
-        const username = Vue.ref("CoolUser123");
-        const usernameEdit = Vue.ref(username.value);
-        const icon = Vue.ref(`https://api.dicebear.com/8.x/bottts/svg?seed=${username.value}`);
-        const iconEdit = Vue.ref(icon.value);
-        const newPassword = Vue.ref("");
-        const joinedDate = Vue.ref("2023-12-01");
-        const rating = Vue.ref(4);
-        const description = Vue.ref("This is my profile description!");
-        const activeTab = Vue.ref("about");
-      
-        //Example Chat Data
-        const users = Vue.ref([
-          { id: 1, name: "Alice", messages: [{ id: 1, text: "Hi there!", from: "seller" }] },
-          { id: 2, name: "Bob", messages: [{ id: 2, text: "Hello!", from: "user" }] }
-        ]);
-        const selectedUser = Vue.ref(null);
-        const newMessage = Vue.ref("");
-      
-        const selectUser = (user) => {
-            selectedUser.value = user;
+  setup() {
+    //Example profile related data
+    const username = Vue.ref("CoolUser123");
+    const usernameEdit = Vue.ref(username.value);
+    const icon = Vue.ref(
+      `https://api.dicebear.com/8.x/bottts/svg?seed=${username.value}`
+    );
+    const iconEdit = Vue.ref(icon.value);
+    const newPassword = Vue.ref("");
+    const joinedDate = Vue.ref("2023-12-01");
+    const rating = Vue.ref(4);
+    const description = Vue.ref("This is my profile description!");
+    const activeTab = Vue.ref("about");
+
+    //Example Chat Data
+    const users = Vue.ref([
+      {
+        id: 1,
+        name: "Alice",
+        messages: [{ id: 1, text: "Hi there!", from: "seller" }],
+      },
+      {
+        id: 2,
+        name: "Bob",
+        messages: [{ id: 2, text: "Hello!", from: "user" }],
+      },
+    ]);
+    const selectedUser = Vue.ref(null);
+    const newMessage = Vue.ref("");
+
+    const selectUser = (user) => {
+      selectedUser.value = user;
+    };
+
+    const sendMessage = () => {
+      if (newMessage.value.trim() && selectedUser.value) {
+        selectedUser.value.messages.push({
+          id: Date.now(),
+          text: newMessage.value,
+          from: "user",
+        });
+        newMessage.value = "";
+      }
+    };
+
+    //Example items
+    const likedItems = Vue.ref([
+      { id: 1, name: "Vintage Camera" },
+      { id: 2, name: "Classic Book" },
+    ]);
+
+    const soldItems = Vue.ref([
+      { id: 1, name: "Example Sold" },
+      { id: 2, name: "Calculator" },
+    ]);
+
+    //Profile Settings Handlers
+    const saveSettings = () => {
+      if (usernameEdit.value.trim()) {
+        username.value = usernameEdit.value.trim();
+      }
+      if (iconEdit.value) {
+        icon.value = iconEdit.value;
+      }
+      if (newPassword.value.trim()) {
+        console.log("Password changed:", newPassword.value);
+      }
+    };
+
+    const onIconChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          iconEdit.value = ev.target.result;
         };
-      
-        const sendMessage = () => {
-          if (newMessage.value.trim() && selectedUser.value) {
-            selectedUser.value.messages.push({
-                id: Date.now(),
-                text: newMessage.value,
-                from: "user"
-            });
-            newMessage.value = "";
-          }
-        };
-      
-        //Example items
-        const likedItems = Vue.ref([
-            { id: 1, name: "Vintage Camera" },
-            { id: 2, name: "Classic Book" },
-        ]);
-      
-        const soldItems = Vue.ref([
-            { id: 1, name: "Example Sold" },
-            { id: 2, name: "Calculator" },
-        ]);
-      
-        //Profile Settings Handlers
-        const saveSettings = () => {
-            if (usernameEdit.value.trim()) {
-                username.value = usernameEdit.value.trim();
-            }
-            if (iconEdit.value) {
-                icon.value = iconEdit.value;
-            }
-            if (newPassword.value.trim()) {
-                console.log("Password changed:", newPassword.value);
-            }
-        };
-      
-        const onIconChange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                iconEdit.value = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-            }
-        };
-      
-        return {
-          //Profile related data
-          username,
-          usernameEdit,
-          icon,
-          iconEdit,
-          newPassword,
-          joinedDate,
-          rating,
-          description,
-          activeTab,
-      
-          //Chat related data
-          users,
-          selectedUser,
-          newMessage,
-          selectUser,
-          sendMessage,
-      
-          //Item related data
-          likedItems,
-          soldItems,
-      
-          //Profile settings functions
-          saveSettings,
-          onIconChange,
-        };
-    }
+        reader.readAsDataURL(file);
+      }
+    };
+
+    return {
+      //Profile related data
+      username,
+      usernameEdit,
+      icon,
+      iconEdit,
+      newPassword,
+      joinedDate,
+      rating,
+      description,
+      activeTab,
+
+      //Chat related data
+      users,
+      selectedUser,
+      newMessage,
+      selectUser,
+      sendMessage,
+
+      //Item related data
+      likedItems,
+      soldItems,
+
+      //Profile settings functions
+      saveSettings,
+      onIconChange,
+    };
+  },
 };

@@ -1,3 +1,8 @@
+/**
+ * @file Signup.js
+ * User signup form for creating new accounts.
+ * Validates SFSU email and matching passwords before sending signup request.
+ */
 export default {
     template: `
         <Navbar></Navbar>

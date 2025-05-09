@@ -1,3 +1,8 @@
+/**
+ * @file Athan.js
+ * Athan's about page. Displays a profile section with an icon, GitHub link, and a short bio. 
+ * Located in about.
+*/
 export default {
     template: `
         <Navbar></Navbar>
