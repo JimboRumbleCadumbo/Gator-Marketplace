@@ -48,9 +48,9 @@ def init_auth_routes(app):
         email = data.get('email')
         password = data.get('password')
         confirm_password = data.get('confirmPassword')
-        name = data.get('name')
+        full_name = data.get('full_name')
 
-        if not email or not password or not name:
+        if not email or not password or not full_name:
             return jsonify({"error": "All fields are required"}), 400
 
         if not (email.endswith("@sfsu.edu") or email.endswith("@mail.sfsu.edu")):
@@ -71,8 +71,8 @@ def init_auth_routes(app):
 
         # Insert new user
         cursor.execute(
-            "INSERT INTO User (email, password_hash, user_name) VALUES (%s, %s, %s)",
-            (email, hashed_pw, name)
+            "INSERT INTO User (email, password_hash, full_name) VALUES (%s, %s, %s)",
+            (email, hashed_pw, full_name)
         )
         mysql.connection.commit()
         cursor.close()

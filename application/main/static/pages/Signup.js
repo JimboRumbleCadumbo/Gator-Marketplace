@@ -58,10 +58,10 @@ export default {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: displayName.value,
+          full_name: displayName.value,
           email: email.value,
           password: password.value,
-          confirmPassword: confirmPassword.value,
+          confirmPassword: confirmPassword.value
         })
       })
       .then(async (res) => {
