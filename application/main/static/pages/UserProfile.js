@@ -170,6 +170,11 @@ export default {
             </footer>
         </div>
     `,
+    data() {
+        return {
+            userIcon: window.__LOGIN_STATE__.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123", // Default icon
+        };
+    },
     setup() {
         //Example profile related data
         const username = Vue.ref("CoolUser123");

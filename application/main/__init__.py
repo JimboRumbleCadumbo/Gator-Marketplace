@@ -50,9 +50,26 @@ auth.init_auth_routes(app)
 def catch_all(path):
     user_id = session.get('user_id')
     user_name = session.get('user_name', '')
+    user_icon = None
+
+    if user_id:
+        # Fetch the user_icon from the database
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT user_icon FROM User WHERE user_id = %s", (user_id,))
+        result = cursor.fetchone()
+        if result and result['user_icon']:
+            # Convert the binary blob to a base64 string for rendering in the frontend
+            import base64
+            # user_icon = f"data:image/png;base64,{base64.b64encode(result['user_icon']).decode('utf-8')}"
+            user_icon = f"data:image/svg+xml;base64,{base64.b64encode(result['user_icon']).decode('utf-8')}"
+        else:
+            # Default icon if no user_icon exists in the database
+            user_icon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123"  # Replace with your default icon URL
+
     login_state = {
         "logged_in": bool(user_id),
         "user_name": user_name,
+        "user_icon": user_icon or "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123"  # Default icon if user_icon not available
     }
     return render_template('index.html', login_state=login_state)
 
