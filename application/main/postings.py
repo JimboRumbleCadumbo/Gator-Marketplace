@@ -1,5 +1,4 @@
-from flask import Flask, request, jsonify
-from flask_mysqldb import MySQL
+from flask import request, jsonify, session
 
 # Category mapping based on the database values
 CATEGORY_MAP = {
@@ -23,6 +22,19 @@ def init_posting_routes(app):
                     'success': False,
                     'error': f'Invalid category: {category_name}. Valid categories are: {", ".join(CATEGORY_MAP.keys())}'
                 }), 400
+                
+            # Database setup connection
+            cursor = mysql.connection.cursor()
+            
+            # Get user ID from the session
+            user_id = session.get('user_id')
+            if not user_id:
+                return jsonify({'success': False, 'error': 'User not logged in'}), 401
+
+            # Within your existing signup route
+            cursor.execute("SELECT MAX(item_id) AS max_id FROM Item_Listing")
+            result = cursor.fetchone()
+            max_item_id = result['max_id'] + 1 if result else 0
 
             # Get form data
             item_data = {
@@ -32,8 +44,9 @@ def init_posting_routes(app):
                 'category_id': CATEGORY_MAP[category_name],  # Convert category name to ID
                 'rental_option': 1 if request.form.get('rentalOption') == 'true' else 0,
                 'description': request.form.get('description'),
-                'seller_id': 1,
-                'is_active': 1
+                'user_id': user_id,
+                'is_active': 1,
+                'item_id': max_item_id
             }
 
             # Validate required fields
@@ -53,12 +66,11 @@ def init_posting_routes(app):
             image_binary = image_file.read()
 
             # Database insertion
-            cursor = mysql.connection.cursor()
             query = """
             INSERT INTO Item_Listing 
-            (name, price, category_id, quality, rental_option, description, image, seller_id, is_active)
-            VALUES (%(name)s, %(price)s, %(category_id)s, %(quality)s, 
-                    %(rental_option)s, %(description)s, %(image)s, %(seller_id)s, %(is_active)s)
+            (item_id, name, price, category_id, quality, rental_option, description, image, user_id, is_active)
+            VALUES (%(item_id)s, %(name)s, %(price)s, %(category_id)s, %(quality)s, 
+                    %(rental_option)s, %(description)s, %(image)s, %(user_id)s, %(is_active)s)
             """
             params = {**item_data, 'image': image_binary}
             
