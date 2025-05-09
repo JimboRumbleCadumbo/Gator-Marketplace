@@ -20,7 +20,7 @@ def init_item_routes(app):
             SELECT il.*, c.category_name, u.user_name, p.rating
             FROM Item_Listing il
             LEFT JOIN Category c ON il.category_id = c.category_id
-            LEFT JOIN User u on il.seller_id = u.user_id
+            LEFT JOIN User u on il.user_id = u.user_id
             LEFT JOIN Profile p on u.user_id = p.profile_id
             WHERE il.item_id = %s
         """, (item_id,))
@@ -49,7 +49,7 @@ def init_item_routes(app):
             "created_at": item["created_at"],
             "updated_at": item["updated_at"],
             "is_active": bool(item["is_active"]),
-            "seller_id": item["seller_id"],
+            "seller_id": item["user_id"],
             "seller_rating": item["rating"],
             "seller_name": item["user_name"],  # Assuming the seller's name is in the same row
             "category_name": item["category_name"],
