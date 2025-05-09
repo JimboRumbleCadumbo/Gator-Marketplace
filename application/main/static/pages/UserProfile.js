@@ -20,7 +20,7 @@ export default {
                 <div class="user-container">
                     <div class="user-content" v-if="user">
                         <div class="user-header">
-                            <img :src="user.icon || defaultIcon" alt="User Icon" class="user-icon" />
+                            <img :src="user.icon" alt="User Icon" class="user-icon" />
                         </div>
                         <div class="user-details">
                             <div class="username-section">
@@ -140,7 +140,7 @@ export default {
                     <div class="user-settings-group">
                     <label>Profile Icon</label>
                         <div class="user-settings-icon-upload">
-                            <img :src="iconEdit" alt="Profile Preview" class="user-settings-icon-preview" />
+                            <img :src="user.icon" alt="Profile Preview" class="user-settings-icon-preview" />
                             <input type="file" accept="image/*" @change="onIconChange" />
                         </div>
                     </div>
@@ -178,7 +178,7 @@ export default {
     setup() {
         //Example profile related data
         const username = Vue.ref("CoolUser123");
-        const icon = Vue.ref(`https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123`);
+        const icon = Vue.ref(``);
         const description = Vue.ref("This is my profile description!");
         const usernameEdit = Vue.ref(username.value);
         const iconEdit = Vue.ref(icon.value);
@@ -186,7 +186,6 @@ export default {
         const activeTab = Vue.ref("about");
 
         const user = Vue.ref(null);
-        const defaultIcon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
       
         //Example Chat Data
         const users = Vue.ref([
@@ -257,11 +256,12 @@ export default {
                 const userId = sessionData.user_id;
                 const userResponse = await fetch(`/api/user/${userId}`);
                 const userData = await userResponse.json();
+                console.log("Session data", sessionData);
                 if (userResponse.ok) {
                 user.value = {
                     username: userData.user_name,
-                    icon: "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
                     joinedDate: userData.joined_date,
+                    icon: sessionData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
                     rating: userData.rating,
                     // description: userData.description,
                 };
@@ -285,7 +285,6 @@ export default {
           newPassword,
           description,
           activeTab,
-          defaultIcon,
           user,
       
           //Chat related data
