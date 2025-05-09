@@ -429,16 +429,30 @@ h1 {
   background-color: #ccc;
 }
 
-.rent-button:disabled {
+.item-button:disabled {
   background-color: #d1d5db;
   color: #6b7280;
 }
 
-.rent-button:disabled:hover {
+.item-button:disabled:hover {
   background-color: #d1d5db;
   color: #6b7280;
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+.tooltip {
+  visibility: hidden;
+  color: black;
+  text-align: center;
+  z-index: 1;
+  position: absolute;
+  align-self: center;
+  top: 710px;
+}
+
+.item-button:disabled:hover + .tooltip {
+  visibility: visible;
 }
 
 .category-line {

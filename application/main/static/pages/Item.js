@@ -44,8 +44,9 @@ export default {
                         </div>
         
                         <div class="buttons">
-                            <button @click="showChat" :disabled="item.rentalOption == 'Not for Rent'" class="rent-button">Rent</button>
-                            <button @click="showChat">Buy</button>
+                            <button @click="showChat" :disabled="item.rentalOption == 'Not for Rent' || !isLoggedIn" class="item-button">Rent</button>
+                            <button @click="showChat" :disabled="!isLoggedIn" class="item-button">Buy</button>
+                            <span v-if="!isLoggedIn" class="tooltip">You need to log in to buy</span>
                         </div>
                     </div>
                 </div>
@@ -71,62 +72,91 @@ export default {
         </footer>
     </div>
   `,
+    setup() {
+        const route = VueRouter.useRoute();
+        const isLoggedIn = Vue.ref(false);
+        const chatVisible = Vue.ref(false);
+        const isLiked = Vue.ref(false);
+        const item = Vue.ref({});
+        const user = Vue.ref(null);
 
-    data() {
-        return {
-            chatVisible: false,
-            isLiked: false,
-            item: {},
+        const showChat = () => {
+        chatVisible.value = true;
         };
-    },
-    methods: {
-        showChat() {
-            this.chatVisible = true;
-        },
-        hideChat() {
-            this.chatVisible = false;
-        },
-        goToSellerProfile() {
-            console.log("Go to seller profile clicked");
-        },
-        loadItemDetails() {
-            const route = VueRouter.useRoute();
-            const itemId = route.query.id;
 
-            fetch(`/api/item?id=${itemId}`)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch item details");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log("Data that can be loaded:", data),
-                    this.item = {
-                        id: data.item_id,
-                        name: data.name,
-                        description: data.description,
-                        price: `$${data.price.toFixed(2)}`,
-                        seller_id: data.seller_id,
-                        seller_name: data.seller_name,
-                        seller_rating: data.seller_rating,
-                        quality: data.quality,
-                        rentalOption: data.rental_option ? "Available for Rent" : "Not for Rent",
-                        category: data.category_name, // Use category_name from the API
-                        image: data.image ? `data:image/jpeg;base64,${data.image}` : "https://placehold.co/600x400", // Use placeholder if image is missing
+        const hideChat = () => {
+        chatVisible.value = false;
+        };
+
+        const goToSellerProfile = () => {
+        console.log("Go to seller profile clicked");
+        };
+
+        const toggleLike = () => {
+            isLiked.value = !isLiked.value;
+            console.log("Like button clicked. Liked:", isLiked.value);
+        }
+
+        const loadItemDetails = async () => {
+            const itemId = route.query.id;
+            try {
+                const response = await fetch(`/api/item?id=${itemId}`);
+                if (!response.ok) throw new Error("Failed to fetch item details");
+                    const data = await response.json();
+                    console.log("Data that can be loaded:", data);
+                    item.value = {
+                    id: data.item_id,
+                    name: data.name,
+                    description: data.description,
+                    price: `$${data.price.toFixed(2)}`,
+                    seller_id: data.seller_id,
+                    seller_name: data.seller_name,
+                    seller_rating: data.seller_rating,
+                    quality: data.quality,
+                    rentalOption: data.rental_option ? "Available for Rent" : "Not for Rent",
+                    category: data.category_name,
+                    image: data.image ? `data:image/jpeg;base64,${data.image}` : "https://placehold.co/600x400",
+                };
+            } catch (error) {
+                console.error("Error loading item details:", error);
+                alert("Failed to load item details.");
+            }
+        };
+
+        const fetchUserData = async () => {
+            try {
+                const sessionResponse = await fetch('/api/session');
+                const sessionData = await sessionResponse.json();
+                isLoggedIn.value = sessionData.logged_in || false;
+                console.log("isLoggedin", isLoggedIn.value);
+
+                if (isLoggedIn.value) {
+                    user.value = {
+                        user_id: sessionData.user_id,
+                        username: sessionData.user_name,
                     };
-                    console.log("Item details loaded:", this.item);
-                })
-                .catch((error) => {
-                    console.error("Error loading item details:", error);
-                    alert("Failed to load item details.");
-                });
-        },
-        toggleLike() {
-            this.isLiked = !this.isLiked;
-        },
-    },
-    created() {
-        this.loadItemDetails();
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        loadItemDetails();
+        fetchUserData();
+
+        return {
+            item,
+            user,
+            isLoggedIn,
+            chatVisible,
+            isLiked,
+            showChat,
+            hideChat,
+            goToSellerProfile,
+            loadItemDetails,
+            fetchUserData,
+            toggleLike,
+        };
+
     },
 };
