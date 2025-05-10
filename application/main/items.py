@@ -51,9 +51,64 @@ def init_item_routes(app):
             "is_active": bool(item["is_active"]),
             "seller_id": item["user_id"],
             "seller_rating": item["rating"],
-            "seller_name": item["user_name"],  # Assuming the seller's name is in the same row
+            "seller_name": item["user_name"], 
             "category_name": item["category_name"],
             "image": image_base64,
         }
 
         return jsonify(item_data)
+    
+    @app.route('/api/wishlist/toggle', methods=['POST'])
+    def toggle_wishlist():
+        data = request.get_json()
+        user_id = data.get('user_id')
+        item_id = data.get('item_id')
+
+        if not user_id or not item_id:
+            return jsonify({"error": "Invalid user or item ID"}), 400
+
+        cursor = mysql.connection.cursor()
+
+        # Check if the item is already in the wishlist
+        cursor.execute("""
+            SELECT * FROM wishlist 
+            WHERE user_id = %s AND item_id = %s
+        """, (user_id, item_id))
+        wishlist_entry = cursor.fetchone()
+
+        if wishlist_entry:
+            # If it exists, remove it
+            cursor.execute("""
+                DELETE FROM wishlist 
+                WHERE user_id = %s AND item_id = %s
+            """, (user_id, item_id))
+            mysql.connection.commit()
+            return jsonify({"liked": False})
+
+        else:
+            # If it doesn't exist, add it
+            cursor.execute("""
+                INSERT INTO wishlist (user_id, item_id, created_at)
+                VALUES (%s, %s, NOW())
+            """, (user_id, item_id))
+            mysql.connection.commit()
+            return jsonify({"liked": True})
+        
+
+    @app.route('/api/wishlist/check', methods=['GET'])
+    def check_wishlist():
+        user_id = request.args.get('user_id')
+        item_id = request.args.get('item_id')
+
+        if not user_id or not item_id:
+            return jsonify({"error": "Invalid user or item ID"}), 400
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            SELECT * FROM wishlist 
+            WHERE user_id = %s AND item_id = %s
+        """, (user_id, item_id))
+        wishlist_entry = cursor.fetchone()
+        cursor.close()
+
+        return jsonify({"liked": bool(wishlist_entry)})
