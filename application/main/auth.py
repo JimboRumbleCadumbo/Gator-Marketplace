@@ -2,15 +2,13 @@ from flask import Flask, request, jsonify, session
 from flask_mysqldb import MySQL
 import bcrypt
 from functools import wraps
+from MySQLdb.cursors import DictCursor
 
 def init_auth_routes(app):
     mysql = app.config.get('MYSQL_CONNECTION')
 
     @app.route('/api/login', methods=['POST'])
     def login():
-        """
-        API endpoint for user login.
-        """
         data = request.get_json()
         email = data.get('email')
         password = data.get('password')
@@ -18,66 +16,67 @@ def init_auth_routes(app):
         if not email or not password:
             return jsonify({"error": "Email and password are required"}), 400
 
-        cursor = mysql.connection.cursor()
+        cursor = mysql.connection.cursor(DictCursor)
         cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
         user = cursor.fetchone()
 
         if not user:
             return jsonify({"error": "Invalid email or password"}), 401
 
-        # Verify the password
         if not bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
             return jsonify({"error": "Invalid email or password"}), 401
 
-        # Store user information in the session
         session['user_id'] = user['user_id']
         session['user_name'] = user['user_name']
 
-        return jsonify({"message": "Login successful", "user": {
-            "user_id": user['user_id'],
-            "user_name": user['user_name'],
-            "email": user['email'],
-        }})
+        return jsonify({
+            "message": "Login successful",
+            "user": {
+                "user_id": user['user_id'],
+                "user_name": user['user_name'],
+                "email": user['email'],
+            }
+        })
 
     @app.route('/api/signup', methods=['POST'])
     def signup():
-        """
-        API endpoint for user signup.
-        """
-        data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
-        confirm_password = data.get('confirmPassword')
-        full_name = data.get('full_name')
+            data = request.get_json()
+            email = data.get('email')
+            password = data.get('password')
+            confirm_password = data.get('confirmPassword')
+            full_name = data.get('full_name')
+            user_name = data.get('user_name')
 
-        if not email or not password or not full_name:
-            return jsonify({"error": "All fields are required"}), 400
+            if not email or not password or not full_name or not user_name:
+                return jsonify({"error": "All fields are required"}), 400
 
-        if not (email.endswith("@sfsu.edu") or email.endswith("@mail.sfsu.edu")):
-            return jsonify({"error": "Must use an @sfsu.edu or @mail.sfsu.edu email"}), 400
+            if not (email.endswith("@sfsu.edu") or email.endswith("@mail.sfsu.edu")):
+                return jsonify({"error": "Must use an @sfsu.edu or @mail.sfsu.edu email"}), 400
 
-        if password != confirm_password:
-            return jsonify({"error": "Passwords do not match"}), 400
+            if password != confirm_password:
+                return jsonify({"error": "Passwords do not match"}), 400
 
-        cursor = mysql.connection.cursor()
+            cursor = mysql.connection.cursor()
 
-        # Check if user already exists
-        cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
-        if cursor.fetchone():
-            return jsonify({"error": "Email already exists"}), 409
+            # Check for duplicates
+            cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
+            if cursor.fetchone():
+                return jsonify({"error": "Email already exists"}), 409
 
-        # Hash the password
-        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            cursor.execute("SELECT * FROM User WHERE user_name = %s", (user_name,))
+            if cursor.fetchone():
+                return jsonify({"error": "Username already taken"}), 409
 
-        # Insert new user
-        cursor.execute(
-            "INSERT INTO User (email, password_hash, full_name) VALUES (%s, %s, %s)",
-            (email, hashed_pw, full_name)
-        )
-        mysql.connection.commit()
-        cursor.close()
+            # Hash and insert
+            hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            cursor.execute(
+                "INSERT INTO User (email, password_hash, full_name, user_name, role, profile_id) VALUES (%s, %s, %s, %s, %s, %s)",
+                (email, hashed_pw, full_name, user_name, 'user', 1)
+            )
+            mysql.connection.commit()
+            cursor.close()
 
-        return jsonify({"message": "Account created successfully"}), 201
+            return jsonify({"message": "Account created successfully"}), 201
 
     @app.route('/api/logout', methods=['POST'])
     def logout():
