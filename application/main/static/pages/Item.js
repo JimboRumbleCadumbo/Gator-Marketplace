@@ -1,77 +1,86 @@
 export default {
-    //The item.location and item.category are currently id in the return value from searchData.
-    //Same thing for seller only currently and id.
-
     template: `
-    <Navbar></Navbar>
-    <div class="page-wrapper">
-        <div class="container">
-            <div class="item-layout">
-                <img :src="item.image" alt="Item Image" class="item-image" />
-  
-                <div class="item-details">
-                    <div class="item-title">
-                    <h2>{{ item.name }}</h2>
-                    <span class="like-icon" @click="toggleLike">
-                        <span :class="{ liked: isLiked }">♥</span>
-                    </span>
-                    </div>
-  
-                    <p><strong>Price:</strong> {{ item.price }}</p>
-    
-                    <div class="seller-section">
-                        <div class="seller-info">
-                            <p class="seller-profile">
-                            <strong @click="goToSellerProfile">Seller:</strong> {{ item.seller_name }}
-                            <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= item.seller_rating }">&#9733;</span>
-                            <span class="badge">Verified</span>
+    <div>
+        <Navbar></Navbar>
+        <div class="page-wrapper">
+            <div class="container">
+                <div class="item-layout">
+                    <img :src="item.image" alt="Item Image" class="item-image" />
+                    
+                    <div class="item-details">
+                        <div class="item-title">
+                            <h2>{{ item.name }}</h2>
+                            <span class="like-icon" @click="toggleLike">
+                                <span :class="{ liked: isLiked }">♥</span>
+                            </span>
+                        </div>
+                    
+                        <p><strong>Price:</strong> {{ item.price }}</p>
+                    
+                        <div class="seller-section">
+                            <div class="seller-info">
+                                <p class="seller-profile">
+                                <strong @click="goToSellerProfile">Seller:</strong> {{ item.seller_name }}
+                                <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= item.seller_rating }">&#9733;</span>
+                                <span class="badge">Verified</span>
+                                </p>
+                            </div>
+                    
+                            <p class="category-line">
+                                <strong>Categories:</strong>
+                                <span class="category-badge">{{ item.category }}</span>
                             </p>
+                    
+                            <div class="description">
+                                <p><strong>Condition:</strong>
+                                {{ item.quality }}</p>
+                            </div>
+                    
+                            <div class="description">
+                                <h3>Description</h3>
+                                <p>{{ item.description }}</p>
+                            </div>
+                    
+                            <div class="buttons">
+                                <button @click="initiateChat('rent')" :disabled="item.rentalOption == 'Not for Rent' || !isLoggedIn" class="item-button">Rent</button>
+                                <button @click="initiateChat('buy')" :disabled="!isLoggedIn" class="item-button">Buy</button>
+                                <span v-if="!isLoggedIn" class="tooltip">You need to log in to buy</span>
+                            </div>
                         </div>
-        
-                        <p class="category-line">
-                            <strong>Categories:</strong>
-                            <span class="category-badge">{{ item.category }}</span>
-                        </p>
+                    </div>               
+                </div>
 
-                        <div class="description">
-                            <p><strong>Condition:</strong>
-                            {{ item.quality }}</p>
+                <div class="chat-box" v-if="chatVisible">
+                    <button @click="hideChat" class="close-btn">x</button>
+                    <strong>Seller: {{ item.seller_name }}</strong>
+                    <div class="chat-messages">
+                        <div 
+                            v-for="msg in messages" 
+                            :key="msg.id" 
+                            class="message" 
+                            :class="msg.sender_id === user.user_id ? 'user' : 'seller'"
+                        >
+                            {{ msg.text }}
                         </div>
-        
-                        <div class="description">
-                            <h3>Description</h3>
-                            <p>{{ item.description }}</p>
-                        </div>
-        
-                        <div class="buttons">
-                            <button @click="showChat" :disabled="item.rentalOption == 'Not for Rent' || !isLoggedIn" class="item-button">Rent</button>
-                            <button @click="showChat" :disabled="!isLoggedIn" class="item-button">Buy</button>
-                            <span v-if="!isLoggedIn" class="tooltip">You need to log in to buy</span>
-                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input 
+                            type="text" 
+                            v-model="newMessage" 
+                            @keyup.enter="sendMessage" 
+                            placeholder="Type a message..." 
+                        />
+                        <button @click="sendMessage">Send</button>
                     </div>
                 </div>
             </div>
-  
-            <div class="chat-box" v-if="chatVisible">
-                <button @click="hideChat" class="close-btn">×</button>
-                <strong>Seller: {{ item.seller_name }}</strong>
-                <div class="chat-messages">
-                    <div class="message user">User: Is this still available?</div>
-                    <div class="message seller">Seller: Yes, it is!</div>
-                </div>
-                <div class="chat-input">
-                    <input type="text" placeholder="Type a message..." />
-                    <button>Send</button>
-                </div>
-            </div>
+            <footer class="footer">
+                <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>
+                <router-link to="/about" class="footer-link">About</router-link>
+            </footer>
         </div>
-  
-        <footer class="footer">
-            <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>
-            <router-link to="/about" class="footer-link">About</router-link>
-        </footer>
     </div>
-  `,
+    `,
     setup() {
         const route = VueRouter.useRoute();
         const isLoggedIn = Vue.ref(false);
@@ -79,6 +88,8 @@ export default {
         const isLiked = Vue.ref(false);
         const item = Vue.ref({});
         const user = Vue.ref(null);
+        const newMessage = Vue.ref("");
+        const messages = Vue.ref([]);
 
         const showChat = () => {
         chatVisible.value = true;
@@ -164,7 +175,6 @@ export default {
                 const sessionResponse = await fetch('/api/session');
                 const sessionData = await sessionResponse.json();
                 isLoggedIn.value = sessionData.logged_in || false;
-                console.log("isLoggedin", isLoggedIn.value);
 
                 if (isLoggedIn.value) {
                     user.value = {
@@ -180,6 +190,67 @@ export default {
         loadItemDetails();
         fetchUserData();
 
+        const loadMessages = async () => {
+            try {
+                const response = await fetch(`/api/messages/${item.value.seller_id}`);
+                if (!response.ok) throw new Error("Failed to fetch messages");
+                const data = await response.json();
+                messages.value = data.messages;
+            } catch (error) {
+                console.error("Error loading messages:", error);
+            }
+        };
+
+        const initiateChat = async (actionType) => {
+            chatVisible.value = true;
+            await loadMessages();
+            
+            // Send initial message based on action
+            if (actionType === 'buy') {
+                newMessage.value = `I want to buy ${item.value.name} (${item.value.price}).`;
+                sendMessage();
+            }
+        };
+       
+        const sendMessage = async () => {
+            if (!newMessage.value.trim() || !user.value) return;
+
+            try {
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        receiver_id: item.value.seller_id,
+                        text: newMessage.value
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`HTTP error ${response.status}: ${errorText}`);
+                    throw new Error(`Failed to send message (${response.status})`);
+                }
+                
+                const result = await response.json();
+                messages.value.push({
+                    id: result.message_id,
+                    text: newMessage.value,
+                    sender_id: user.value.user_id,
+                    timestamp: result.timestamp
+                });
+                newMessage.value = "";
+                await loadMessages(); // Refresh messages after sending
+            } catch (error) {
+                console.error('Error sending message:', error);
+                alert('Unable to send message. Please try again later.');
+            }
+        };
+
+        Vue.onMounted(() => {
+            loadItemDetails();
+            fetchUserData();
+        });
         return {
             item,
             user,
@@ -192,7 +263,10 @@ export default {
             loadItemDetails,
             fetchUserData,
             toggleLike,
+            messages,
+            newMessage,
+            initiateChat,
+            sendMessage,
         };
-
     },
 };

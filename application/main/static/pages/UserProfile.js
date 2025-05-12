@@ -1,5 +1,6 @@
 export default {
-  template: `
+    template: `
+    <div>
         <Navbar></Navbar>    
         <div class="page-wrapper">
 
@@ -175,6 +176,7 @@ export default {
                 <router-link to="/about" class="footer-link">About</router-link>
             </footer>
         </div>
+    </div>
     `,
     data() {
         return {
@@ -182,141 +184,152 @@ export default {
         };
     },
     setup() {
-        //Example profile related data
-        const username = Vue.ref("CoolUser123");
-        const icon = Vue.ref(``);
-        const description = Vue.ref("This is my profile description!");
-        const usernameEdit = Vue.ref(username.value);
-        const iconEdit = Vue.ref(icon.value);
-        const newPassword = Vue.ref("");
-        const activeTab = Vue.ref("about");
+        const { ref, onMounted } = Vue;
         
-        const user = Vue.ref(null);
-        const likedItems = Vue.ref([]);
-      
-        //Example Chat Data
-        const users = Vue.ref([
-          { id: 1, name: "Alice", messages: [{ id: 1, text: "Hi there!", from: "seller" }] },
-          { id: 2, name: "Bob", messages: [{ id: 2, text: "Hello!", from: "user" }] }
-        ]);
-        const selectedUser = Vue.ref(null);
-        const newMessage = Vue.ref("");
-      
-        const selectUser = (user) => {
+        // User data
+        const currentUserId = ref(null);
+        const user = ref(null);
+        const defaultIcon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
+        
+        // Tabs and settings
+        const activeTab = ref("about");
+        const usernameEdit = ref("");
+        const iconEdit = ref(defaultIcon);
+        const newPassword = ref("");
+        const description = ref("");
+
+        // Messages
+        const users = ref([]);
+        const selectedUser = ref(null);
+        const newMessage = ref("");
+        
+        // Items
+        const likedItems = ref([]);
+        const soldItems = ref([]);
+
+        // Message functions
+        const selectUser = async (user) => {
             selectedUser.value = user;
-        };
-      
-        const sendMessage = () => {
-          if (newMessage.value.trim() && selectedUser.value) {
-            selectedUser.value.messages.push({
-                id: Date.now(),
-                text: newMessage.value,
-                from: "user"
-            });
-            newMessage.value = "";
-          }
-        };
-      
-        //Get Users liked items
-        const fetchLikedItems = async () => {
             try {
-                const response = await fetch('/api/liked-items');
-                if (!response.ok) throw new Error("Failed to fetch liked items");
-
+                const response = await fetch(`/api/messages/${user.id}`);
+                if (!response.ok) throw new Error('Failed to fetch messages');
                 const data = await response.json();
-                likedItems.value = data;
-                console.log("Loaded liked items:", likedItems.value);
+                selectedUser.value.messages = data.messages.map(msg => ({
+                    ...msg,
+                    from: msg.sender_id === currentUserId.value ? 'user' : 'seller'
+                }));
             } catch (error) {
-                console.error("Error loading liked items:", error);
-            }
-        };
-      
-        const soldItems = Vue.ref([
-            { id: 1, name: "Example Sold" },
-            { id: 2, name: "Calculator" },
-        ]);
-      
-        //Profile Settings Handlers
-        const saveSettings = () => {
-            if (usernameEdit.value.trim()) {
-                username.value = usernameEdit.value.trim();
-            }
-            if (iconEdit.value) {
-                icon.value = iconEdit.value;
-            }
-            if (newPassword.value.trim()) {
-                console.log("Password changed:", newPassword.value);
-            }
-        };
-      
-        const onIconChange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                iconEdit.value = ev.target.result;
-            };
-            reader.readAsDataURL(file);
+                console.error('Error fetching messages:', error);
             }
         };
 
-        // Fetch user data from the API
+        const sendMessage = async () => {
+            if (!newMessage.value.trim() || !selectedUser.value) return;
+
+            try {
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        receiver_id: selectedUser.value.id,
+                        text: newMessage.value
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to send message');
+                
+                const result = await response.json();
+                selectedUser.value.messages.push({
+                    id: result.message_id,
+                    text: newMessage.value,
+                    sender_id: currentUserId.value,
+                    timestamp: result.timestamp,
+                    from: 'user'
+                });
+                newMessage.value = "";
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+        };
+
+        // User data fetching
         const fetchUserData = async () => {
             try {
-            // First, check if user is logged in
-            const sessionResponse = await fetch('/api/session');
-            const sessionData = await sessionResponse.json();
-            if (sessionData.logged_in) {
-                // Fetch the full user data using user_id
-                const userId = sessionData.user_id;
-                const userResponse = await fetch(`/api/user/${userId}`);
-                const userData = await userResponse.json();
-                console.log("Session data", sessionData);
-                if (userResponse.ok) {
-                user.value = {
-                    username: userData.user_name,
-                    joinedDate: userData.joined_date,
-                    icon: sessionData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
-                    rating: userData.rating,
-                    // description: userData.description,
-                };
-                } else {
-                console.error("Failed to fetch user data:", userData.error);
+                const sessionResponse = await fetch('/api/session');
+                const sessionData = await sessionResponse.json();
+                
+                if (sessionData.logged_in) {
+                    currentUserId.value = sessionData.user_id;
+                    const userResponse = await fetch(`/api/user/${sessionData.user_id}`);
+                    if (userResponse.ok) {
+                        const userData = await userResponse.json();
+                        user.value = {
+                            username: userData.user_name,
+                            icon: defaultIcon,
+                            joinedDate: new Date(userData.joined_date).toLocaleDateString(),
+                            rating: userData.rating
+                        };
+                        usernameEdit.value = userData.user_name;
+                    }
                 }
-            }
             } catch (error) {
-            console.error("Error fetching user data:", error);
+                console.error("Error fetching user data:", error);
             }
         };
 
-        fetchUserData();
-        fetchLikedItems();
-      
+        onMounted(fetchUserData);
+
         return {
-          //Profile related data
-          username,
-          usernameEdit,
-          icon,
-          iconEdit,
-          newPassword,
-          description,
-          activeTab,
-          user,
-      
-          //Chat related data
-          users,
-          selectedUser,
-          newMessage,
-          selectUser,
-          sendMessage,
-      
-          //Item related data
-          likedItems,
-          soldItems,
-      
-          //Profile settings functions
-          saveSettings,
-          onIconChange,
+            // User data
+            user,
+            defaultIcon,
+            currentUserId,
+            
+            // Tabs and state
+            activeTab,
+            usernameEdit,
+            iconEdit,
+            newPassword,
+            description,
+            
+            // Messages
+            users,
+            selectedUser,
+            newMessage,
+            selectUser,
+            sendMessage,
+            
+            // Items
+            likedItems,
+            soldItems,
+            
+            // Settings functions
+            saveSettings: async () => {
+                try {
+                    const response = await fetch('/api/user', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            username: usernameEdit.value,
+                            password: newPassword.value
+                        })
+                    });
+                    if (response.ok) fetchUserData();
+                } catch (error) {
+                    console.error('Error saving settings:', error);
+                }
+            },
+            
+            onIconChange: (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        iconEdit.value = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
         };
     }
 };

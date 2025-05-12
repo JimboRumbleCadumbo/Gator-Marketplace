@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, session
 import os
 from main import search
 from main import postings
 from main import items
 from main import auth
+from main import messaging
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 
@@ -45,6 +46,8 @@ app.secret_key = os.getenv('FLASK_SESSION_SECRET_KEY')
 
 # Initialize routes from auth module
 auth.init_auth_routes(app)
+
+messaging.init_message_routes(app, mysql)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
