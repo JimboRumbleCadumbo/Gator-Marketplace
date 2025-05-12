@@ -1,6 +1,7 @@
 import base64
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_mysqldb import MySQL
+import MySQLdb.cursors
 
 def init_item_routes(app):
     mysql = app.config.get('MYSQL_CONNECTION')
@@ -112,3 +113,59 @@ def init_item_routes(app):
         cursor.close()
 
         return jsonify({"liked": bool(wishlist_entry)})
+
+    @app.route('/api/liked-items', methods=['GET'])
+    def get_user_liked_items():
+        """
+        API endpoint for fetching liked items for the logged-in user.
+        
+        Returns:
+            JSON response with liked items
+        """
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({"error": "Not logged in"}), 401
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        
+        try:
+            # Fetch the liked items for the logged-in user
+            sql_query = """
+                SELECT il.item_id, il.name, il.price, il.image 
+                FROM wishlist w
+                JOIN Item_Listing il ON w.item_id = il.item_id
+                WHERE w.user_id = %s
+            """
+            cursor.execute(sql_query, (user_id,))
+            results = cursor.fetchall()
+            
+
+            processed_results = []
+            for item in results:
+                processed_item = {
+                    "item_id": item['item_id'],
+                    "name": item['name'],
+                    "price": f"${item['price']:.2f}",
+                    "image_base64": None
+                }
+                
+                # Convert image BLOB to base64 if it exists
+                if item['image']:
+                    try:
+                        image_data = base64.b64encode(item['image']).decode('utf-8')
+                        processed_item['image_base64'] = f"data:image/jpeg;base64,{image_data}"
+                    except Exception as e:
+                        print(f"Error converting image to base64: {str(e)}")
+                
+                processed_results.append(processed_item)
+            
+            return jsonify(processed_results)
+        
+        except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"Liked Items API error: {error_details}")
+            return jsonify({"error": str(e), "details": error_details}), 500
+        
+        finally:
+            cursor.close()

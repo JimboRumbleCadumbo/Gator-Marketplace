@@ -44,13 +44,19 @@ export default {
             <div v-if="activeTab === 'liked'" class="tab-content">
                 <h3>Liked Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card liked-card" v-for="item in likedItems" :key="item.id">
-                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
-                        <h3>{{ item.name }}</h3>
-                        <p>{{ item.price }}</p>
-                        <p>{{ item.description }}</p>
-                    </div>
-                </div>             
+                    <router-link 
+                        v-for="item in likedItems" 
+                        :key="item.item_id" 
+                        :to="'/item?id=' + item.item_id" 
+                        class="card-link"
+                    >
+                        <div class="result-card">
+                            <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.price }}</p>
+                        </div>
+                    </router-link>
+                </div>
             </div>
 
             <div v-if="activeTab === 'sold'" class="tab-content">
@@ -184,8 +190,9 @@ export default {
         const iconEdit = Vue.ref(icon.value);
         const newPassword = Vue.ref("");
         const activeTab = Vue.ref("about");
-
+        
         const user = Vue.ref(null);
+        const likedItems = Vue.ref([]);
       
         //Example Chat Data
         const users = Vue.ref([
@@ -210,11 +217,19 @@ export default {
           }
         };
       
-        //Example items
-        const likedItems = Vue.ref([
-            { id: 1, name: "Vintage Camera" },
-            { id: 2, name: "Classic Book" },
-        ]);
+        //Get Users liked items
+        const fetchLikedItems = async () => {
+            try {
+                const response = await fetch('/api/liked-items');
+                if (!response.ok) throw new Error("Failed to fetch liked items");
+
+                const data = await response.json();
+                likedItems.value = data;
+                console.log("Loaded liked items:", likedItems.value);
+            } catch (error) {
+                console.error("Error loading liked items:", error);
+            }
+        };
       
         const soldItems = Vue.ref([
             { id: 1, name: "Example Sold" },
@@ -275,6 +290,7 @@ export default {
         };
 
         fetchUserData();
+        fetchLikedItems();
       
         return {
           //Profile related data
