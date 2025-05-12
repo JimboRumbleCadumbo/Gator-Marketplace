@@ -91,9 +91,12 @@ DROP TABLE IF EXISTS `Message`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Message` (
   `sender_id` int DEFAULT NULL,
-  `reciever_id` int DEFAULT NULL,
-  `text` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `receiver_id` int DEFAULT NULL,
+  `text` tinytext NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +105,7 @@ CREATE TABLE `Message` (
 
 LOCK TABLES `Message` WRITE;
 /*!40000 ALTER TABLE `Message` DISABLE KEYS */;
-INSERT INTO `Message` VALUES (1,2,'Hello, is this still up for sale?'),(2,3,'You still want the item?');
+INSERT INTO `Message` VALUES (1,2,'Hello, is this still up for sale?',1,'2025-05-12 08:50:14'),(2,3,'You still want the item?',2,'2025-05-12 08:50:14');
 /*!40000 ALTER TABLE `Message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,10 +242,11 @@ DROP TABLE IF EXISTS `Wishlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Wishlist` (
-  `wishlist_id` tinyint NOT NULL COMMENT 'Primary Key',
-  `item_id` tinyint NOT NULL COMMENT 'Foreign Key to Item_Listing table',
-  `user_id` tinyint NOT NULL COMMENT 'Foreign Key to User table',
-  `created_at` tinyint NOT NULL
+  `wishlist_id` int NOT NULL AUTO_INCREMENT,
+  `item_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`wishlist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -264,4 +268,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-09  1:28:19
+-- Dump completed on 2025-05-12  8:52:09

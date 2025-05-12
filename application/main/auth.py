@@ -1,7 +1,6 @@
-from flask import Flask, request, jsonify, session
-from flask_mysqldb import MySQL
+from flask import request, jsonify, session
 import bcrypt
-from functools import wraps
+import base64
 from MySQLdb.cursors import DictCursor
 
 def init_auth_routes(app):
@@ -25,9 +24,16 @@ def init_auth_routes(app):
 
         if not bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
             return jsonify({"error": "Invalid email or password"}), 401
+        
+        # Convert user icon to Base64 and store in session
+        user_icon_base64 = None
+        if user['user_icon']:
+            import base64
+            user_icon_base64 = f"data:image/svg+xml;base64,{base64.b64encode(user['user_icon']).decode('utf-8')}"
 
         session['user_id'] = user['user_id']
         session['user_name'] = user['user_name']
+        session['user_icon'] = user_icon_base64
 
         return jsonify({
             "message": "Login successful",
@@ -97,6 +103,7 @@ def init_auth_routes(app):
                 "logged_in": True,
                 "user_id": user_id,
                 "user_name": session.get('user_name'),
+                "user_icon": session.get('user_icon')
             })
         return jsonify({"logged_in": False})
     

@@ -20,7 +20,7 @@ export default {
                 <div class="user-container">
                     <div class="user-content" v-if="user">
                         <div class="user-header">
-                            <img :src="user.icon || defaultIcon" alt="User Icon" class="user-icon" />
+                            <img :src="user.icon" alt="User Icon" class="user-icon" />
                         </div>
                         <div class="user-details">
                             <div class="username-section">
@@ -44,13 +44,19 @@ export default {
             <div v-if="activeTab === 'liked'" class="tab-content">
                 <h3>Liked Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card liked-card" v-for="item in likedItems" :key="item.id">
-                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
-                        <h3>{{ item.name }}</h3>
-                        <p>{{ item.price }}</p>
-                        <p>{{ item.description }}</p>
-                    </div>
-                </div>             
+                    <router-link 
+                        v-for="item in likedItems" 
+                        :key="item.item_id" 
+                        :to="'/item?id=' + item.item_id" 
+                        class="card-link"
+                    >
+                        <div class="result-card">
+                            <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.price }}</p>
+                        </div>
+                    </router-link>
+                </div>
             </div>
 
             <div v-if="activeTab === 'sold'" class="tab-content">
@@ -140,7 +146,7 @@ export default {
                     <div class="user-settings-group">
                     <label>Profile Icon</label>
                         <div class="user-settings-icon-upload">
-                            <img :src="iconEdit" alt="Profile Preview" class="user-settings-icon-preview" />
+                            <img :src="user.icon" alt="Profile Preview" class="user-settings-icon-preview" />
                             <input type="file" accept="image/*" @change="onIconChange" />
                         </div>
                     </div>
@@ -178,15 +184,15 @@ export default {
     setup() {
         //Example profile related data
         const username = Vue.ref("CoolUser123");
-        const icon = Vue.ref(`https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123`);
+        const icon = Vue.ref(``);
         const description = Vue.ref("This is my profile description!");
         const usernameEdit = Vue.ref(username.value);
         const iconEdit = Vue.ref(icon.value);
         const newPassword = Vue.ref("");
         const activeTab = Vue.ref("about");
-
+        
         const user = Vue.ref(null);
-        const defaultIcon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
+        const likedItems = Vue.ref([]);
       
         //Example Chat Data
         const users = Vue.ref([
@@ -211,11 +217,19 @@ export default {
           }
         };
       
-        //Example items
-        const likedItems = Vue.ref([
-            { id: 1, name: "Vintage Camera" },
-            { id: 2, name: "Classic Book" },
-        ]);
+        //Get Users liked items
+        const fetchLikedItems = async () => {
+            try {
+                const response = await fetch('/api/liked-items');
+                if (!response.ok) throw new Error("Failed to fetch liked items");
+
+                const data = await response.json();
+                likedItems.value = data;
+                console.log("Loaded liked items:", likedItems.value);
+            } catch (error) {
+                console.error("Error loading liked items:", error);
+            }
+        };
       
         const soldItems = Vue.ref([
             { id: 1, name: "Example Sold" },
@@ -257,11 +271,12 @@ export default {
                 const userId = sessionData.user_id;
                 const userResponse = await fetch(`/api/user/${userId}`);
                 const userData = await userResponse.json();
+                console.log("Session data", sessionData);
                 if (userResponse.ok) {
                 user.value = {
                     username: userData.user_name,
-                    icon: "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
                     joinedDate: userData.joined_date,
+                    icon: sessionData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
                     rating: userData.rating,
                     // description: userData.description,
                 };
@@ -275,6 +290,7 @@ export default {
         };
 
         fetchUserData();
+        fetchLikedItems();
       
         return {
           //Profile related data
@@ -285,7 +301,6 @@ export default {
           newPassword,
           description,
           activeTab,
-          defaultIcon,
           user,
       
           //Chat related data

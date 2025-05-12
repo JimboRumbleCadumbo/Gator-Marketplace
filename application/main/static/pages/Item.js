@@ -92,8 +92,37 @@ export default {
         console.log("Go to seller profile clicked");
         };
 
-        const toggleLike = () => {
-            isLiked.value = !isLiked.value;
+        const toggleLike = async () => {
+            if (!isLoggedIn.value) {
+                alert("You must be logged in to like an item.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/wishlist/toggle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: user.value.user_id,
+                        item_id: item.value.id,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to toggle like");
+                }
+
+                const data = await response.json();
+                isLiked.value = data.liked;
+                console.log("Like status:", isLiked.value);
+            } catch (error) {
+                console.error("Error toggling like:", error);
+                alert("Failed to toggle like.");
+            }
+
+
             console.log("Like button clicked. Liked:", isLiked.value);
         }
 
@@ -117,6 +146,13 @@ export default {
                     category: data.category_name,
                     image: data.image ? `data:image/jpeg;base64,${data.image}` : "https://placehold.co/600x400",
                 };
+
+                if (isLoggedIn.value) {
+                    const likeResponse = await fetch(`/api/wishlist/check?user_id=${user.value.user_id}&item_id=${item.value.id}`);
+                    const likeData = await likeResponse.json();
+                    isLiked.value = likeData.liked;
+                }
+
             } catch (error) {
                 console.error("Error loading item details:", error);
                 alert("Failed to load item details.");
