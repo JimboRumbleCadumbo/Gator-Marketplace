@@ -72,7 +72,7 @@ def init_item_routes(app):
 
         # Check if the item is already in the wishlist
         cursor.execute("""
-            SELECT * FROM wishlist 
+            SELECT * FROM Wishlist 
             WHERE user_id = %s AND item_id = %s
         """, (user_id, item_id))
         wishlist_entry = cursor.fetchone()
@@ -80,7 +80,7 @@ def init_item_routes(app):
         if wishlist_entry:
             # If it exists, remove it
             cursor.execute("""
-                DELETE FROM wishlist 
+                DELETE FROM Wishlist 
                 WHERE user_id = %s AND item_id = %s
             """, (user_id, item_id))
             mysql.connection.commit()
@@ -89,7 +89,7 @@ def init_item_routes(app):
         else:
             # If it doesn't exist, add it
             cursor.execute("""
-                INSERT INTO wishlist (user_id, item_id, created_at)
+                INSERT INTO Wishlist (user_id, item_id, created_at)
                 VALUES (%s, %s, NOW())
             """, (user_id, item_id))
             mysql.connection.commit()
@@ -106,7 +106,7 @@ def init_item_routes(app):
 
         cursor = mysql.connection.cursor()
         cursor.execute("""
-            SELECT * FROM wishlist 
+            SELECT * FROM Wishlist 
             WHERE user_id = %s AND item_id = %s
         """, (user_id, item_id))
         wishlist_entry = cursor.fetchone()
@@ -132,7 +132,7 @@ def init_item_routes(app):
             # Fetch the liked items for the logged-in user
             sql_query = """
                 SELECT il.item_id, il.name, il.price, il.image 
-                FROM wishlist w
+                FROM Wishlist w
                 JOIN Item_Listing il ON w.item_id = il.item_id
                 WHERE w.user_id = %s
             """
