@@ -1,8 +1,5 @@
-from flask import Flask, request, jsonify, session
-from flask_mysqldb import MySQL
+from flask import request, jsonify, session
 import bcrypt
-from functools import wraps
-import base64
 from MySQLdb.cursors import DictCursor
 
 def init_auth_routes(app):
@@ -29,7 +26,6 @@ def init_auth_routes(app):
 
         session['user_id'] = user['user_id']
         session['user_name'] = user['user_name']
-        session['user_icon'] = user_icon_base64
 
         return jsonify({
             "message": "Login successful",
@@ -99,7 +95,7 @@ def init_auth_routes(app):
                 "logged_in": True,
                 "user_id": user_id,
                 "user_name": session.get('user_name'),
-                "user_icon": session.get('user_icon')
+                #"user_icon": session.get('user_icon')
             })
         return jsonify({"logged_in": False})
     
