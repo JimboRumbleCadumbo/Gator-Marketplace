@@ -146,29 +146,48 @@ def init_auth_routes(app):
 
     @app.route('/api/user/update', methods=['POST'])
     def update_user_info():
+        """
+        API endpoint to update user information (display name, description, password, and profile icon).
+        """
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({"error": "User not logged in"}), 401
 
-        data = request.get_json()
-        new_user_name = data.get('user_name')
-        new_description = data.get('description')
-        new_password = data.get('password')
+        user_name = request.form.get('user_name')
+        description = request.form.get('description')
+        password = request.form.get('password')
+        icon = request.files.get('icon')
+
+        if not user_name or not description:
+            return jsonify({"error": "Display name and description are required"}), 400
 
         cursor = mysql.connection.cursor()
+
         cursor.execute("""
             UPDATE User 
             SET user_name = %s, description = %s, updated_at = NOW() 
             WHERE user_id = %s
-        """, (new_user_name, new_description, user_id))
+        """, (user_name, description, user_id))
 
-        if new_password:
-            hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        if password:
+            hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             cursor.execute("""
                 UPDATE User 
                 SET password_hash = %s 
                 WHERE user_id = %s
             """, (hashed_pw, user_id))
+
+        if icon:
+            icon_data = icon.read()
+            cursor.execute("""
+                UPDATE User 
+                SET user_icon = %s 
+                WHERE user_id = %s
+            """, (icon_data, user_id))
+
+            session['user_icon'] = f"data:image/svg+xml;base64,{base64.b64encode(icon_data).decode('utf-8')}"
+
+        session['user_name'] = user_name
 
         mysql.connection.commit()
         return jsonify({"message": "User information updated successfully"})

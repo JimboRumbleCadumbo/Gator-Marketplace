@@ -191,7 +191,9 @@ export default {
         const newPassword = Vue.ref("");
         const activeTab = Vue.ref("about");
         
-        const user = Vue.ref(null);
+        const user = Vue.ref({
+            icon: "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
+        });
         const likedItems = Vue.ref([]);
       
         //Example Chat Data
@@ -238,23 +240,31 @@ export default {
       
         //Profile Settings Handlers
         const saveSettings = async () => {
-            const payload = {
-                user_name: usernameEdit.value.trim(),
-                description: description.value.trim(),
-                password: newPassword.value.trim() || null,
-            };
+            try {
+                const formData = new FormData();
+                formData.append('user_name', usernameEdit.value.trim());
+                formData.append('description', description.value.trim());
+                if (newPassword.value.trim()) {
+                    formData.append('password', newPassword.value.trim());
+                }
+                if (user.value.icon) {
+                    const blob = await fetch(user.value.icon).then((res) => res.blob());
+                    formData.append('icon', blob);
+                }
 
-            const response = await fetch('/api/user/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
+                const response = await fetch('/api/user/update', {
+                    method: 'POST',
+                    body: formData,
+                });
 
-            const data = await response.json();
-            if (response.ok) {
-                alert("Settings updated successfully!");
-            } else {
-                alert("Error: " + data.error);
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Settings updated successfully!");
+                } else {
+                    alert("Error: " + data.error);
+                }
+            } catch (error) {
+                console.log("Error saving settings:", error);
             }
         };
       
@@ -263,9 +273,9 @@ export default {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
-                iconEdit.value = ev.target.result;
-            };
-            reader.readAsDataURL(file);
+                    user.value.icon = ev.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         };
 
