@@ -120,6 +120,7 @@ def init_auth_routes(app):
                 u.user_id, 
                 u.user_name, 
                 u.email, 
+                u.description, 
                 DATE_FORMAT(u.created_at, '%%M %%d %%Y') AS formatted_date,
                 p.rating 
             FROM 
@@ -139,6 +140,35 @@ def init_auth_routes(app):
             "user_name": user['user_name'],
             "email": user['email'],
             "joined_date": user['formatted_date'],
-            # "description": user['description'],
+            "description": user['description'],
             "rating": user['rating'] 
         })
+
+    @app.route('/api/user/update', methods=['POST'])
+    def update_user_info():
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({"error": "User not logged in"}), 401
+
+        data = request.get_json()
+        new_user_name = data.get('user_name')
+        new_description = data.get('description')
+        new_password = data.get('password')
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            UPDATE User 
+            SET user_name = %s, description = %s, updated_at = NOW() 
+            WHERE user_id = %s
+        """, (new_user_name, new_description, user_id))
+
+        if new_password:
+            hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            cursor.execute("""
+                UPDATE User 
+                SET password_hash = %s 
+                WHERE user_id = %s
+            """, (hashed_pw, user_id))
+
+        mysql.connection.commit()
+        return jsonify({"message": "User information updated successfully"})

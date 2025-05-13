@@ -237,15 +237,24 @@ export default {
         ]);
       
         //Profile Settings Handlers
-        const saveSettings = () => {
-            if (usernameEdit.value.trim()) {
-                username.value = usernameEdit.value.trim();
-            }
-            if (iconEdit.value) {
-                icon.value = iconEdit.value;
-            }
-            if (newPassword.value.trim()) {
-                console.log("Password changed:", newPassword.value);
+        const saveSettings = async () => {
+            const payload = {
+                user_name: usernameEdit.value.trim(),
+                description: description.value.trim(),
+                password: newPassword.value.trim() || null,
+            };
+
+            const response = await fetch('/api/user/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert("Settings updated successfully!");
+            } else {
+                alert("Error: " + data.error);
             }
         };
       
@@ -263,29 +272,35 @@ export default {
         // Fetch user data from the API
         const fetchUserData = async () => {
             try {
-            // First, check if user is logged in
-            const sessionResponse = await fetch('/api/session');
-            const sessionData = await sessionResponse.json();
-            if (sessionData.logged_in) {
+                // First, check if user is logged in
+                const sessionResponse = await fetch('/api/session');
+                const sessionData = await sessionResponse.json();
+                if (sessionData.logged_in) {
                 // Fetch the full user data using user_id
-                const userId = sessionData.user_id;
-                const userResponse = await fetch(`/api/user/${userId}`);
-                const userData = await userResponse.json();
-                console.log("Session data", sessionData);
-                if (userResponse.ok) {
-                user.value = {
-                    username: userData.user_name,
-                    joinedDate: userData.joined_date,
-                    icon: sessionData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
-                    rating: userData.rating,
-                    // description: userData.description,
-                };
+                    const userId = sessionData.user_id;
+                    const userResponse = await fetch(`/api/user/${userId}`);
+                    const userData = await userResponse.json();
+                    console.log("Session data", sessionData);
+                    if (userResponse.ok) {
+                        user.value = {
+                            username: userData.user_name,
+                            joinedDate: userData.joined_date,
+                            icon: sessionData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
+                            rating: userData.rating,
+                            description: userData.description,
+                        };
+
+                        // Update the settings form fields
+                        usernameEdit.value = userData.user_name || "";
+                        description.value = userData.description || "";
+                    } else {
+                        console.error("Failed to fetch user data:", userData.error);
+                    }
                 } else {
-                console.error("Failed to fetch user data:", userData.error);
+                    console.error("User is not logged in.");
                 }
-            }
             } catch (error) {
-            console.error("Error fetching user data:", error);
+                console.error("Error fetching user data:", error);
             }
         };
 
