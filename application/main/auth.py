@@ -24,16 +24,9 @@ def init_auth_routes(app):
 
         if not bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
             return jsonify({"error": "Invalid email or password"}), 401
-        
-        # Convert user icon to Base64 and store in session
-        user_icon_base64 = None
-        if user['user_icon']:
-            import base64
-            user_icon_base64 = f"data:image/svg+xml;base64,{base64.b64encode(user['user_icon']).decode('utf-8')}"
 
         session['user_id'] = user['user_id']
         session['user_name'] = user['user_name']
-        session['user_icon'] = user_icon_base64
 
         return jsonify({
             "message": "Login successful",
@@ -120,7 +113,8 @@ def init_auth_routes(app):
                 u.user_id, 
                 u.user_name, 
                 u.email, 
-                u.description, 
+                u.description,
+                u.user_icon, 
                 DATE_FORMAT(u.created_at, '%%M %%d %%Y') AS formatted_date,
                 p.rating 
             FROM 
@@ -134,6 +128,23 @@ def init_auth_routes(app):
 
         if not user:
             return jsonify({"error": "User not found"}), 404
+        
+        user_icon_base64 = None
+        if user['user_icon']:
+            # Check if the icon is SVG by inspecting the file content or extension
+            if b'<svg' in user['user_icon'][:100].lower() or b'<?xml' in user['user_icon'][:100].lower():
+                        print("Detected SVG image.")
+                        user_icon_base64 = f"data:image/svg+xml;base64,{base64.b64encode(user['user_icon']).decode('utf-8')}"
+            else:
+                import imghdr
+                # Detect the image type (png, jpeg, svg, etc.)
+                image_type = imghdr.what(None, user['user_icon'])
+                print(f"Detected image type: {image_type}")
+
+                if not image_type:  # Default to jpeg if detection fails
+                    image_type = "jpeg"
+
+                user_icon_base64 = f"data:image/{image_type};base64,{base64.b64encode(user['user_icon']).decode('utf-8')}"
 
         return jsonify({
             "user_id": user['user_id'],
@@ -141,7 +152,8 @@ def init_auth_routes(app):
             "email": user['email'],
             "joined_date": user['formatted_date'],
             "description": user['description'],
-            "rating": user['rating'] 
+            "rating": user['rating'],
+            "user_icon": user_icon_base64
         })
 
     @app.route('/api/user/update', methods=['POST'])
@@ -184,8 +196,6 @@ def init_auth_routes(app):
                 SET user_icon = %s 
                 WHERE user_id = %s
             """, (icon_data, user_id))
-
-            session['user_icon'] = f"data:image/svg+xml;base64,{base64.b64encode(icon_data).decode('utf-8')}"
 
         session['user_name'] = user_name
 

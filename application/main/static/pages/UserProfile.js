@@ -184,16 +184,14 @@ export default {
     setup() {
         //Example profile related data
         const username = Vue.ref("CoolUser123");
-        const icon = Vue.ref(``);
+        const icon = Vue.ref("");
         const description = Vue.ref("This is my profile description!");
         const usernameEdit = Vue.ref(username.value);
         const iconEdit = Vue.ref(icon.value);
         const newPassword = Vue.ref("");
         const activeTab = Vue.ref("about");
         
-        const user = Vue.ref({
-            icon: "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
-        });
+        const user = Vue.ref({});
         const likedItems = Vue.ref([]);
       
         //Example Chat Data
@@ -290,12 +288,12 @@ export default {
                     const userId = sessionData.user_id;
                     const userResponse = await fetch(`/api/user/${userId}`);
                     const userData = await userResponse.json();
-                    console.log("Session data", sessionData);
+                    console.log("Session data", userData);
                     if (userResponse.ok) {
                         user.value = {
                             username: userData.user_name,
                             joinedDate: userData.joined_date,
-                            icon: sessionData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
+                            icon: userData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
                             rating: userData.rating,
                             description: userData.description,
                         };
