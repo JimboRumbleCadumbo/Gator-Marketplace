@@ -184,7 +184,7 @@ export default {
         };
     },
     setup() {
-        const { ref, onMounted } = Vue;
+        const { ref, onMounted, onUnmounted, watch } = Vue;
         
         // User data
         const currentUserId = ref(null);
@@ -202,33 +202,83 @@ export default {
         const users = ref([]);
         const selectedUser = ref(null);
         const newMessage = ref("");
+        let poller = null;
         
         // Items
         const likedItems = ref([]);
-        const soldItems = ref([]);
 
-        // Message functions
-        const selectUser = async (user) => {
-            selectedUser.value = user;
-            try {
-                const response = await fetch(`/api/messages/${user.id}`);
-                if (!response.ok) throw new Error('Failed to fetch messages');
-                const data = await response.json();
-                selectedUser.value.messages = data.messages.map(msg => ({
-                    ...msg,
-                    from: msg.sender_id === currentUserId.value ? 'user' : 'seller'
-                }));
-            } catch (error) {
-                console.error('Error fetching messages:', error);
+        // ----------------- Message functions -----------------
+        async function safeJson(res) {
+            if (!res.ok) {
+              console.error('Fetch failed', res.status, await res.text());
+              return null;
             }
-        };
+            const ct = res.headers.get('Content-Type') || '';
+            if (!ct.includes('application/json')) {
+              console.error('Expected JSON, got:', ct, await res.text());
+              return null;
+            }
+            return res.json();
+          }
+        
+          const fetchContacts = async () => {
+            const res  = await fetch('/api/messages/fetchAllContact', { credentials: 'include' });
+            const data = await safeJson(res);
+            if (data?.success) {
+              users.value = data.messages.map(m => ({
+                id:   m.contact_id,
+                name: m.user_name
+              }));
+            }
+          };
+        
+          const loadHistory = async (userId) => {
+            const res  = await fetch(`/api/messages/${userId}`, { credentials: 'include' });
+            const data = await res.json();
+            if (data.success) {
+              selectedUser.value.messages = data.messages.map(msg => ({
+                id:   msg.id,
+                text: msg.text,
+                from: msg.sender_id === userId ? 'seller' : 'user'
+              }));
+            }
+          };
+        
+          const selectUser = async (u) => {
+            selectedUser.value = { ...u, messages: [] };
+            await loadHistory(u.id);
+          };
+        
+          const sendMessage = async () => {
+            if (!newMessage.value.trim() || !selectedUser.value) return;
+        
+            const res = await fetch('/api/messages', {
+                method:      'POST',
+                credentials: 'include',
+                headers:     { 'Content-Type': 'application/json' },
+                body:        JSON.stringify({
+                receiver_id: selectedUser.value.id,
+                text:        newMessage.value
+                })
+            });
+            const data = await safeJson(res);
+            if (data) {
+              // push & refresh
+              newMessage.value = '';
+              await loadHistory(selectedUser.value.id);
+            }
+          };
+        
+          
+
+        // ----------------- Item functions -----------------
       
         const soldItems = Vue.ref([
             { id: 1, name: "Example Sold" },
             { id: 2, name: "Calculator" },
         ]);
       
-        //Profile Settings Handlers
+        // ----------------- User Setting functions -----------------
         const saveSettings = async () => {
             try {
                 const formData = new FormData();
@@ -280,7 +330,6 @@ export default {
                     const userId = sessionData.user_id;
                     const userResponse = await fetch(`/api/user/${userId}`);
                     const userData = await userResponse.json();
-                    console.log("Session data", userData);
                     if (userResponse.ok) {
                         user.value = {
                             username: userData.user_name,
@@ -297,20 +346,46 @@ export default {
                         console.error("Failed to fetch user data:", userData.error);
                     }
                 } else {
-                    console.error("User is not logged in.");
+                    console.error("Please log in.");
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
         };
 
-        onMounted(fetchUserData);
+        onMounted(() => {
+            if (activeTab.value === 'messages') {
+                fetchContacts();
+            }
+            fetchUserData();
+        });
+
+        onUnmounted(() => clearInterval(poller));    
+
+        // polling when on the messages tab
+        watch(activeTab, tab => {
+            if (tab === 'messages') {
+            fetchContacts();
+            poller = setInterval(() => {
+                if (selectedUser.value) {
+                loadHistory(selectedUser.value.id);
+                }
+            }, 5000);
+            } else {
+            clearInterval(poller);
+            poller = null;
+            }
+        });
+
+
 
         return {
             // User data
             user,
             defaultIcon,
             currentUserId,
+            saveSettings,
+            onIconChange,
             
             // Tabs and state
             activeTab,
@@ -324,39 +399,12 @@ export default {
             selectedUser,
             newMessage,
             selectUser,
+            fetchContacts,
             sendMessage,
             
             // Items
             likedItems,
             soldItems,
-            
-            // Settings functions
-            saveSettings: async () => {
-                try {
-                    const response = await fetch('/api/user', {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            username: usernameEdit.value,
-                            password: newPassword.value
-                        })
-                    });
-                    if (response.ok) fetchUserData();
-                } catch (error) {
-                    console.error('Error saving settings:', error);
-                }
-            },
-            
-            onIconChange: (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        iconEdit.value = ev.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
         };
     }
 };
