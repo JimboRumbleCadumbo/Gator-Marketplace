@@ -75,7 +75,7 @@ export default {
             <div v-if="activeTab === 'rented'" class="tab-content">
                 <h3>Rented Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card rented-card" v-for="item in likedItems" :key="item.id">
+                    <div class="result-card rented-card" v-for="item in soldItems" :key="item.id">
                         <div class="return-banner">
                             Return by: {{ item.return_date || 'TBD' }}
                         </div>
