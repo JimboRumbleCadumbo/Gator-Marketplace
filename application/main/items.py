@@ -169,3 +169,48 @@ def init_item_routes(app):
         
         finally:
             cursor.close()
+
+    @app.route('/api/featured-items', methods=['GET'])
+    def get_featured_items():
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        
+        try:
+            sql_query = """
+                SELECT item_id, name, price, description, image 
+                FROM Item_Listing 
+                ORDER BY item_id DESC 
+                LIMIT 4
+            """
+            cursor.execute(sql_query)
+            results = cursor.fetchall()
+            
+            processed_results = []
+            for item in results:
+                processed_item = {
+                    "id": item['item_id'],
+                    "name": item['name'],
+                    "price": f"{item['price']:.2f}",
+                    "description": item['description'],
+                    "image_base64": None
+                }
+                
+                # Convert image BLOB to base64 if it exists
+                if item['image']:
+                    try:
+                        image_data = base64.b64encode(item['image']).decode('utf-8')
+                        processed_item['image_base64'] = f"data:image/jpeg;base64,{image_data}"
+                    except Exception as e:
+                        print(f"Error converting image to base64: {str(e)}")
+                
+                processed_results.append(processed_item)
+            
+            return jsonify(processed_results)
+        
+        except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"Featured Items API error: {error_details}")
+            return jsonify({"error": str(e), "details": error_details}), 500
+        
+        finally:
+            cursor.close()

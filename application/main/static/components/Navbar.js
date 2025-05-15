@@ -2,43 +2,6 @@ import Searchbar from "/static/components/Searchbar.js";
 
 export default {
   components: { Searchbar },
-  data() {
-    return {
-      userIcon: "",
-      loggedIn: false,
-      userName: "",
-      showDropdown: false,
-    };
-  },
-  methods: {
-    initializeLoginState() {
-      const loginState = window.__LOGIN_STATE__; // Injected by the backend
-      if (loginState) {
-        this.loggedIn = loginState.logged_in;
-        this.userName = loginState.user_name || "";
-        this.userIcon = loginState.user_icon; // Use the user_icon provided by the backend
-      }
-    },
-    handleLogout() {
-      fetch('/api/logout', { method: 'POST' })
-        .then(() => {
-          this.loggedIn = false;
-          this.userName = "";
-          this.userIcon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123"; // Reset to default icon
-          alert("Logged out successfully");
-          window.location.href = '/';
-        })
-        .catch((error) => {
-          console.error("Logout error:", error);
-        });
-    },
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
-    },
-  },
-  mounted() {
-    this.initializeLoginState();
-  },
   template: `
     <nav class="nav-bar">
         <div class="nav-left">
@@ -69,4 +32,77 @@ export default {
         </div>
     </nav>
   `,
+  setup() {
+    const userName = Vue.ref("");
+    const userIcon = Vue.ref("https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123");
+    const loggedIn = Vue.ref(false);
+    const showDropdown = Vue.ref(false);
+
+    // Initialize Login State (from injected global state)
+    const initializeLoginState = () => {
+      const loginState = window.__LOGIN_STATE__;
+      if (loginState) {
+        loggedIn.value = loginState.logged_in;
+        userName.value = loginState.user_name || "";
+      }
+    };
+
+    // Fetch User Data from API
+    const fetchUserData = async () => {
+      try {
+        const sessionResponse = await fetch('/api/session');
+        const sessionData = await sessionResponse.json();
+
+        if (sessionData.logged_in) {
+          const userId = sessionData.user_id;
+          const userResponse = await fetch(`/api/user/${userId}`);
+          const userData = await userResponse.json();
+          console.log("Session data", userData);
+
+            if (userResponse.ok) {
+                userName.value = userData.user_name;
+                userIcon.value = userData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
+            } else {
+                console.error("Failed to fetch user data:", userData.error);
+            }
+        } else {
+          console.error("User is not logged in.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // Handle Logout
+    const handleLogout = async () => {
+      try {
+        await fetch('/api/logout', { method: 'POST' });
+        loggedIn.value = false;
+        userName.value = "";
+        userIcon.value = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
+        alert("Logged out successfully");
+        window.location.href = '/';
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    };
+
+    // Toggle Dropdown
+    const toggleDropdown = () => {
+      showDropdown.value = !showDropdown.value;
+    };
+
+    // Auto-run on component mount
+    initializeLoginState();
+    fetchUserData();
+
+    return {
+        userName,
+        userIcon,
+        loggedIn,
+        showDropdown,
+        toggleDropdown,
+        handleLogout,
+    };
+  },
 };

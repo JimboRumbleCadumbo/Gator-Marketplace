@@ -76,7 +76,7 @@ export default {
             <div v-if="activeTab === 'rented'" class="tab-content">
                 <h3>Rented Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card rented-card" v-for="item in likedItems" :key="item.id">
+                    <div class="result-card rented-card" v-for="item in soldItems" :key="item.id">
                         <div class="return-banner">
                             Return by: {{ item.return_date || 'TBD' }}
                         </div>
@@ -222,55 +222,82 @@ export default {
                 console.error('Error fetching messages:', error);
             }
         };
-
-        const sendMessage = async () => {
-            if (!newMessage.value.trim() || !selectedUser.value) return;
-
+      
+        const soldItems = Vue.ref([
+            { id: 1, name: "Example Sold" },
+            { id: 2, name: "Calculator" },
+        ]);
+      
+        //Profile Settings Handlers
+        const saveSettings = async () => {
             try {
-                const response = await fetch('/api/messages', {
+                const formData = new FormData();
+                formData.append('user_name', usernameEdit.value.trim());
+                formData.append('description', description.value.trim());
+                if (newPassword.value.trim()) {
+                    formData.append('password', newPassword.value.trim());
+                }
+                if (user.value.icon) {
+                    const blob = await fetch(user.value.icon).then((res) => res.blob());
+                    formData.append('icon', blob);
+                }
+
+                const response = await fetch('/api/user/update', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        receiver_id: selectedUser.value.id,
-                        text: newMessage.value
-                    })
+                    body: formData,
                 });
 
-                if (!response.ok) throw new Error('Failed to send message');
-                
-                const result = await response.json();
-                selectedUser.value.messages.push({
-                    id: result.message_id,
-                    text: newMessage.value,
-                    sender_id: currentUserId.value,
-                    timestamp: result.timestamp,
-                    from: 'user'
-                });
-                newMessage.value = "";
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Settings updated successfully!");
+                } else {
+                    alert("Error: " + data.error);
+                }
             } catch (error) {
-                console.error('Error sending message:', error);
+                console.log("Error saving settings:", error);
+            }
+        };
+      
+        const onIconChange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    user.value.icon = ev.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         };
 
         // User data fetching
         const fetchUserData = async () => {
             try {
+                // First, check if user is logged in
                 const sessionResponse = await fetch('/api/session');
                 const sessionData = await sessionResponse.json();
-                
                 if (sessionData.logged_in) {
-                    currentUserId.value = sessionData.user_id;
-                    const userResponse = await fetch(`/api/user/${sessionData.user_id}`);
+                // Fetch the full user data using user_id
+                    const userId = sessionData.user_id;
+                    const userResponse = await fetch(`/api/user/${userId}`);
+                    const userData = await userResponse.json();
+                    console.log("Session data", userData);
                     if (userResponse.ok) {
-                        const userData = await userResponse.json();
                         user.value = {
                             username: userData.user_name,
-                            icon: defaultIcon,
-                            joinedDate: new Date(userData.joined_date).toLocaleDateString(),
-                            rating: userData.rating
+                            joinedDate: userData.joined_date,
+                            icon: userData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
+                            rating: userData.rating,
+                            description: userData.description,
                         };
-                        usernameEdit.value = userData.user_name;
+
+                        // Update the settings form fields
+                        usernameEdit.value = userData.user_name || "";
+                        description.value = userData.description || "";
+                    } else {
+                        console.error("Failed to fetch user data:", userData.error);
                     }
+                } else {
+                    console.error("User is not logged in.");
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
