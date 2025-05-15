@@ -59,12 +59,12 @@ export default {
                 </div>
                 
                 <div class="form-group checkbox-group">
-                <input 
-                type="checkbox" 
-                id="rentalOption" 
-                v-model="itemData.rentalOption"
-                />
-                <label for="rentalOption">This item is available for rental</label>
+                    <input 
+                    type="checkbox" 
+                    id="rentalOption" 
+                    v-model="itemData.rentalOption"
+                    />
+                    <label for="rentalOption">This item is available for rental</label>
                 </div>
                 
                 <div class="form-group">
@@ -82,7 +82,8 @@ export default {
                     accept="image/*"
                     style="display: none;"
                     />
-                
+                </div>
+
                 <div class="form-group">
                     <label for="itemDescription">Description</label>
                     <textarea 
@@ -122,13 +123,18 @@ export default {
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file && file.type.startsWith("image/")) {
+                // Store the actual file object
+                itemData.value.image = file;
+                
+                // Create the preview as before
                 const reader = new FileReader();
                 reader.onload = () => {
                   imagePreview.value = reader.result;
                 };
                 reader.readAsDataURL(file);
-              }
+            }
         }
+        
 
         function submitForm() {
             // Create FormData for file upload
@@ -179,6 +185,9 @@ export default {
                 image: null
             };
             imagePreview.value = null;
+            // Also reset the file input
+            const fileInput = document.getElementById('itemImage');
+            if (fileInput) fileInput.value = '';
         }
 
         return {

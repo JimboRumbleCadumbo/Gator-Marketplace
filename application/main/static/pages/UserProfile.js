@@ -11,7 +11,8 @@
  *  - Settings: Allows updates to display name, profile icon, description, and password.
  */
 export default {
-  template: `
+    template: `
+    <div>
         <Navbar></Navbar>    
         <div class="page-wrapper">
 
@@ -30,18 +31,18 @@ export default {
             <!-- Tab Content -->
             <div v-if="activeTab === 'about'" class="tab-content">
                 <div class="user-container">
-                    <div class="user-content">
+                    <div class="user-content" v-if="user">
                         <div class="user-header">
-                            <img :src="icon" alt="User Icon" class="user-icon" />
+                            <img :src="user.icon" alt="User Icon" class="user-icon" />
                         </div>
                         <div class="user-details">
                             <div class="username-section">
-                                <span class="username">{{ username }}</span>
+                                <span class="username">{{ user.username }}</span>
                             </div>
-                            <div class="joined-date">Joined: {{ joinedDate }}</div>
+                            <div class="joined-date">Joined: {{ user.joinedDate }}</div>
                             <div class="rating">
-                                <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= rating }">&#9733;</span>
-                                <span class="rating-score">({{ rating }}/5)</span>
+                                <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= user.rating }">&#9733;</span>
+                                <span class="rating-score">({{ user.rating }}/5)</span>
                             </div>
                             <div class="description">
                                 <label>Description:</label>
@@ -49,19 +50,26 @@ export default {
                             </div>
                         </div>
                     </div>
+                    <p v-else>Loading user information...</p>
                 </div>
             </div>
 
             <div v-if="activeTab === 'liked'" class="tab-content">
                 <h3>Liked Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card liked-card" v-for="item in likedItems" :key="item.id">
-                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
-                        <h3>{{ item.name }}</h3>
-                        <p>{{ item.price }}</p>
-                        <p>{{ item.description }}</p>
-                    </div>
-                </div>             
+                    <router-link 
+                        v-for="item in likedItems" 
+                        :key="item.item_id" 
+                        :to="'/item?id=' + item.item_id" 
+                        class="card-link"
+                    >
+                        <div class="result-card">
+                            <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.price }}</p>
+                        </div>
+                    </router-link>
+                </div>
             </div>
 
             <div v-if="activeTab === 'sold'" class="tab-content">
@@ -80,7 +88,7 @@ export default {
             <div v-if="activeTab === 'rented'" class="tab-content">
                 <h3>Rented Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card rented-card" v-for="item in likedItems" :key="item.id">
+                    <div class="result-card rented-card" v-for="item in soldItems" :key="item.id">
                         <div class="return-banner">
                             Return by: {{ item.return_date || 'TBD' }}
                         </div>
@@ -151,7 +159,7 @@ export default {
                     <div class="user-settings-group">
                     <label>Profile Icon</label>
                         <div class="user-settings-icon-upload">
-                            <img :src="iconEdit" alt="Profile Preview" class="user-settings-icon-preview" />
+                            <img :src="user.icon" alt="Profile Preview" class="user-settings-icon-preview" />
                             <input type="file" accept="image/*" @change="onIconChange" />
                         </div>
                     </div>
@@ -180,113 +188,235 @@ export default {
                 <router-link to="/about" class="footer-link">About</router-link>
             </footer>
         </div>
+    </div>
     `,
-  setup() {
-    //Example profile related data
-    const username = Vue.ref("CoolUser123");
-    const usernameEdit = Vue.ref(username.value);
-    const icon = Vue.ref(
-      `https://api.dicebear.com/8.x/bottts/svg?seed=${username.value}`
-    );
-    const iconEdit = Vue.ref(icon.value);
-    const newPassword = Vue.ref("");
-    const joinedDate = Vue.ref("2023-12-01");
-    const rating = Vue.ref(4);
-    const description = Vue.ref("This is my profile description!");
-    const activeTab = Vue.ref("about");
-
-    //Example Chat Data
-    const users = Vue.ref([
-      {
-        id: 1,
-        name: "Alice",
-        messages: [{ id: 1, text: "Hi there!", from: "seller" }],
-      },
-      {
-        id: 2,
-        name: "Bob",
-        messages: [{ id: 2, text: "Hello!", from: "user" }],
-      },
-    ]);
-    const selectedUser = Vue.ref(null);
-    const newMessage = Vue.ref("");
-
-    const selectUser = (user) => {
-      selectedUser.value = user;
-    };
-
-    const sendMessage = () => {
-      if (newMessage.value.trim() && selectedUser.value) {
-        selectedUser.value.messages.push({
-          id: Date.now(),
-          text: newMessage.value,
-          from: "user",
-        });
-        newMessage.value = "";
-      }
-    };
-
-    //Example items
-    const likedItems = Vue.ref([
-      { id: 1, name: "Vintage Camera" },
-      { id: 2, name: "Classic Book" },
-    ]);
-
-    const soldItems = Vue.ref([
-      { id: 1, name: "Example Sold" },
-      { id: 2, name: "Calculator" },
-    ]);
-
-    //Profile Settings Handlers
-    const saveSettings = () => {
-      if (usernameEdit.value.trim()) {
-        username.value = usernameEdit.value.trim();
-      }
-      if (iconEdit.value) {
-        icon.value = iconEdit.value;
-      }
-      if (newPassword.value.trim()) {
-        console.log("Password changed:", newPassword.value);
-      }
-    };
-
-    const onIconChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          iconEdit.value = ev.target.result;
+    data() {
+        return {
+            userIcon: window.__LOGIN_STATE__.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123", // Default icon
         };
-        reader.readAsDataURL(file);
-      }
-    };
+    },
+    setup() {
+        const { ref, onMounted, onUnmounted, watch } = Vue;
+        
+        // User data
+        const currentUserId = ref(null);
+        const user = ref(null);
+        const defaultIcon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
+        
+        // Tabs and settings
+        const activeTab = ref("about");
+        const usernameEdit = ref("");
+        const iconEdit = ref(defaultIcon);
+        const newPassword = ref("");
+        const description = ref("");
 
-    return {
-      //Profile related data
-      username,
-      usernameEdit,
-      icon,
-      iconEdit,
-      newPassword,
-      joinedDate,
-      rating,
-      description,
-      activeTab,
+        // Messages
+        const users = ref([]);
+        const selectedUser = ref(null);
+        const newMessage = ref("");
+        let poller = null;
+        
+        // Items
+        const likedItems = ref([]);
 
-      //Chat related data
-      users,
-      selectedUser,
-      newMessage,
-      selectUser,
-      sendMessage,
+        // ----------------- Message functions -----------------
+        async function safeJson(res) {
+            if (!res.ok) {
+              console.error('Fetch failed', res.status, await res.text());
+              return null;
+            }
+            const ct = res.headers.get('Content-Type') || '';
+            if (!ct.includes('application/json')) {
+              console.error('Expected JSON, got:', ct, await res.text());
+              return null;
+            }
+            return res.json();
+          }
+        
+          const fetchContacts = async () => {
+            const res  = await fetch('/api/messages/fetchAllContact', { credentials: 'include' });
+            const data = await safeJson(res);
+            if (data?.success) {
+              users.value = data.messages.map(m => ({
+                id:   m.contact_id,
+                name: m.user_name
+              }));
+            }
+          };
+        
+          const loadHistory = async (userId) => {
+            const res  = await fetch(`/api/messages/${userId}`, { credentials: 'include' });
+            const data = await res.json();
+            if (data.success) {
+              selectedUser.value.messages = data.messages.map(msg => ({
+                id:   msg.id,
+                text: msg.text,
+                from: msg.sender_id === userId ? 'seller' : 'user'
+              }));
+            }
+          };
+        
+          const selectUser = async (u) => {
+            selectedUser.value = { ...u, messages: [] };
+            await loadHistory(u.id);
+          };
+        
+          const sendMessage = async () => {
+            if (!newMessage.value.trim() || !selectedUser.value) return;
+        
+            const res = await fetch('/api/messages', {
+                method:      'POST',
+                credentials: 'include',
+                headers:     { 'Content-Type': 'application/json' },
+                body:        JSON.stringify({
+                receiver_id: selectedUser.value.id,
+                text:        newMessage.value
+                })
+            });
+            const data = await safeJson(res);
+            if (data) {
+              // push & refresh
+              newMessage.value = '';
+              await loadHistory(selectedUser.value.id);
+            }
+          };
+        
+          
 
-      //Item related data
-      likedItems,
-      soldItems,
+        // ----------------- Item functions -----------------
+      
+        const soldItems = Vue.ref([
+            { id: 1, name: "Example Sold" },
+            { id: 2, name: "Calculator" },
+        ]);
+      
+        // ----------------- User Setting functions -----------------
+        const saveSettings = async () => {
+            try {
+                const formData = new FormData();
+                formData.append('user_name', usernameEdit.value.trim());
+                formData.append('description', description.value.trim());
+                if (newPassword.value.trim()) {
+                    formData.append('password', newPassword.value.trim());
+                }
+                if (user.value.icon) {
+                    const blob = await fetch(user.value.icon).then((res) => res.blob());
+                    formData.append('icon', blob);
+                }
 
-      //Profile settings functions
-      saveSettings,
-      onIconChange,
-    };
-  },
+                const response = await fetch('/api/user/update', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Settings updated successfully!");
+                } else {
+                    alert("Error: " + data.error);
+                }
+            } catch (error) {
+                console.log("Error saving settings:", error);
+            }
+        };
+      
+        const onIconChange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    user.value.icon = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // User data fetching
+        const fetchUserData = async () => {
+            try {
+                // First, check if user is logged in
+                const sessionResponse = await fetch('/api/session');
+                const sessionData = await sessionResponse.json();
+                if (sessionData.logged_in) {
+                // Fetch the full user data using user_id
+                    const userId = sessionData.user_id;
+                    const userResponse = await fetch(`/api/user/${userId}`);
+                    const userData = await userResponse.json();
+                    if (userResponse.ok) {
+                        user.value = {
+                            username: userData.user_name,
+                            joinedDate: userData.joined_date,
+                            icon: userData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
+                            rating: userData.rating,
+                            description: userData.description,
+                        };
+
+                        // Update the settings form fields
+                        usernameEdit.value = userData.user_name || "";
+                        description.value = userData.description || "";
+                    } else {
+                        console.error("Failed to fetch user data:", userData.error);
+                    }
+                } else {
+                    console.error("Please log in.");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        onMounted(() => {
+            if (activeTab.value === 'messages') {
+                fetchContacts();
+            }
+            fetchUserData();
+        });
+
+        onUnmounted(() => clearInterval(poller));    
+
+        // polling when on the messages tab
+        watch(activeTab, tab => {
+            if (tab === 'messages') {
+            fetchContacts();
+            poller = setInterval(() => {
+                if (selectedUser.value) {
+                loadHistory(selectedUser.value.id);
+                }
+            }, 5000);
+            } else {
+            clearInterval(poller);
+            poller = null;
+            }
+        });
+
+
+
+        return {
+            // User data
+            user,
+            defaultIcon,
+            currentUserId,
+            saveSettings,
+            onIconChange,
+            
+            // Tabs and state
+            activeTab,
+            usernameEdit,
+            iconEdit,
+            newPassword,
+            description,
+            
+            // Messages
+            users,
+            selectedUser,
+            newMessage,
+            selectUser,
+            fetchContacts,
+            sendMessage,
+            
+            // Items
+            likedItems,
+            soldItems,
+        };
+    }
 };

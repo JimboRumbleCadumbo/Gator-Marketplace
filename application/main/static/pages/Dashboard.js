@@ -17,34 +17,21 @@ export default {
         
                 <h1> Featured Items </h1>
                 <!-- Product Grid -->
+                <!-- Product Grid -->
                 <div class="product-grid">
-                    <div class="card">
-                        <img src="https://placehold.co/600x400" alt="Item Image" />
-                        <h3> Sample Item</h3>
-                        <p>$10</p>
-                        <p>Sample description Sample description</p>
-                    </div>
-
-                    <div class="card">
-                        <img src="https://placehold.co/600x400" alt="Item Image" />
-                        <h3> Sample Item</h3>
-                        <p>$10</p>
-                        <p>Sample description Sample description</p>
-                    </div>
-
-                    <div class="card">
-                        <img src="https://placehold.co/600x400" alt="Item Image" />
-                        <h3> Sample Item</h3>
-                        <p>$10</p>
-                        <p>Sample description Sample description</p>
-                    </div>
-
-                    <div class="card">
-                        <img src="https://placehold.co/600x400" alt="Item Image" />
-                        <h3> Sample Item</h3>
-                        <p>$10</p>
-                        <p>Sample description Sample description</p>
-                    </div>
+                    <router-link 
+                        v-for="item in featuredItems" 
+                        :key="item.id" 
+                        :to="'/item?id=' + item.id" 
+                        class="card-link">
+                        
+                        <div class="card">
+                            <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                            <h3>{{ item.name || item.title }}</h3>
+                            <p>\${{ item.price || item.cost }}</p>
+                            <p>{{ item.description || 'No description available' }}</p>
+                        </div>
+                    </router-link>
                 </div>
             </div> 
         </div>
@@ -59,6 +46,7 @@ export default {
     //Added to make sure searchresults are reset if you hit home page
     const route = VueRouter.useRoute();
     const searchData = Vue.inject("searchData");
+    const featuredItems = Vue.ref([]);
 
     Vue.watchEffect(() => {
         //Reset the results when on the home page
@@ -67,8 +55,23 @@ export default {
         }
     });
 
+    const fetchFeaturedItems = async () => {
+        try {
+            const response = await fetch('/api/featured-items');
+            console.log("Response:", response);
+            const data = await response.json();
+            featuredItems.value = data;
+        } catch (error) {
+            console.error("Error fetching featured items:", error);
+        }
+    };
+
+    fetchFeaturedItems();
+
     return {
         searchData,
+        featuredItems,
+        fetchFeaturedItems,
     };
   },
 };

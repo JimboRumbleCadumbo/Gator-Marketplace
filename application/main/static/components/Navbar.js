@@ -8,42 +8,6 @@ import Searchbar from "/static/components/Searchbar.js";
 
 export default {
   components: { Searchbar },
-  data() {
-    return {
-      // You can replace this with a real user icon URL or a computed property
-      userIcon: "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123",
-      loggedIn: false,
-      userName: "",
-      showDropdown: false,
-    };
-  },
-  methods: {
-    initializeLoginState() {
-        const loginState = window.__LOGIN_STATE__; // Injected by the backend
-        if (loginState) {
-            this.loggedIn = loginState.logged_in;
-            this.userName = loginState.user_name || "";
-        }
-    },
-    handleLogout() {
-      fetch('/api/logout', { method: 'POST' })
-        .then(() => {
-          this.loggedIn = false;
-          this.userName = "";
-          alert("Logged out successfully");
-          window.location.href = '/';
-        })
-        .catch((error) => {
-          console.error("Logout error:", error);
-        });
-    },
-    toggleDropdown() {
-        this.showDropdown = !this.showDropdown;
-    },
-  },
-  mounted() {
-    this.initializeLoginState();
-  },
   template: `
     <nav class="nav-bar">
         <div class="nav-left">
@@ -56,7 +20,7 @@ export default {
         </div>
 
         <div class="nav-center">
-            <Searchbar> </Searchbar>
+            <Searchbar></Searchbar>
         </div>
 
         <div class="nav-right">
@@ -66,12 +30,85 @@ export default {
             <div v-if="loggedIn" class="nav-link dropdown" @click="toggleDropdown">
                 <span class="dropdown-label">Welcome, {{ userName }}</span>
                 <img :src="userIcon" alt="Profile" class="nav-profile-icon" />
-                    <div v-if="showDropdown" class="dropdown-menu">
-                        <router-link to="/profile" class="dropdown-item">Profile</router-link>
-                        <button @click.stop="handleLogout" class="dropdown-item">Logout</button>
-                    </div>
+                <div v-if="showDropdown" class="dropdown-menu">
+                    <router-link to="/profile" class="dropdown-item">Profile</router-link>
+                    <button @click.stop="handleLogout" class="dropdown-item">Logout</button>
+                </div>
             </div>
         </div>
     </nav>
-    `,
+  `,
+  setup() {
+    const userName = Vue.ref("");
+    const userIcon = Vue.ref("https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123");
+    const loggedIn = Vue.ref(false);
+    const showDropdown = Vue.ref(false);
+
+    // Initialize Login State (from injected global state)
+    const initializeLoginState = () => {
+      const loginState = window.__LOGIN_STATE__;
+      if (loginState) {
+        loggedIn.value = loginState.logged_in;
+        userName.value = loginState.user_name || "";
+      }
+    };
+
+    // Fetch User Data from API
+    const fetchUserData = async () => {
+      try {
+        const sessionResponse = await fetch('/api/session');
+        const sessionData = await sessionResponse.json();
+
+        if (sessionData.logged_in) {
+          const userId = sessionData.user_id;
+          const userResponse = await fetch(`/api/user/${userId}`);
+          const userData = await userResponse.json();
+          console.log("Session data", userData);
+
+            if (userResponse.ok) {
+                userName.value = userData.user_name;
+                userIcon.value = userData.user_icon || "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
+            } else {
+                console.error("Failed to fetch user data:", userData.error);
+            }
+        } else {
+          console.error("User is not logged in.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // Handle Logout
+    const handleLogout = async () => {
+      try {
+        await fetch('/api/logout', { method: 'POST' });
+        loggedIn.value = false;
+        userName.value = "";
+        userIcon.value = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
+        alert("Logged out successfully");
+        window.location.href = '/';
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    };
+
+    // Toggle Dropdown
+    const toggleDropdown = () => {
+      showDropdown.value = !showDropdown.value;
+    };
+
+    // Auto-run on component mount
+    initializeLoginState();
+    fetchUserData();
+
+    return {
+        userName,
+        userIcon,
+        loggedIn,
+        showDropdown,
+        toggleDropdown,
+        handleLogout,
+    };
+  },
 };
