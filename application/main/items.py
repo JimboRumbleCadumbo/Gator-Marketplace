@@ -22,7 +22,7 @@ def init_item_routes(app):
             FROM Item_Listing il
             LEFT JOIN Category c ON il.category_id = c.category_id
             LEFT JOIN User u on il.user_id = u.user_id
-            LEFT JOIN Profile p on u.user_id = p.profile_id
+            LEFT JOIN Profile p on u.profile_id = p.profile_id
             WHERE il.item_id = %s
         """, (item_id,))
         item = cursor.fetchone()
@@ -39,6 +39,7 @@ def init_item_routes(app):
                 print(f"Error encoding image: {e}")
                 image_base64 = None
 
+        print("Seller rating:", item["rating"])
         # Map the database result to a dictionary
         item_data = {
             "item_id": item["item_id"],
