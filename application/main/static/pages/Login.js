@@ -32,8 +32,8 @@ export default {
     const password = Vue.ref('');
 
     function handleLogin() {
-      if (!email.value.endsWith('@sfsu.edu')) {
-        alert('Please use your @sfsu.edu email address.');
+      if (!email.value.endsWith('@sfsu.edu') && !email.value.endsWith('@mail.sfsu.edu')) {
+        alert('Please use your @sfsu.edu or @mail.sfsu.edu email address.');
         return;
       }
       fetch('/api/login', {
