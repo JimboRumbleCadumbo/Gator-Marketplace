@@ -59,6 +59,13 @@ export default {
           console.error('Login error:', error);
           alert('Login failed: ' + error.message);
         });
+
+        //Google Analytics login event
+          if (typeof gtag === 'function') {
+            gtag('event', 'login', {
+            method: 'email'
+            });
+          }
     }
 
     return {
