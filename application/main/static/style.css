@@ -174,7 +174,7 @@ h1 {
 }
 
 /* Media Query for Smaller Screens (Mobile) */
-@media (max-width: 768px) {
+@media (max-width: 1300px) {
   .nav-bar {
     flex-direction: column;
     height: auto;

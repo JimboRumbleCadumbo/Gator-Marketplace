@@ -58,7 +58,7 @@ export default {
                             v-for="msg in messages" 
                             :key="msg.id" 
                             class="message" 
-                            :class="msg.sender_id === currentUserId ? 'user' : 'seller'"
+                            :class="msg.sender_id ===  user.user_id  ? 'user' : 'seller'"
                         >
                             {{ msg.text }}
                         </div>
@@ -87,10 +87,10 @@ export default {
 
         // Reactive state
         const isLoggedIn = ref(false);
-        const currentUserId = ref(null);
         const chatVisible = ref(false);
         const isLiked = ref(false);
         const item = ref({});
+        const user = ref({});
         const newMessage = ref("");
         const messages = ref([]);
         let poller = null;
@@ -111,23 +111,32 @@ export default {
 
         // Fetch current user session
         const fetchUserData = async () => {
-            const res = await fetch('/api/session', { credentials: 'include' });
-            const data = await safeJson(res);
-            if (data && data.logged_in) {
-                isLoggedIn.value = true;
-                currentUserId.value = data.user_id;
-            } else {
-                isLoggedIn.value = false;
+            try {
+                const sessionResponse = await fetch('/api/session');
+                const sessionData = await sessionResponse.json();
+                isLoggedIn.value = sessionData.logged_in || false;
+                console.log("isLoggedin", isLoggedIn.value);
+
+                if (isLoggedIn.value) {
+                    user.value = {
+                        user_id: sessionData.user_id,
+                        username: sessionData.user_name,
+                    };
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
             }
         };
 
         // Load item details
         const loadItemDetails = async () => {
             const itemId = route.query.id;
-            const res = await fetch(`/api/item?id=${itemId}`);
-            const data = await safeJson(res);
-            if (data) {
-                item.value = {
+            try {
+                const response = await fetch(`/api/item?id=${itemId}`);
+                if (!response.ok) throw new Error("Failed to fetch item details");
+                    const data = await response.json();
+                    console.log("Data that can be loaded:", data);
+                    item.value = {
                     id: data.item_id,
                     name: data.name,
                     description: data.description,
@@ -136,10 +145,20 @@ export default {
                     seller_name: data.seller_name,
                     seller_rating: data.seller_rating,
                     quality: data.quality,
-                    rentalOption: data.rental_option ? 'Available for Rent' : 'Not for Rent',
+                    rentalOption: data.rental_option ? "Available for Rent" : "Not for Rent",
                     category: data.category_name,
-                    image: data.image ? `data:image/jpeg;base64,${data.image}` : 'https://placehold.co/600x400',
+                    image: data.image ? `data:image/jpeg;base64,${data.image}` : "https://placehold.co/600x400",
                 };
+
+                if (isLoggedIn.value) {
+                    const likeResponse = await fetch(`/api/wishlist/check?user_id=${user.value.user_id}&item_id=${item.value.id}`);
+                    const likeData = await likeResponse.json();
+                    isLiked.value = likeData.liked;
+                }
+
+            } catch (error) {
+                console.error("Error loading item details:", error);
+                alert("Failed to load item details.");
             }
         };
 
@@ -190,24 +209,36 @@ export default {
         // Toggle like functionality
         const toggleLike = async () => {
             if (!isLoggedIn.value) {
-                alert('You must be logged in to like an item.');
+                alert("You must be logged in to like an item.");
                 return;
             }
+
             try {
                 const response = await fetch('/api/wishlist/toggle', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({
-                        user_id: currentUserId.value,
-                        item_id: item.value.id
-                    })
+                        user_id: user.value.user_id,
+                        item_id: item.value.id,
+                    }),
                 });
-                const data = await safeJson(response);
-                if (data) isLiked.value = data.liked;
-            } catch (err) {
-                console.error('Error toggling like:', err);
+
+                if (!response.ok) {
+                    throw new Error("Failed to toggle like");
+                }
+
+                const data = await response.json();
+                isLiked.value = data.liked;
+                console.log("Like status:", isLiked.value);
+            } catch (error) {
+                console.error("Error toggling like:", error);
+                alert("Failed to toggle like.");
             }
-        };
+
+            console.log("Like button clicked. Liked:", isLiked.value);
+        }
 
         // Navigate to seller profile
         const goToSellerProfile = () => {
@@ -239,8 +270,8 @@ export default {
         // Expose to template
         return {
             item,
+            user,
             isLoggedIn,
-            currentUserId,
             chatVisible,
             isLiked,
             messages,

@@ -353,11 +353,26 @@ export default {
             }
         };
 
+        //Get Users liked items
+        const fetchLikedItems = async () => {
+            try {
+                const response = await fetch('/api/liked-items');
+                if (!response.ok) throw new Error("Failed to fetch liked items");
+
+                const data = await response.json();
+                likedItems.value = data;
+                console.log("Loaded liked items:", likedItems.value);
+            } catch (error) {
+                console.error("Error loading liked items:", error);
+            }
+        };
+
         onMounted(() => {
             if (activeTab.value === 'messages') {
                 fetchContacts();
             }
             fetchUserData();
+            fetchLikedItems();
         });
 
         onUnmounted(() => clearInterval(poller));    
