@@ -132,7 +132,7 @@ def init_item_routes(app):
         try:
             # Fetch the liked items for the logged-in user
             sql_query = """
-                SELECT il.item_id, il.name, il.price, il.image 
+                SELECT il.item_id, il.name, il.price, il.image, il.is_active
                 FROM Wishlist w
                 JOIN Item_Listing il ON w.item_id = il.item_id
                 WHERE w.user_id = %s
@@ -147,7 +147,8 @@ def init_item_routes(app):
                     "item_id": item['item_id'],
                     "name": item['name'],
                     "price": f"${item['price']:.2f}",
-                    "image_base64": None
+                    "image_base64": None,
+                    "is_active": bool(item["is_active"])
                 }
                 
                 # Convert image BLOB to base64 if it exists

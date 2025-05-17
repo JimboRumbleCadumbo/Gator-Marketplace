@@ -71,6 +71,7 @@ export default {
                         class="card-link"
                     >
                         <div class="result-card">
+                            <div v-if="!item.is_active" class="sold-banner">SOLD</div>
                             <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                             <h3>{{ item.name }}</h3>
                             <p>{{ item.price }}</p>
@@ -89,9 +90,7 @@ export default {
                             <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                             <h3>{{ item.name }}</h3>
                             <p>{{ item.price }}</p>
-                            <p>{{ item.description }}</p>
                         </div>
-                        <button @click.stop="deleteUserItem(item.item_id, 'sold')" class="delete-btn">Delete</button>
                     </div>
                 </div>
             </div>
@@ -435,6 +434,8 @@ export default {
                 console.error("Error loading liked items:", error);
             }
         };
+
+        console.log(likedItems.value);
 
         //Get Users liked items
         const fetchUsersItems = async (status = 'active') => {
