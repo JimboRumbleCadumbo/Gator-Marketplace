@@ -1,11 +1,7 @@
 import threading
 from flask import Flask, render_template, session
 import os
-from main import search
-from main import postings
-from main import items
-from main import auth
-from main import messaging
+from main import search, postings, items, auth, messaging
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 
@@ -29,7 +25,9 @@ app.config['MYSQL_AUTOCOMMIT'] = True
 app.config['MYSQL_POOL_NAME'] = 'mypool'
 app.config['MYSQL_POOL_SIZE'] = 10
 
-# Set secret key for session management
+# Initialize MySQL
+mysql = MySQL(app)
+app.config['MYSQL_CONNECTION'] = mysql
 app.secret_key = os.getenv('FLASK_SESSION_SECRET_KEY')
 
 # Initialize MySQL once for the whole application

@@ -18,11 +18,10 @@ def init_item_routes(app):
         cursor = mysql.connection.cursor()
         # Join Item_Listing with Category to get the category_name
         cursor.execute("""
-            SELECT il.*, c.category_name, u.user_name, p.rating
+            SELECT il.*, c.category_name, u.user_name, u.rating
             FROM Item_Listing il
             LEFT JOIN Category c ON il.category_id = c.category_id
             LEFT JOIN User u on il.user_id = u.user_id
-            LEFT JOIN Profile p on u.profile_id = p.profile_id
             WHERE il.item_id = %s
         """, (item_id,))
         item = cursor.fetchone()
