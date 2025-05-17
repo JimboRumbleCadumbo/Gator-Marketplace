@@ -178,13 +178,18 @@ export default {
         // Load chat history with seller
         const loadHistory = async () => {
             if (!item.value.seller_id) return;
-            const res = await fetch(`/api/messages/${item.value.seller_id}`, { credentials: 'include' });
+            const res = await fetch(
+                `/api/messages/${item.value.seller_id}?item_id=${item.value.id}`, 
+                { credentials: 'include' }
+              );
+              
             const data = await safeJson(res);
             if (data && data.success) {
                 messages.value = data.messages.map(msg => ({
                     id: msg.id,
                     text: msg.text,
-                    sender_id: msg.sender_id
+                    sender_id: msg.sender_id,
+                    item_id: msg.item_id
                 }));
             }
         };
@@ -198,8 +203,9 @@ export default {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     receiver_id: item.value.seller_id,
-                    text: newMessage.value
-                })
+                    text:        newMessage.value,
+                    item_id:     item.value.id
+                  })                  
             });
             const data = await safeJson(res);
             if (data && data.success) {
