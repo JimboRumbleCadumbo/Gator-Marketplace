@@ -69,8 +69,8 @@ def init_auth_routes(app):
             # Hash and insert
             hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             cursor.execute(
-                "INSERT INTO User (email, password_hash, full_name, user_name, role, profile_id) VALUES (%s, %s, %s, %s, %s, %s)",
-                (email, hashed_pw, full_name, user_name, 'user', 1)
+                "INSERT INTO User (email, password_hash, full_name, user_name, role) VALUES (%s, %s, %s, %s, %s)",
+                (email, hashed_pw, full_name, user_name, 'user')
             )
             mysql.connection.commit()
             cursor.close()
@@ -116,11 +116,9 @@ def init_auth_routes(app):
                 u.description,
                 u.user_icon, 
                 DATE_FORMAT(u.created_at, '%%M %%d %%Y') AS formatted_date,
-                p.rating 
+                u.rating 
             FROM 
                 User u 
-            JOIN 
-                Profile p ON u.profile_id = p.profile_id 
             WHERE 
                 u.user_id = %s
         """, (user_id,))

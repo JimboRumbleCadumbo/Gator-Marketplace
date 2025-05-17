@@ -20,6 +20,7 @@ export default {
             <div class="tab-container">
                 <div class="tab">
                     <button @click="activeTab = 'about'" :class="{ active: activeTab === 'about' }">About</button>
+                    <button @click="activeTab = 'my_items'" :class="{ active: activeTab === 'my_items' }">My Items</button>
                     <button @click="activeTab = 'liked'" :class="{ active: activeTab === 'liked' }">Liked Items</button>
                     <button @click="activeTab = 'sold'" :class="{ active: activeTab === 'sold' }">Sold Items</button>
                     <button @click="activeTab = 'rented'" :class="{ active: activeTab === 'rented' }">Rented Items</button>
@@ -54,6 +55,24 @@ export default {
                 </div>
             </div>
 
+            <div v-if="activeTab === 'my_items'" class="tab-content">
+                <h3>My Items</h3>
+                <div class="dashboard-product-grid">
+                    <div v-for="item in myItems" :key="item.item_id" class="card-item">
+                        <router-link :to="'/item?id=' + item.item_id" class="card-link">
+                            <div class="result-card">
+                                <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.price }}</p>
+                            </div>
+                        </router-link>
+                        <button @click.stop="deleteUserItem(item.item_id)" class="delete-btn">Delete</button>
+                        
+                        <button @click="markAsSold(item.item_id)" class="sold-btn">Sold</button>
+                    </div>
+                </div>
+            </div>
+
             <div v-if="activeTab === 'liked'" class="tab-content">
                 <h3>Liked Items</h3>
                 <div class="dashboard-product-grid">
@@ -64,6 +83,7 @@ export default {
                         class="card-link"
                     >
                         <div class="result-card">
+                            <div v-if="!item.is_active" class="sold-banner">SOLD</div>
                             <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                             <h3>{{ item.name }}</h3>
                             <p>{{ item.price }}</p>
@@ -72,15 +92,17 @@ export default {
                 </div>
             </div>
 
+            <!-- Sold Items -->
             <div v-if="activeTab === 'sold'" class="tab-content">
                 <h3>Sold Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card sold-card" v-for="item in soldItems" :key="item.id">
-                        <div class="sold-banner">SOLD</div>
-                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
-                        <h3>{{ item.name }}</h3>
-                        <p>{{ item.price }}</p>
-                        <p>{{ item.description }}</p>
+                    <div v-for="item in soldItems" :key="item.item_id" class="card-item">
+                        <div class="result-card sold-card">
+                            <div class="sold-banner">SOLD</div>
+                            <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.price }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -88,11 +110,11 @@ export default {
             <div v-if="activeTab === 'rented'" class="tab-content">
                 <h3>Rented Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card rented-card" v-for="item in soldItems" :key="item.id">
+                    <div class="result-card rented-card" v-for="item in soldItems" :key="item.item_id">
                         <div class="return-banner">
                             Return by: {{ item.return_date || 'TBD' }}
                         </div>
-                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
+                        <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                         <h3>{{ item.name }}</h3>
                         <p>{{ item.price }}</p>
                         <p>{{ item.description }}</p>
@@ -103,44 +125,49 @@ export default {
             <div v-if="activeTab === 'messages'" class="tab-content">
                 <h3>Messages</h3>
                 <div class="messages-container">
-                    
-                    <!-- User list on the left -->
+                    <!-- Conversation list -->
                     <div class="user-list">
-                        <div 
-                            v-for="user in users" 
-                            :key="user.id" 
-                            class="user-list-item" 
-                            :class="{ active: selectedUser && selectedUser.id === user.id }"
-                            @click="selectUser(user)"
-                        >
-                            {{ user.name }}
+                        <div
+                            v-for="conv in users"
+                            :key="conv.id + '-' + conv.item_id"
+                            class="user-list-item"
+                            :class="{ active: selectedConv && selectedConv.id === conv.id && selectedConv.item_id === conv.item_id }"
+                            @click="selectConv(conv)">
+                            {{ conv.name }}
                         </div>
                     </div>
 
-                    <!-- Chat area on the right -->
-                    <div class="chat-panel" v-if="selectedUser">
+                    <!-- Chat area -->
+                    <div class="chat-panel" v-if="selectedConv">
                         <div class="chat-header">
-                            <span>{{ selectedUser.name }}</span>
+                            <span>
+                                {{ selectedConv.name }}
+                                <strong v-if="selectedConv.is_active === 0">(SOLD)</strong>
+                            </span>
                         </div>
                         <div class="chat-messages">
-                            <div 
-                            v-for="msg in selectedUser.messages" 
-                            :key="msg.id" 
-                            class="message" 
-                            :class="msg.from === 'user' ? 'user' : 'seller'"
-                            >
-                            {{ msg.text }}
+                            <div
+                                v-for="msg in messages"
+                                :key="msg.id"
+                                class="message"
+                                :class="msg.from === 'user' ? 'user' : 'seller'">
+                                {{ msg.text }}
                             </div>
                         </div>
                         <div class="chat-input">
-                            <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
-                            <button @click="sendMessage">Send</button>
+                            <input
+                                type="text"
+                                v-model="newMessage"
+                                @keyup.enter="sendMessage()"
+                                placeholder="Type a message..."
+                            />
+                            <button @click="sendMessage()">Send</button>
                         </div>
                     </div>
 
-                    <!-- Optional placeholder if no user selected -->
+                    <!-- Placeholder if no conversation selected -->
                     <div class="chat-panel" v-else>
-                        <p class="no-user-selected">Select a user to start chatting</p>
+                        <p class="no-user-selected">Select a conversation to start chatting</p>
                     </div>
                 </div>
             </div>
@@ -197,100 +224,132 @@ export default {
     },
     setup() {
         const { ref, onMounted, onUnmounted, watch } = Vue;
-        
+
         // User data
-        const currentUserId = ref(null);
         const user = ref(null);
-        const defaultIcon = "https://api.dicebear.com/8.x/bottts/svg?seed=CoolUser123";
-        
+
         // Tabs and settings
         const activeTab = ref("about");
         const usernameEdit = ref("");
-        const iconEdit = ref(defaultIcon);
         const newPassword = ref("");
         const description = ref("");
 
         // Messages
         const users = ref([]);
-        const selectedUser = ref(null);
+        const selectedConv = ref(null);
+        const messages = ref([]);
         const newMessage = ref("");
         let poller = null;
-        
+
         // Items
         const likedItems = ref([]);
+        const myItems = ref([]);
+        const soldItems = ref([]);
 
         // ----------------- Message functions -----------------
+
         async function safeJson(res) {
-            if (!res.ok) {
-              console.error('Fetch failed', res.status, await res.text());
-              return null;
-            }
+            if (!res.ok) { console.error(res.status, await res.text()); return null; }
             const ct = res.headers.get('Content-Type') || '';
-            if (!ct.includes('application/json')) {
-              console.error('Expected JSON, got:', ct, await res.text());
-              return null;
-            }
+            if (!ct.includes('application/json')) { console.error('expected JSON', ct); return null; }
             return res.json();
-          }
+        }
         
-          const fetchContacts = async () => {
-            const res  = await fetch('/api/messages/fetchAllContact', { credentials: 'include' });
+        const fetchConversations = async () => {
+            const res = await fetch('/api/messages/fetchAllContact', { credentials: 'include' });
             const data = await safeJson(res);
             if (data?.success) {
-              users.value = data.messages.map(m => ({
-                id:   m.contact_id,
-                name: m.user_name
-              }));
+                users.value = data.messages.map(m => ({
+                    id: m.contact_id,
+                    item_id: m.item_id,
+                    name: `${m.user_name} - ${m.item_name}`,
+                    is_active: m.is_active
+                }));
+                if (!selectedConv.value && users.value.length) 
+                    selectConv(users.value[0]);
             }
-          };
+        };
         
-          const loadHistory = async (userId) => {
-            const res  = await fetch(`/api/messages/${userId}`, { credentials: 'include' });
-            const data = await res.json();
-            if (data.success) {
-              selectedUser.value.messages = data.messages.map(msg => ({
-                id:   msg.id,
-                text: msg.text,
-                from: msg.sender_id === userId ? 'seller' : 'user'
-              }));
+        // load chat history for given conversation
+        const loadHistory = async (contactId, itemId) => {
+            const url = `/api/messages/${contactId}?item_id=${itemId}`;
+            const res = await fetch(url, { credentials: 'include' });
+            const data = await safeJson(res);
+            if (data?.success) {
+                messages.value = data.messages.map(msg => ({
+                    id: msg.id,
+                    text: msg.text,
+                    from: msg.sender_id === contactId ? 'seller' : 'user'
+                }));
             }
-          };
+        };
+
+        // select a conversation
+        const selectConv = async (conv) => {
+            selectedConv.value = conv;
+            newMessage.value = '';
+            await loadHistory(conv.id, conv.item_id);
+        };
         
-          const selectUser = async (u) => {
-            selectedUser.value = { ...u, messages: [] };
-            await loadHistory(u.id);
-          };
-        
-          const sendMessage = async () => {
-            if (!newMessage.value.trim() || !selectedUser.value) return;
-        
+        // send a message
+        const sendMessage = async () => {
+            if (!newMessage.value.trim() || !selectedConv.value) return;
+            const body = {
+                receiver_id: selectedConv.value.id,
+                text: newMessage.value,
+                item_id: selectedConv.value.item_id
+            };
             const res = await fetch('/api/messages', {
-                method:      'POST',
-                credentials: 'include',
-                headers:     { 'Content-Type': 'application/json' },
-                body:        JSON.stringify({
-                receiver_id: selectedUser.value.id,
-                text:        newMessage.value
-                })
+                method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
             });
             const data = await safeJson(res);
-            if (data) {
-              // push & refresh
-              newMessage.value = '';
-              await loadHistory(selectedUser.value.id);
+            if (data?.success) {
+                newMessage.value = '';
+                await loadHistory(selectedConv.value.id, selectedConv.value.item_id);
             }
-          };
+        };
         
-          
 
         // ----------------- Item functions -----------------
-      
-        const soldItems = Vue.ref([
-            { id: 1, name: "Example Sold" },
-            { id: 2, name: "Calculator" },
-        ]);
-      
+
+        const deleteUserItem = async (itemId) => {
+            if (!confirm("Are you sure you want to delete this item?")) return;
+            try {
+                const response = await fetch(`/api/user-items/${itemId}`, {
+                    method: 'DELETE', credentials: 'include'
+                });
+                if (!response.ok) throw new Error("Failed to delete item.");
+                myItems.value = myItems.value.filter(item => item.item_id !== itemId);
+                soldItems.value = soldItems.value.filter(item => item.item_id !== itemId);
+                alert('Item deleted successfully!!');
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        const markAsSold = async (itemId) => {
+            if (!confirm("Are you sure you want to mark this item as sold?")) return;
+            try {
+                const response = await fetch(`/api/user-items/${itemId}/sold`, {
+                    method: 'POST', credentials: 'include'
+                });
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.error || "Failed to mark item as sold.");
+                }
+                const soldItem = myItems.value.find(item => item.item_id === itemId);
+                if (soldItem) {
+                    myItems.value = myItems.value.filter(item => item.item_id !== itemId);
+                    soldItems.value.push(soldItem);
+                }
+                alert('Item marked as sold successfully!!');
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
         // ----------------- User Setting functions -----------------
+        
         const saveSettings = async () => {
             try {
                 const formData = new FormData();
@@ -300,33 +359,27 @@ export default {
                     formData.append('password', newPassword.value.trim());
                 }
                 if (user.value.icon) {
-                    const blob = await fetch(user.value.icon).then((res) => res.blob());
+                    const blob = await fetch(user.value.icon).then(res => res.blob());
                     formData.append('icon', blob);
                 }
-
                 const response = await fetch('/api/user/update', {
-                    method: 'POST',
-                    body: formData,
+                    method: 'POST', body: formData
                 });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert("Settings updated successfully!");
-                } else {
-                    alert("Error: " + data.error);
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Failed to update settings.');
                 }
+                alert('Updated successfully!!');
             } catch (error) {
-                console.log("Error saving settings:", error);
+                console.error(error);
             }
         };
-      
+
         const onIconChange = (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (ev) => {
-                    user.value.icon = ev.target.result;
-                };
+                reader.onload = ev => { user.value.icon = ev.target.result; };
                 reader.readAsDataURL(file);
             }
         };
@@ -365,58 +418,84 @@ export default {
             }
         };
 
+        //Get Users liked items
+        const fetchLikedItems = async () => {
+            try {
+                const response = await fetch('/api/liked-items');
+                if (!response.ok) throw new Error("Failed to fetch liked items");
+
+                const data = await response.json();
+                likedItems.value = data;
+                console.log("Loaded liked items:", likedItems.value);
+            } catch (error) {
+                console.error("Error loading liked items:", error);
+            }
+        };
+
+        console.log(likedItems.value);
+
+        //Get Users liked items
+        const fetchUsersItems = async (status = 'active') => {
+            try {
+                const response = await fetch(`/api/user-items?status=${status}`);
+                if (!response.ok) throw new Error(`Failed to fetch ${status} items`);
+
+                const data = await response.json();
+                if (status === 'active') {
+                    myItems.value = data;
+                } else {
+                    soldItems.value = data;
+                }
+                console.log(`Loaded User's ${status} items:`, data);
+            } catch (error) {
+                console.error(`Error loading User's ${status} items:`, error);
+            }
+        };
+
         onMounted(() => {
             if (activeTab.value === 'messages') {
-                fetchContacts();
+                fetchConversations();
             }
             fetchUserData();
+            fetchLikedItems();
+            fetchUsersItems('active');
+            fetchUsersItems('sold');
         });
 
         onUnmounted(() => clearInterval(poller));    
 
-        // polling when on the messages tab
         watch(activeTab, tab => {
             if (tab === 'messages') {
-            fetchContacts();
-            poller = setInterval(() => {
-                if (selectedUser.value) {
-                loadHistory(selectedUser.value.id);
-                }
-            }, 5000);
+                fetchConversations();
+                poller = setInterval(() => {
+                    if (selectedConv.value) loadHistory(selectedConv.value.id, selectedConv.value.item_id);
+                }, 5000);
             } else {
-            clearInterval(poller);
-            poller = null;
+                clearInterval(poller);
+                poller = null;
             }
         });
 
-
-
         return {
-            // User data
             user,
-            defaultIcon,
-            currentUserId,
-            saveSettings,
-            onIconChange,
-            
-            // Tabs and state
             activeTab,
             usernameEdit,
-            iconEdit,
             newPassword,
             description,
-            
-            // Messages
             users,
-            selectedUser,
+            selectedConv,
+            messages,
             newMessage,
-            selectUser,
-            fetchContacts,
+            selectConv,
+            fetchConversations,
             sendMessage,
-            
-            // Items
+            deleteUserItem,
+            markAsSold,
+            saveSettings,
+            onIconChange,
             likedItems,
-            soldItems,
+            myItems,
+            soldItems
         };
     }
 };
