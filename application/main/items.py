@@ -284,7 +284,7 @@ def init_item_routes(app):
     @app.route('/api/user-items/<int:item_id>', methods=['DELETE'])
     def delete_user_item(item_id):
         """
-        API endpoint to delete a user's posted item.
+        API endpoint to delete a user's posted item and associated likes in Wishlist.
         """
         user_id = session.get('user_id')
         if not user_id:
@@ -293,20 +293,33 @@ def init_item_routes(app):
         cursor = mysql.connection.cursor()
         
         try:
+            # Start a transaction
+            mysql.connection.begin()
+
             # Ensure the item belongs to the logged-in user
-            delete_query = """
+            delete_item_query = """
                 DELETE FROM Item_Listing 
                 WHERE item_id = %s AND user_id = %s
             """
-            cursor.execute(delete_query, (item_id, user_id))
-            mysql.connection.commit()
-
+            cursor.execute(delete_item_query, (item_id, user_id))
+            
             if cursor.rowcount == 0:
+                mysql.connection.rollback()
                 return jsonify({"error": "Item not found or not owned by user"}), 404
-
-            return jsonify({"success": True, "message": "Item deleted successfully"}), 200
+            
+            # Delete associated wishlist entries
+            delete_wishlist_query = """
+                DELETE FROM Wishlist 
+                WHERE item_id = %s
+            """
+            cursor.execute(delete_wishlist_query, (item_id,))
+            
+            # Commit the transaction
+            mysql.connection.commit()
+            return jsonify({"success": True, "message": "Item and associated wishlist entries deleted successfully"}), 200
         
         except Exception as e:
+            mysql.connection.rollback()
             import traceback
             error_details = traceback.format_exc()
             print(f"Delete Item API error: {error_details}")

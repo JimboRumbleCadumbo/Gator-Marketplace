@@ -42,7 +42,13 @@ export default {
                             </div>
                         
                             <div class="buttons">
-                                <button @click="initiateChat('rent')" :disabled="item.rentalOption === 'Not for Rent' || !isLoggedIn" class="item-button">Rent</button>
+                                <button 
+                                    @click="initiateChat('rent')" 
+                                    :disabled="item.rentalOption === 'Not for Rent' || !isLoggedIn || !item.isActive" 
+                                    class="item-button">
+                                    Rent
+                                </button>
+
                                 <button
                                     @click="initiateChat('buy')" 
                                     :disabled="!isLoggedIn || !item.isActive" 
