@@ -22,7 +22,7 @@ export default {
                 <div class="result-product-grid" v-show="filteredResults.length > 0">
         
                     <router-link v-for="result in filteredResults"
-                        :key="result.id"
+                        :key="result.item_id"
                         :to="'/item?id=' + result.item_id"
                         class="card-link"
                         >

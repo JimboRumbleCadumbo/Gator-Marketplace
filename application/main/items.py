@@ -215,3 +215,94 @@ def init_item_routes(app):
         
         finally:
             cursor.close()
+
+
+
+    @app.route('/api/user-items', methods=['GET'])
+    def get_user_posted_items():
+        """
+        API endpoint for fetching items posted by the logged-in user.
+
+        Returns:
+            JSON response with user's posted items.
+        """
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({"error": "Not logged in"}), 401
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        
+        try:
+            # Fetch items posted by the logged-in user
+            sql_query = """
+                SELECT il.item_id, il.name, il.price, il.image 
+                FROM Item_Listing il
+                WHERE il.user_id = %s
+            """
+            cursor.execute(sql_query, (user_id,))
+            results = cursor.fetchall()
+            
+            processed_results = []
+            for item in results:
+                processed_item = {
+                    "item_id": item['item_id'],
+                    "name": item['name'],
+                    "price": f"${item['price']:.2f}",
+                    "image_base64": None
+                }
+                
+                # Convert image BLOB to base64 if it exists
+                if item['image']:
+                    try:
+                        image_data = base64.b64encode(item['image']).decode('utf-8')
+                        processed_item['image_base64'] = f"data:image/jpeg;base64,{image_data}"
+                    except Exception as e:
+                        print(f"Error converting image to base64: {str(e)}")
+                
+                processed_results.append(processed_item)
+            
+            return jsonify(processed_results)
+        
+        except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"User Items API error: {error_details}")
+            return jsonify({"error": str(e), "details": error_details}), 500
+        
+        finally:
+            cursor.close()
+
+
+    @app.route('/api/user-items/<int:item_id>', methods=['DELETE'])
+    def delete_user_item(item_id):
+        """
+        API endpoint to delete a user's posted item.
+        """
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({"error": "Not logged in"}), 401
+
+        cursor = mysql.connection.cursor()
+        
+        try:
+            # Ensure the item belongs to the logged-in user
+            delete_query = """
+                DELETE FROM Item_Listing 
+                WHERE item_id = %s AND user_id = %s
+            """
+            cursor.execute(delete_query, (item_id, user_id))
+            mysql.connection.commit()
+
+            if cursor.rowcount == 0:
+                return jsonify({"error": "Item not found or not owned by user"}), 404
+
+            return jsonify({"success": True, "message": "Item deleted successfully"}), 200
+        
+        except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"Delete Item API error: {error_details}")
+            return jsonify({"error": str(e), "details": error_details}), 500
+        
+        finally:
+            cursor.close()

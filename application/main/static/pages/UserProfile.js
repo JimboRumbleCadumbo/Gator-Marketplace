@@ -8,6 +8,7 @@ export default {
             <div class="tab-container">
                 <div class="tab">
                     <button @click="activeTab = 'about'" :class="{ active: activeTab === 'about' }">About</button>
+                    <button @click="activeTab = 'my_items'" :class="{ active: activeTab === 'my_items' }">My Items</button>
                     <button @click="activeTab = 'liked'" :class="{ active: activeTab === 'liked' }">Liked Items</button>
                     <button @click="activeTab = 'sold'" :class="{ active: activeTab === 'sold' }">Sold Items</button>
                     <button @click="activeTab = 'rented'" :class="{ active: activeTab === 'rented' }">Rented Items</button>
@@ -39,6 +40,24 @@ export default {
                         </div>
                     </div>
                     <p v-else>Loading user information...</p>
+                </div>
+            </div>
+
+            <div v-if="activeTab === 'my_items'" class="tab-content">
+                <h3>My Items</h3>
+                <div class="dashboard-product-grid">
+                    <div v-for="item in myItems" :key="item.item_id" class="card-item">
+                        <router-link :to="'/item?id=' + item.item_id" class="card-link">
+                            <div class="result-card">
+                                <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.price }}</p>
+                            </div>
+                        </router-link>
+                        <button @click.stop="deleteUserItem(item.item_id)" class="delete-btn">Delete</button>
+                        
+                        <button @click="markAsSold(item.item_id)" class="sold-btn">Sold</button>
+                    </div>
                 </div>
             </div>
 
@@ -206,6 +225,7 @@ export default {
         
         // Items
         const likedItems = ref([]);
+        const myItems = ref([]);
 
         // ----------------- Message functions -----------------
         async function safeJson(res) {
@@ -277,7 +297,26 @@ export default {
             { id: 1, name: "Example Sold" },
             { id: 2, name: "Calculator" },
         ]);
-      
+
+        const deleteUserItem = async (itemId) => {
+            if (!confirm("Are you sure you want to delete this item?")) return;
+
+            try {
+                const response = await fetch(`/api/user-items/${itemId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                if (!response.ok) throw new Error("Failed to delete item.");
+
+                // Remove the deleted item from the list without reloading
+                myItems.value = myItems.value.filter(item => item.item_id !== itemId);
+                console.log("Item deleted:", itemId);
+            } catch (error) {
+                console.error("Error deleting item:", error);
+            }
+        };
+
         // ----------------- User Setting functions -----------------
         const saveSettings = async () => {
             try {
@@ -367,12 +406,27 @@ export default {
             }
         };
 
+        //Get Users liked items
+        const fetchUsersItems = async () => {
+            try {
+                const response = await fetch('/api/user-items');
+                if (!response.ok) throw new Error("Failed to fetch liked items");
+
+                const data = await response.json();
+                myItems.value = data;
+                console.log("Loaded Users items:", likedItems.value);
+            } catch (error) {
+                console.error("Error loading Users items:", error);
+            }
+        };
+
         onMounted(() => {
             if (activeTab.value === 'messages') {
                 fetchContacts();
             }
             fetchUserData();
             fetchLikedItems();
+            fetchUsersItems();
         });
 
         onUnmounted(() => clearInterval(poller));    
@@ -419,7 +473,9 @@ export default {
             
             // Items
             likedItems,
+            myItems,
             soldItems,
+            deleteUserItem,
         };
     }
 };
