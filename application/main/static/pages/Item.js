@@ -197,6 +197,10 @@ export default {
         // Send a new message
         const sendMessage = async () => {
             if (!newMessage.value.trim() || !isLoggedIn.value) return;
+            if (user.value.user_id === item.value.seller_id) {
+                alert("You cannot send a message to yourself.");
+                return;
+            }
             const res = await fetch('/api/messages', {
                 method: 'POST',
                 credentials: 'include',

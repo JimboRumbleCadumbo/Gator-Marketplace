@@ -309,7 +309,7 @@ export default {
                 if (!response.ok) throw new Error("Failed to delete item.");
                 myItems.value = myItems.value.filter(item => item.item_id !== itemId);
                 soldItems.value = soldItems.value.filter(item => item.item_id !== itemId);
-                console.log('Item deleted successfully!!');
+                alert('Item deleted successfully!!');
             } catch (error) {
                 console.error(error);
             }
@@ -330,7 +330,7 @@ export default {
                     myItems.value = myItems.value.filter(item => item.item_id !== itemId);
                     soldItems.value.push(soldItem);
                 }
-                console.log('Item marked as sold successfully!!');
+                alert('Item marked as sold successfully!!');
             } catch (error) {
                 console.error(error);
             }
@@ -357,7 +357,7 @@ export default {
                     const data = await response.json();
                     throw new Error(data.error || 'Failed to update settings.');
                 }
-                console.log('Updated successfully!!');
+                alert('Updated successfully!!');
             } catch (error) {
                 console.error(error);
             }
