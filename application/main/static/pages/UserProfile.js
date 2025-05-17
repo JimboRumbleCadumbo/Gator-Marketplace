@@ -79,15 +79,19 @@ export default {
                 </div>
             </div>
 
+            <!-- Sold Items -->
             <div v-if="activeTab === 'sold'" class="tab-content">
                 <h3>Sold Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card sold-card" v-for="item in soldItems" :key="item.id">
-                        <div class="sold-banner">SOLD</div>
-                        <img :src="item.image || 'https://placehold.co/600x400'" alt="Item Image" />
-                        <h3>{{ item.name }}</h3>
-                        <p>{{ item.price }}</p>
-                        <p>{{ item.description }}</p>
+                    <div v-for="item in soldItems" :key="item.item_id" class="card-item">
+                        <div class="result-card sold-card">
+                            <div class="sold-banner">SOLD</div>
+                            <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.price }}</p>
+                            <p>{{ item.description }}</p>
+                        </div>
+                        <button @click.stop="deleteUserItem(item.item_id, 'sold')" class="delete-btn">Delete</button>
                     </div>
                 </div>
             </div>
@@ -226,6 +230,7 @@ export default {
         // Items
         const likedItems = ref([]);
         const myItems = ref([]);
+        const soldItems = Vue.ref([]);
 
         // ----------------- Message functions -----------------
         async function safeJson(res) {
@@ -292,11 +297,6 @@ export default {
           
 
         // ----------------- Item functions -----------------
-      
-        const soldItems = Vue.ref([
-            { id: 1, name: "Example Sold" },
-            { id: 2, name: "Calculator" },
-        ]);
 
         const deleteUserItem = async (itemId) => {
             if (!confirm("Are you sure you want to delete this item?")) return;
@@ -309,11 +309,41 @@ export default {
 
                 if (!response.ok) throw new Error("Failed to delete item.");
 
-                // Remove the deleted item from the list without reloading
                 myItems.value = myItems.value.filter(item => item.item_id !== itemId);
+                soldItems.value = soldItems.value.filter(item => item.item_id !== itemId);
+
                 console.log("Item deleted:", itemId);
             } catch (error) {
                 console.error("Error deleting item:", error);
+            }
+        };
+
+        const markAsSold = async (itemId) => {
+            if (!confirm("Are you sure you want to mark this item as sold?")) return;
+
+            try {
+                const response = await fetch(`/api/user-items/${itemId}/sold`, {
+                    method: 'POST',
+                    credentials: 'include',
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.error || "Failed to mark item as sold.");
+                }
+                
+                // Find the item being marked as sold
+                const soldItem = myItems.value.find(item => item.item_id === itemId);
+
+                if (soldItem) {
+                    myItems.value = myItems.value.filter(item => item.item_id !== itemId);
+                    soldItems.value.push(soldItem);
+                }
+                
+                alert("Item marked as sold successfully!");
+            } catch (error) {
+                console.error("Error marking item as sold:", error);
+                alert(`Error: ${error.message}`);
             }
         };
 
@@ -407,16 +437,20 @@ export default {
         };
 
         //Get Users liked items
-        const fetchUsersItems = async () => {
+        const fetchUsersItems = async (status = 'active') => {
             try {
-                const response = await fetch('/api/user-items');
-                if (!response.ok) throw new Error("Failed to fetch liked items");
+                const response = await fetch(`/api/user-items?status=${status}`);
+                if (!response.ok) throw new Error(`Failed to fetch ${status} items`);
 
                 const data = await response.json();
-                myItems.value = data;
-                console.log("Loaded Users items:", likedItems.value);
+                if (status === 'active') {
+                    myItems.value = data;
+                } else {
+                    soldItems.value = data;
+                }
+                console.log(`Loaded User's ${status} items:`, data);
             } catch (error) {
-                console.error("Error loading Users items:", error);
+                console.error(`Error loading User's ${status} items:`, error);
             }
         };
 
@@ -426,7 +460,8 @@ export default {
             }
             fetchUserData();
             fetchLikedItems();
-            fetchUsersItems();
+            fetchUsersItems('active');
+            fetchUsersItems('sold');
         });
 
         onUnmounted(() => clearInterval(poller));    
@@ -476,6 +511,7 @@ export default {
             myItems,
             soldItems,
             deleteUserItem,
+            markAsSold,
         };
     }
 };

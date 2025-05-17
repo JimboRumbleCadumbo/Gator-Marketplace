@@ -179,6 +179,7 @@ def init_item_routes(app):
             sql_query = """
                 SELECT item_id, name, price, description, image 
                 FROM Item_Listing 
+                WHERE is_active = 1 
                 ORDER BY item_id DESC 
                 LIMIT 4
             """
@@ -223,23 +224,32 @@ def init_item_routes(app):
         """
         API endpoint for fetching items posted by the logged-in user.
 
+        Query param:
+        - status: 'active' (default) or 'sold'
+
         Returns:
-            JSON response with user's posted items.
+            JSON response with user's posted items filtered by status.
         """
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({"error": "Not logged in"}), 401
 
+        status = request.args.get('status', 'active').lower()
+        if status == 'sold':
+            is_active = 0
+        else:
+            is_active = 1  # default to active items
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         
         try:
-            # Fetch items posted by the logged-in user
             sql_query = """
                 SELECT il.item_id, il.name, il.price, il.image 
                 FROM Item_Listing il
                 WHERE il.user_id = %s
+                AND il.is_active = %s
             """
-            cursor.execute(sql_query, (user_id,))
+            cursor.execute(sql_query, (user_id, is_active))
             results = cursor.fetchall()
             
             processed_results = []
@@ -251,7 +261,6 @@ def init_item_routes(app):
                     "image_base64": None
                 }
                 
-                # Convert image BLOB to base64 if it exists
                 if item['image']:
                     try:
                         image_data = base64.b64encode(item['image']).decode('utf-8')
@@ -271,7 +280,6 @@ def init_item_routes(app):
         
         finally:
             cursor.close()
-
 
     @app.route('/api/user-items/<int:item_id>', methods=['DELETE'])
     def delete_user_item(item_id):
@@ -302,6 +310,39 @@ def init_item_routes(app):
             import traceback
             error_details = traceback.format_exc()
             print(f"Delete Item API error: {error_details}")
+            return jsonify({"error": str(e), "details": error_details}), 500
+        
+        finally:
+            cursor.close()
+
+    @app.route('/api/user-items/<int:item_id>/sold', methods=['POST'])
+    def mark_item_as_sold(item_id):
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({"error": "Not logged in"}), 401
+
+        cursor = mysql.connection.cursor()
+        
+        try:
+            # Update only if the item belongs to the user
+            sql_update = """
+                UPDATE Item_Listing
+                SET is_active = 0
+                WHERE item_id = %s AND user_id = %s
+            """
+            cursor.execute(sql_update, (item_id, user_id))
+            mysql.connection.commit()
+
+            if cursor.rowcount == 0:
+                # No rows affected means either item doesn't exist or doesn't belong to user
+                return jsonify({"error": "Item not found or you do not have permission to modify this item."}), 404
+            
+            return jsonify({"message": "Item marked as sold successfully."})
+        
+        except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"Mark item as sold API error: {error_details}")
             return jsonify({"error": str(e), "details": error_details}), 500
         
         finally:
