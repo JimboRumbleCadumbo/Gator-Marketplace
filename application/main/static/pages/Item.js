@@ -43,8 +43,14 @@ export default {
                         
                             <div class="buttons">
                                 <button @click="initiateChat('rent')" :disabled="item.rentalOption === 'Not for Rent' || !isLoggedIn" class="item-button">Rent</button>
-                                <button @click="initiateChat('buy')" :disabled="!isLoggedIn" class="item-button">Buy</button>
-                                <span v-if="!isLoggedIn" class="tooltip">You need to log in to chat</span>
+                                <button
+                                    @click="initiateChat('buy')" 
+                                    :disabled="!isLoggedIn || !item.isActive" 
+                                    class="item-button">
+                                    Buy
+                                </button>
+                                <span v-if="!isLoggedIn" class="tooltip">You need to logged in to chat</span>
+                                <span v-if="!item.isActive" class="tooltip">This item has been sold</span>
                             </div>
                         </div>
                     </div>               
@@ -148,6 +154,7 @@ export default {
                     rentalOption: data.rental_option ? "Available for Rent" : "Not for Rent",
                     category: data.category_name,
                     image: data.image ? `data:image/jpeg;base64,${data.image}` : "https://placehold.co/600x400",
+                    isActive: data.is_active,
                 };
 
                 if (isLoggedIn.value) {

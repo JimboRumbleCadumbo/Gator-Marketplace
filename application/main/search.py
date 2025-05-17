@@ -52,7 +52,7 @@ def init_search_routes(app):
         try:
             # Build the SQL query based on filter
             if filter_by == 'All':
-                sql_query = "SELECT * FROM Item_Listing"
+                sql_query = "SELECT * FROM Item_Listing WHERE is_active = 1"
                 params = None
                 
                 if query:
@@ -64,7 +64,7 @@ def init_search_routes(app):
                 if category_id is None:
                     return jsonify({"error": "Invalid category"}), 400
                 
-                sql_query = "SELECT * FROM Item_Listing WHERE category_id = %s"
+                sql_query = "SELECT * FROM Item_Listing WHERE category_id = %s AND is_active = 1"
                 params = (category_id,)
                 
                 if query:
