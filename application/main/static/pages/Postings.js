@@ -108,6 +108,7 @@ export default {
         </footer>
     `,
     setup() {
+        const router = VueRouter.useRouter();
         const itemData = Vue.ref({
             name: '',
             price: '',
@@ -167,6 +168,7 @@ export default {
                 console.log('Listing created successfully:', data);
                 alert('Item listing created successfully!');
                 resetForm();
+                router.push('/');
             })
             .catch(error => {
                 console.error('Error creating listing:', error);

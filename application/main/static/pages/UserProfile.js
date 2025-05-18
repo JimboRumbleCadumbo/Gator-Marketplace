@@ -96,28 +96,32 @@ export default {
             <div v-if="activeTab === 'sold'" class="tab-content">
                 <h3>Sold Items</h3>
                 <div class="dashboard-product-grid">
-                    <div v-for="item in soldItems" :key="item.item_id" class="card-item">
-                        <div class="result-card sold-card">
+                    <router-link 
+                        v-for="item in soldItems" 
+                        :key="item.item_id" 
+                        :to="'/item?id=' + item.item_id" 
+                        class="card-link"
+                    >
+                        <div class="result-card">
                             <div class="sold-banner">SOLD</div>
                             <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                             <h3>{{ item.name }}</h3>
                             <p>{{ item.price }}</p>
                         </div>
-                    </div>
+                    </router-link>
                 </div>
             </div>
 
             <div v-if="activeTab === 'rented'" class="tab-content">
                 <h3>Rented Items</h3>
                 <div class="dashboard-product-grid">
-                    <div class="result-card rented-card" v-for="item in soldItems" :key="item.item_id">
+                    <div class="result-card rented-card" v-for="item in rentedItems" :key="item.item_id">
                         <div class="return-banner">
                             Return by: {{ item.return_date || 'TBD' }}
                         </div>
                         <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                         <h3>{{ item.name }}</h3>
                         <p>{{ item.price }}</p>
-                        <p>{{ item.description }}</p>
                     </div>
                 </div>
             </div>
@@ -245,6 +249,27 @@ export default {
         const likedItems = ref([]);
         const myItems = ref([]);
         const soldItems = ref([]);
+        const rentedItems = [{
+            item_id: 1,
+            name: "Portable Projector",
+            price: "$25/day",
+            return_date: "2025-05-25",
+            image_base64: "https://placehold.co/600x400?text=Portable+Projector"
+        },
+        {
+            item_id: 2,
+            name: "Electric Scooter",
+            price: "$15/day",
+            return_date: "2025-05-20",
+            image_base64: "https://placehold.co/600x400?text=Electric+Scooter"
+        },
+        {
+            item_id: 3,
+            name: "Camping Tent",
+            price: "$10/day",
+            return_date: "2025-05-22",
+            image_base64: "https://placehold.co/600x400?text=Camping+Tent"
+        }];
 
         // ----------------- Message functions -----------------
 
@@ -486,6 +511,10 @@ export default {
             selectedConv,
             messages,
             newMessage,
+            likedItems,
+            myItems,
+            soldItems,
+            rentedItems,
             selectConv,
             fetchConversations,
             sendMessage,
@@ -493,9 +522,6 @@ export default {
             markAsSold,
             saveSettings,
             onIconChange,
-            likedItems,
-            myItems,
-            soldItems
         };
     }
 };
