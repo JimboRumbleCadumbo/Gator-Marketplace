@@ -82,3 +82,31 @@
   text-decoration: underline;
   color: #004080;
 }
+
+#signup-form .form-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+#signup-form .form-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+#signup-form .tos-link {
+  color: #0066c0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+#signup-form .tos-link:hover {
+  text-decoration: underline;
+  color: #004080;
+}
+
+#signup-form label[for="accept-tos"] {
+  margin: 0;
+}

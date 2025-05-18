@@ -22,6 +22,13 @@ export default {
             <label for="confirm-password" class="required-label">Confirm Password</label>
             <input type="password" id="confirm-password" v-model="confirmPassword" required/>
 
+            <div class="form-group">
+                <input type="checkbox" id="accept-tos" v-model="acceptTOS" required />
+                <label for="accept-tos">
+                    I accept the <router-link to="/terms" class="tos-link">Terms of Service</router-link>.
+                </label>
+            </div>
+
             <button type="submit">Sign Up</button>
 
             <p class="toggle-link">

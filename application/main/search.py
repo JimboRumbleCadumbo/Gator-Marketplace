@@ -52,11 +52,11 @@ def init_search_routes(app):
         try:
             # Build the SQL query based on filter
             if filter_by == 'All':
-                sql_query = "SELECT * FROM Item_Listing WHERE is_active = 1"
+                sql_query = "SELECT * FROM Item_Listing"
                 params = None
                 
                 if query:
-                    sql_query += " WHERE name LIKE %s"
+                    sql_query += " WHERE name LIKE %s AND is_active = 1"
                     params = ('%' + query + '%',)
             else:
                 # Get category ID from constants

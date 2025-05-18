@@ -32,6 +32,11 @@ export default {
         const router = VueRouter.useRouter();
 
         function submitSearch() {
+            if(searchQuery.value.length > 40) {
+                alert("Search query is too long. Please limit to 40 characters.");
+                return;
+            }
+                
             fetch("/api/search", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
