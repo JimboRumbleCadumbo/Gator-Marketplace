@@ -1,6 +1,11 @@
+/*
+ * @file Item.js
+ * Fetches and displays individual item, including image, price, category,
+ * quality, seller info, and description. Also includes buttons to
+ * buy or rent, and a basic chat UI for messaging the seller.
+ */
 export default {
     template: `
-    <div>
         <Navbar></Navbar>
         <div class="page-wrapper">
             <div class="container">
@@ -76,21 +81,20 @@ export default {
                         </div>
                     </div>
                     <div class="chat-input">
-                        <input 
-                            type="text" 
-                            v-model="newMessage" 
-                            @keyup.enter="sendMessage" 
-                            placeholder="Type a message..." 
+                    <input 
+                        type="text" 
+                        v-model="newMessage" 
+                        @keyup.enter="sendMessage" 
+                        placeholder="Type a message..." 
                         />
-                        <button @click="sendMessage">Send</button>
-                    </div>
+                    <button @click="sendMessage">Send</button>
                 </div>
             </div>
-            <footer class="footer">
-                <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>
-                <router-link to="/about" class="footer-link">About</router-link>
-            </footer>
         </div>
+        <footer class="footer">
+            <p>&copy; 2025 CSC 648 Team 05. All rights reserved.</p>
+            <router-link to="/about" class="footer-link">About</router-link>
+        </footer>
     </div>
     `,
     setup() {
@@ -110,12 +114,12 @@ export default {
         // Safe JSON parser
         async function safeJson(res) {
             if (!res.ok) {
-                console.error('Fetch failed', res.status, await res.text());
+                console.error("Fetch failed", res.status, await res.text());
                 return null;
             }
-            const ct = res.headers.get('Content-Type') || '';
-            if (!ct.includes('application/json')) {
-                console.error('Expected JSON, got:', ct, await res.text());
+            const ct = res.headers.get("Content-Type") || "";
+            if (!ct.includes("application/json")) {
+                console.error("Expected JSON, got:", ct, await res.text());
                 return null;
             }
             return res.json();
@@ -124,10 +128,10 @@ export default {
         // Fetch current user session
         const fetchUserData = async () => {
             try {
-                const sessionResponse = await fetch('/api/session');
+                const sessionResponse = await fetch("/api/session");
                 const sessionData = await sessionResponse.json();
                 isLoggedIn.value = sessionData.logged_in || false;
-                console.log("isLoggedin", isLoggedIn.value);
+                // console.log("isLoggedin", isLoggedIn.value);
 
                 if (isLoggedIn.value) {
                     user.value = {
@@ -145,10 +149,11 @@ export default {
             const itemId = route.query.id;
             try {
                 const response = await fetch(`/api/item?id=${itemId}`);
-                if (!response.ok) throw new Error("Failed to fetch item details");
-                    const data = await response.json();
-                    console.log("Data that can be loaded:", data);
-                    item.value = {
+                if (!response.ok)
+                    throw new Error("Failed to fetch item details");
+                const data = await response.json();
+                // console.log("Data that can be loaded:", data);
+                item.value = {
                     id: data.item_id,
                     name: data.name,
                     description: data.description,
@@ -157,18 +162,23 @@ export default {
                     seller_name: data.seller_name,
                     seller_rating: data.seller_rating,
                     quality: data.quality,
-                    rentalOption: data.rental_option ? "Available for Rent" : "Not for Rent",
+                    rentalOption: data.rental_option
+                        ? "Available for Rent"
+                        : "Not for Rent",
                     category: data.category_name,
-                    image: data.image ? `data:image/jpeg;base64,${data.image}` : "https://placehold.co/600x400",
+                    image: data.image
+                        ? `data:image/jpeg;base64,${data.image}`
+                        : "https://placehold.co/600x400",
                     isActive: data.is_active,
                 };
 
                 if (isLoggedIn.value) {
-                    const likeResponse = await fetch(`/api/wishlist/check?user_id=${user.value.user_id}&item_id=${item.value.id}`);
+                    const likeResponse = await fetch(
+                        `/api/wishlist/check?user_id=${user.value.user_id}&item_id=${item.value.id}`
+                    );
                     const likeData = await likeResponse.json();
                     isLiked.value = likeData.liked;
                 }
-
             } catch (error) {
                 console.error("Error loading item details:", error);
                 alert("Failed to load item details.");
@@ -179,17 +189,17 @@ export default {
         const loadHistory = async () => {
             if (!item.value.seller_id) return;
             const res = await fetch(
-                `/api/messages/${item.value.seller_id}?item_id=${item.value.id}`, 
-                { credentials: 'include' }
-              );
-              
+                `/api/messages/${item.value.seller_id}?item_id=${item.value.id}`,
+                { credentials: "include" }
+            );
+
             const data = await safeJson(res);
             if (data && data.success) {
-                messages.value = data.messages.map(msg => ({
+                messages.value = data.messages.map((msg) => ({
                     id: msg.id,
                     text: msg.text,
                     sender_id: msg.sender_id,
-                    item_id: msg.item_id
+                    item_id: msg.item_id,
                 }));
             }
         };
@@ -201,19 +211,19 @@ export default {
                 alert("You cannot send a message to yourself.");
                 return;
             }
-            const res = await fetch('/api/messages', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
+            const res = await fetch("/api/messages", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     receiver_id: item.value.seller_id,
-                    text:        newMessage.value,
-                    item_id:     item.value.id
-                  })                  
+                    text: newMessage.value,
+                    item_id: item.value.id,
+                }),
             });
             const data = await safeJson(res);
             if (data && data.success) {
-                newMessage.value = '';
+                newMessage.value = "";
                 await loadHistory();
             }
         };
@@ -222,9 +232,9 @@ export default {
         const initiateChat = async (actionType) => {
             chatVisible.value = true;
             await loadHistory();
-            if (actionType === 'buy') {
+            if (actionType === "buy") {
                 newMessage.value = `I want to buy ${item.value.name} (${item.value.price}).`;
-            } else if (actionType === 'rent') {
+            } else if (actionType === "rent") {
                 newMessage.value = `I want to rent ${item.value.name}.`;
             }
         };
@@ -237,10 +247,10 @@ export default {
             }
 
             try {
-                const response = await fetch('/api/wishlist/toggle', {
-                    method: 'POST',
+                const response = await fetch("/api/wishlist/toggle", {
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
                         user_id: user.value.user_id,
@@ -261,7 +271,7 @@ export default {
             }
 
             console.log("Like button clicked. Liked:", isLiked.value);
-        }
+        };
 
         // Navigate to seller profile
         const goToSellerProfile = () => {
@@ -269,7 +279,7 @@ export default {
         };
 
         // Watch chat visibility to start/stop polling
-        watch(chatVisible, visible => {
+        watch(chatVisible, (visible) => {
             if (visible) {
                 loadHistory();
                 poller = setInterval(loadHistory, 5000);
@@ -301,10 +311,14 @@ export default {
             newMessage,
             initiateChat,
             sendMessage,
-            hideChat: () => { chatVisible.value = false; },
-            showChat: () => { chatVisible.value = true; },
+            hideChat: () => {
+                chatVisible.value = false;
+            },
+            showChat: () => {
+                chatVisible.value = true;
+            },
             toggleLike,
-            goToSellerProfile
+            goToSellerProfile,
         };
-    }
+    },
 };

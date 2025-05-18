@@ -1,5 +1,5 @@
 export default {
-  template: `
+    template: `
     <Navbar></Navbar>
     <div class="page-wrapper">
       <div class="container">
@@ -36,69 +36,69 @@ export default {
         <router-link to="/about" class="footer-link">About</router-link>
       </footer>
     </div>
-  `,
-  setup() {
-    const email = Vue.ref('');
-    const password = Vue.ref('');
-    const confirmPassword = Vue.ref('');
-    const userName = Vue.ref('');
-    const fullName = Vue.ref('');
+    `,
+    setup() {
+        const email = Vue.ref("");
+        const password = Vue.ref("");
+        const confirmPassword = Vue.ref("");
+        const userName = Vue.ref("");
+        const fullName = Vue.ref("");
 
-    async function handleSignup() {
-      if (
-        !email.value.endsWith('@sfsu.edu') &&
-        !email.value.endsWith('@mail.sfsu.edu')
-      ) {
-        alert('Only SFSU email addresses are allowed.');
-        return;
-      }
+        async function handleSignup() {
+            if (
+                !email.value.endsWith("@sfsu.edu") &&
+                !email.value.endsWith("@mail.sfsu.edu")
+            ) {
+                alert("Only SFSU email addresses are allowed.");
+                return;
+            }
 
-      if (password.value !== confirmPassword.value) {
-        alert('Passwords do not match.');
-        return;
-      }
+            if (password.value !== confirmPassword.value) {
+                alert("Passwords do not match.");
+                return;
+            }
 
-      try {
-        const res = await fetch('/api/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_name: userName.value,
-            full_name: fullName.value,
-            email: email.value,
-            password: password.value,
-            confirmPassword: confirmPassword.value
-          })
-        });
+            try {
+                const res = await fetch("/api/signup", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        user_name: userName.value,
+                        full_name: fullName.value,
+                        email: email.value,
+                        password: password.value,
+                        confirmPassword: confirmPassword.value,
+                    }),
+                });
 
-        const contentType = res.headers.get("content-type");
+                const contentType = res.headers.get("content-type");
 
-        if (contentType && contentType.includes("application/json")) {
-          const data = await res.json();
-          if (data.error) {
-            alert(`Signup failed: ${data.error}`);
-          } else {
-            alert("Account created successfully!");
-            window.location.href = "/login";
-          }
-        } else {
-          const text = await res.text();
-          console.error("Unexpected response:", text);
-          alert("Unexpected response from server. Check console.");
+                if (contentType && contentType.includes("application/json")) {
+                    const data = await res.json();
+                    if (data.error) {
+                        alert(`Signup failed: ${data.error}`);
+                    } else {
+                        alert("Account created successfully!");
+                        window.location.href = "/login";
+                    }
+                } else {
+                    const text = await res.text();
+                    console.error("Unexpected response:", text);
+                    alert("Unexpected response from server. Check console.");
+                }
+            } catch (err) {
+                console.error("Signup error:", err);
+                alert("Something went wrong. Please try again.");
+            }
         }
-      } catch (err) {
-        console.error("Signup error:", err);
-        alert("Something went wrong. Please try again.");
-      }
-    }
 
-    return {
-      email,
-      password,
-      confirmPassword,
-      userName,
-      fullName,
-      handleSignup
-    };
-  }
+        return {
+            email,
+            password,
+            confirmPassword,
+            userName,
+            fullName,
+            handleSignup,
+        };
+    },
 };

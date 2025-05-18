@@ -38,7 +38,6 @@ def init_item_routes(app):
                 print(f"Error encoding image: {e}")
                 image_base64 = None
 
-        print("Seller rating:", item["rating"])
         # Map the database result to a dictionary
         item_data = {
             "item_id": item["item_id"],

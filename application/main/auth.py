@@ -131,13 +131,11 @@ def init_auth_routes(app):
         if user['user_icon']:
             # Check if the icon is SVG by inspecting the file content or extension
             if b'<svg' in user['user_icon'][:100].lower() or b'<?xml' in user['user_icon'][:100].lower():
-                        print("Detected SVG image.")
                         user_icon_base64 = f"data:image/svg+xml;base64,{base64.b64encode(user['user_icon']).decode('utf-8')}"
             else:
                 import imghdr
                 # Detect the image type (png, jpeg, svg, etc.)
                 image_type = imghdr.what(None, user['user_icon'])
-                print(f"Detected image type: {image_type}")
 
                 if not image_type:  # Default to jpeg if detection fails
                     image_type = "jpeg"

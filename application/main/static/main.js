@@ -1,8 +1,12 @@
+/**
+ * @file main.js
+ * This file serves as the main entry point for the Vue application.
+ * Sets up routes, registers global components
+ */
 const { createApp, reactive } = Vue;
 const { createRouter, createWebHistory } = VueRouter;
 
 //Page imports
-//import Home from "/static/pages/Home.js";
 import About from "/static/pages/About.js";
 import Alexis from "/static/pages/Alexis.js";
 import Athan from "/static/pages/Athan.js";
@@ -30,16 +34,16 @@ const routes = [
     { path: "/about", component: About },
     { path: "/postings", component: Postings },
     { path: "/item", component: Item },
-    { path: "/dashboard", component: Dashboard},
-    { path: "/results", component: Results},
+    { path: "/dashboard", component: Dashboard },
+    { path: "/results", component: Results },
     { path: "/about/alexis", component: Alexis },
     { path: "/about/athan", component: Athan },
     { path: "/about/david", component: David },
     { path: "/about/jun", component: Jun },
     { path: "/about/yuming", component: Yuming },
-    { path: "/login", component: Login},
-    { path: "/signup", component: Signup},
-    { path: "/profile", component: UserProfile},
+    { path: "/login", component: Login },
+    { path: "/signup", component: Signup },
+    { path: "/profile", component: UserProfile },
 ];
 
 const router = createRouter({

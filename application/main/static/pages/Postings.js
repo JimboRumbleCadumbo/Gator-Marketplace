@@ -105,15 +105,15 @@ export default {
     setup() {
         const router = VueRouter.useRouter();
         const itemData = Vue.ref({
-            name: '',
-            price: '',
-            description: '',
-            condition: '',
-            category: '',
+            name: "",
+            price: "",
+            description: "",
+            condition: "",
+            category: "",
             rentalOption: false,
-            image: null
+            image: null,
         });
-        
+
         const imagePreview = Vue.ref(null);
 
         function handleImageUpload(event) {
@@ -121,70 +121,71 @@ export default {
             if (file && file.type.startsWith("image/")) {
                 // Store the actual file object
                 itemData.value.image = file;
-                
+
                 // Create the preview as before
                 const reader = new FileReader();
                 reader.onload = () => {
-                  imagePreview.value = reader.result;
+                    imagePreview.value = reader.result;
                 };
                 reader.readAsDataURL(file);
             }
         }
-        
 
         function submitForm() {
             // Create FormData for file upload
             const formData = new FormData();
-            formData.append('name', itemData.value.name);
-            formData.append('price', itemData.value.price);
-            formData.append('description', itemData.value.description);
-            formData.append('condition', itemData.value.condition);
-            formData.append('category', itemData.value.category);
-            formData.append('rentalOption', itemData.value.rentalOption);
+            formData.append("name", itemData.value.name);
+            formData.append("price", itemData.value.price);
+            formData.append("description", itemData.value.description);
+            formData.append("condition", itemData.value.condition);
+            formData.append("category", itemData.value.category);
+            formData.append("rentalOption", itemData.value.rentalOption);
 
             if (itemData.value.image) {
-                formData.append('image', itemData.value.image);
+                formData.append("image", itemData.value.image);
             }
 
             // Send the request to the backend
-            fetch('/api/create-listing', {
-                method: 'POST',
-                body: formData
+            fetch("/api/create-listing", {
+                method: "POST",
+                body: formData,
             })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => {
-                        throw new Error(err.error || 'Failed to create listing');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Listing created successfully:', data);
-                alert('Item listing created successfully!');
-                resetForm();
-                router.push('/');
-            })
-            .catch(error => {
-                console.error('Error creating listing:', error);
-                alert('Failed to create listing: ' + error.message);
-            });
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.json().then((err) => {
+                            throw new Error(
+                                err.error || "Failed to create listing"
+                            );
+                        });
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log("Listing created successfully:", data);
+                    alert("Item listing created successfully!");
+                    resetForm();
+                    router.push("/");
+                })
+                .catch((error) => {
+                    console.error("Error creating listing:", error);
+                    alert("Failed to create listing: " + error.message);
+                });
         }
 
         function resetForm() {
             itemData.value = {
-                name: '',
-                price: '',
-                description: '',
-                condition: '',
-                location: '',
+                name: "",
+                price: "",
+                description: "",
+                condition: "",
+                location: "",
                 rentalOption: false,
-                image: null
+                image: null,
             };
             imagePreview.value = null;
             // Also reset the file input
-            const fileInput = document.getElementById('itemImage');
-            if (fileInput) fileInput.value = '';
+            const fileInput = document.getElementById("itemImage");
+            if (fileInput) fileInput.value = "";
         }
 
         return {
@@ -192,7 +193,7 @@ export default {
             imagePreview,
             handleImageUpload,
             submitForm,
-            resetForm
+            resetForm,
         };
-    }
+    },
 };
