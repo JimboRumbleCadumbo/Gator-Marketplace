@@ -4,7 +4,7 @@
  * with basic validation to ensure use of @sfsu.edu emails.
  */
 export default {
-  template: `
+    template: `
     <Navbar></Navbar>
     <div class="page-wrapper">
         <div class="container">
@@ -31,52 +31,60 @@ export default {
             <router-link to="/about" class="footer-link">About</router-link>
         </footer>
     </div>
-  `,
-  setup() {
-    const email = Vue.ref('');
-    const password = Vue.ref('');
+    `,
+    setup() {
+        const email = Vue.ref("");
+        const password = Vue.ref("");
 
-    function handleLogin() {
-      if (!email.value.endsWith('@sfsu.edu') && !email.value.endsWith('@mail.sfsu.edu')) {
-        alert('Please use your @sfsu.edu or @mail.sfsu.edu email address.');
-        return;
-      }
-      fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.value, password: password.value }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            return response.json().then((err) => {
-              throw new Error(err.error || 'Failed to log in');
-            });
-          }
-          return response.json();
-        })
-        .then((data) => {
-          alert('Login successful');
-          console.log('User:', data.user);
-          // Redirect to dashboard
-          window.location.href = '/dashboard';
-        })
-        .catch((error) => {
-          console.error('Login error:', error);
-          alert('Login failed: ' + error.message);
-        });
+        function handleLogin() {
+            if (
+                !email.value.endsWith("@sfsu.edu") &&
+                !email.value.endsWith("@mail.sfsu.edu")
+            ) {
+                alert(
+                    "Please use your @sfsu.edu or @mail.sfsu.edu email address."
+                );
+                return;
+            }
+            fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email.value,
+                    password: password.value,
+                }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.json().then((err) => {
+                            throw new Error(err.error || "Failed to log in");
+                        });
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    alert("Login successful");
+                    console.log("User:", data.user);
+                    // Redirect to dashboard
+                    window.location.href = "/dashboard";
+                })
+                .catch((error) => {
+                    console.error("Login error:", error);
+                    alert("Login failed: " + error.message);
+                });
 
-        //Google Analytics login event
-          if (typeof gtag === 'function') {
-            gtag('event', 'login', {
-            method: 'email'
-            });
-          }
-    }
+            //Google Analytics login event
+            if (typeof gtag === "function") {
+                gtag("event", "login", {
+                    method: "email",
+                });
+            }
+        }
 
-    return {
-      email,
-      password,
-      handleLogin,
-    };
-  }
+        return {
+            email,
+            password,
+            handleLogin,
+        };
+    },
 };

@@ -1,11 +1,9 @@
-/**
+/*
  * @file Dashboard.js
  * Displays a welcome banner and a grid of featured item cards.
  */
-console.log("Dashboard.js Loaded!");
-
 export default {
-  template: `
+    template: `
     <Navbar></Navbar>
     <div class="page-wrapper">
         <div class="container">
@@ -41,37 +39,37 @@ export default {
             <router-link to="/about" class="footer-link">About</router-link>
         </footer>
     </div>
-  `,
-  setup() {
-    //Added to make sure searchresults are reset if you hit home page
-    const route = VueRouter.useRoute();
-    const searchData = Vue.inject("searchData");
-    const featuredItems = Vue.ref([]);
+    `,
+    setup() {
+        //Added to make sure searchresults are reset if you hit home page
+        const route = VueRouter.useRoute();
+        const searchData = Vue.inject("searchData");
+        const featuredItems = Vue.ref([]);
 
-    Vue.watchEffect(() => {
-        //Reset the results when on the home page
-        if (route.path === "/") {
-            searchData.results = [];
-        }
-    });
+        Vue.watchEffect(() => {
+            //Reset the results when on the home page
+            if (route.path === "/") {
+                searchData.results = [];
+            }
+        });
 
-    const fetchFeaturedItems = async () => {
-        try {
-            const response = await fetch('/api/featured-items');
-            console.log("Response:", response);
-            const data = await response.json();
-            featuredItems.value = data;
-        } catch (error) {
-            console.error("Error fetching featured items:", error);
-        }
-    };
+        const fetchFeaturedItems = async () => {
+            try {
+                const response = await fetch("/api/featured-items");
+                // console.log("Response:", response);
+                const data = await response.json();
+                featuredItems.value = data;
+            } catch (error) {
+                console.error("Error fetching featured items:", error);
+            }
+        };
 
-    fetchFeaturedItems();
+        fetchFeaturedItems();
 
-    return {
-        searchData,
-        featuredItems,
-        fetchFeaturedItems,
-    };
-  },
+        return {
+            searchData,
+            featuredItems,
+            fetchFeaturedItems,
+        };
+    },
 };

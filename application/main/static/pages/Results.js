@@ -3,10 +3,8 @@
  * Displays search results from the marketplace.
  * Shows result cards from searchData.
  */
-console.log("Dashboard.js Loaded!");
-
 export default {
-  template: `
+    template: `
     <Navbar></Navbar>
     <div class="page-wrapper">
         <div class="container">
@@ -47,51 +45,50 @@ export default {
         </footer>
     </div>
   `,
-  setup() {
-    //Added to make sure searchresults are reset if you hit home page
-    const route = VueRouter.useRoute();
-    const searchData = Vue.inject("searchData");
+    setup() {
+        //Added to make sure searchresults are reset if you hit home page
+        const route = VueRouter.useRoute();
+        const searchData = Vue.inject("searchData");
 
-    const filteredResults = Vue.ref([]);
+        const filteredResults = Vue.ref([]);
 
-    // Price range states
-    const minPrice = Vue.ref(0);
-    const maxPrice = Vue.ref();
+        // Price range states
+        const minPrice = Vue.ref(0);
+        const maxPrice = Vue.ref();
 
-    Vue.watchEffect(() => {
-        //Reset the results when on the home page
-        if (route.path === "/") {
-            searchData.results = [];
-        }
+        Vue.watchEffect(() => {
+            //Reset the results when on the home page
+            if (route.path === "/") {
+                searchData.results = [];
+            }
 
-        filteredResults.value = searchData.results;
-    });
-
-    const applyFilter = () => {
-        filteredResults.value = searchData.results.filter((item) => {
-            const price = parseFloat(item.price || item.cost || 0);
-            return price >= minPrice.value && price <= maxPrice.value;
+            filteredResults.value = searchData.results;
         });
-    };
 
-    const clearFilter = () => {
-        minPrice.value = 0;
-        maxPrice.value = null;
-        filteredResults.value = searchData.results;
-    };
+        const applyFilter = () => {
+            filteredResults.value = searchData.results.filter((item) => {
+                const price = parseFloat(item.price || item.cost || 0);
+                return price >= minPrice.value && price <= maxPrice.value;
+            });
+        };
 
-    Vue.onMounted(() => {
-        filteredResults.value = searchData.results;
-    });
+        const clearFilter = () => {
+            minPrice.value = 0;
+            maxPrice.value = null;
+            filteredResults.value = searchData.results;
+        };
 
-    return {
-        searchData,
-        minPrice,
-        maxPrice,
-        filteredResults,
-        applyFilter,
-        clearFilter,
-        
-    };
-  },
+        Vue.onMounted(() => {
+            filteredResults.value = searchData.results;
+        });
+
+        return {
+            searchData,
+            minPrice,
+            maxPrice,
+            filteredResults,
+            applyFilter,
+            clearFilter,
+        };
+    },
 };

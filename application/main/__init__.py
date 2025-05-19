@@ -3,6 +3,7 @@ import os
 from main import search, postings, items, auth, messaging
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
+import threading
 
 __version__ = "0.1.0" 
 
@@ -37,6 +38,27 @@ items.init_item_routes(app)
 app.secret_key = os.getenv('FLASK_SESSION_SECRET_KEY')
 auth.init_auth_routes(app)
 messaging.init_message_routes(app, mysql)
+
+# Concurrency limiter globals
+current_requests = 0
+lock = threading.Lock()
+MAX_CONCURRENT_REQUESTS = 50
+
+@app.before_request
+def limit_concurrent_requests():
+    global current_requests
+    with lock:
+        print("Current request count:", current_requests)
+        if current_requests >= MAX_CONCURRENT_REQUESTS:
+            return "…traffic overload…", 503
+        current_requests += 1
+
+@app.after_request
+def decrement_concurrent_requests(response):
+    global current_requests
+    with lock:
+        current_requests = max(current_requests - 1, 0)
+    return response
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
