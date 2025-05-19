@@ -2,12 +2,13 @@
 Main module for the Gator Savvy application.
 """
 
-from flask import Flask, render_template, session
+from flask import send_from_directory, Flask, render_template, session
 import os
 from main import search, postings, items, auth, messaging
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 import threading
+
 
 __version__ = "0.1.0" 
 
@@ -47,6 +48,9 @@ messaging.init_message_routes(app, mysql)
 current_requests = 0
 lock = threading.Lock()
 MAX_CONCURRENT_REQUESTS = 50
+
+# Doxygen file location
+DOXYGEN_HTML_DIR = "./Doxygen/html"
 
 @app.before_request
 def limit_concurrent_requests():
@@ -111,5 +115,15 @@ def catch_all(path):
     }
     return render_template('index.html', login_state=login_state)
 
+# Doxygen Routes
+@app.route("/docs/<path:filename>")
+def docs(filename):
+    return send_from_directory(DOXYGEN_HTML_DIR, filename)
+
+@app.route("/docs/")
+def docs_index():
+    return send_from_directory(DOXYGEN_HTML_DIR, "index.html")
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, threaded=True)  # Default Flask server (not for production)
+    
