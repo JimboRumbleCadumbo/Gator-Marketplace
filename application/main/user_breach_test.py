@@ -1,9 +1,8 @@
-#*********************************************************************************
-#   Command to run the test: 
-#       locust -f user_breach_test.py --headless -u 1000 -r 60 --host http://localhost:5000
-#   Meaning: to run 1000 users with 60 requests per minute
-#*********************************************************************************
-
+"""
+    Command to run the test: 
+        locust -f user_breach_test.py --headless -u 1000 -r 60 --host http://localhost:5000
+    Meaning: to run 1000 users with 60 requests per minute
+"""
 from locust import HttpUser, task, between
 
 class WebsiteUser(HttpUser):
