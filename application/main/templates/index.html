@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1GH93TZKR0"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-C1XVLBQRGE"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-C1XVLBQRGE");
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gator Savvy</title>
     <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
     <script src="https://unpkg.com/vue-router@4.2.5/dist/vue-router.global.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='signup.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='login.css') }}"
+    />
     <script>
-        window.__LOGIN_STATE__ = {{ login_state | tojson }};
+      window.__LOGIN_STATE__ = {{ login_state | tojson }};
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app">
-        <router-view></router-view>
+      <router-view></router-view>
     </div>
 
     <script type="module" src="/static/main.js"></script>
-
   </body>
 </html>
