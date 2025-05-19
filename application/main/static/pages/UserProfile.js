@@ -512,9 +512,7 @@ export default {
         };
 
         onMounted(() => {
-            if (activeTab.value === "messages") {
-                fetchConversations();
-            }
+            fetchConversations();
             fetchUserData();
             fetchLikedItems();
             fetchUsersItems("active");
@@ -525,19 +523,27 @@ export default {
 
         watch(activeTab, (tab) => {
             if (tab === "messages") {
+              // first time you land on Messages
+              fetchConversations();
+              if (selectedConv.value) {
+                loadHistory(selectedConv.value.id, selectedConv.value.item_id);
+              }
+          
+              // then start polling *both* the conv list *and* the chat history
+              poller = setInterval(() => {
                 fetchConversations();
-                poller = setInterval(() => {
-                    if (selectedConv.value)
-                        loadHistory(
-                            selectedConv.value.id,
-                            selectedConv.value.item_id
-                        );
-                }, 5000);
+                if (selectedConv.value) {
+                  loadHistory(
+                    selectedConv.value.id,
+                    selectedConv.value.item_id
+                  );
+                }
+              }, 5000);
             } else {
-                clearInterval(poller);
-                poller = null;
+              clearInterval(poller);
+              poller = null;
             }
-        });
+          });
 
         return {
             user,
