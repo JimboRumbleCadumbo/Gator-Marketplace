@@ -71,7 +71,7 @@ export default {
                         class="card-link"
                     >
                         <div class="result-card">
-                            <div v-if="!item.is_active" class="sold-banner">SOLD</div>
+                            <div v-if="item.status == 'sold'" class="sold-banner">SOLD</div>
                             <img :src="item.image_base64 || 'https://placehold.co/600x400'" alt="Item Image" />
                             <h3>{{ item.name }}</h3>
                             <p>{{ item.price }}</p>
@@ -134,7 +134,7 @@ export default {
                         <div class="chat-header">
                             <span>
                                 {{ selectedConv.name }}
-                                <strong v-if="selectedConv.is_active === 0">(SOLD)</strong>
+                                <strong v-if="selectedConv.status === 'sold'">(SOLD)</strong>
                             </span>
                         </div>
                         <div class="chat-messages">
@@ -290,7 +290,7 @@ export default {
                     id: m.contact_id,
                     item_id: m.item_id,
                     name: `${m.user_name} - ${m.item_name}`,
-                    is_active: m.is_active,
+                    status: m.item_status,
                 }));
                 if (!selectedConv.value && users.value.length)
                     selectConv(users.value[0]);

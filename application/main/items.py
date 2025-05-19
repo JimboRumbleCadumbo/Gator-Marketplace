@@ -48,7 +48,7 @@ def init_item_routes(app):
             "rental_option": bool(item["rental_option"]),
             "created_at": item["created_at"],
             "updated_at": item["updated_at"],
-            "is_active": bool(item["is_active"]),
+            "status": item["status"],
             "seller_id": item["user_id"],
             "seller_rating": item["rating"],
             "seller_name": item["user_name"], 
@@ -130,7 +130,7 @@ def init_item_routes(app):
         try:
             # Fetch the liked items for the logged-in user
             sql_query = """
-                SELECT il.item_id, il.name, il.price, il.image, il.is_active
+                SELECT il.item_id, il.name, il.price, il.image, il.status
                 FROM Wishlist w
                 JOIN Item_Listing il ON w.item_id = il.item_id
                 WHERE w.user_id = %s
@@ -146,7 +146,7 @@ def init_item_routes(app):
                     "name": item['name'],
                     "price": f"${item['price']:.2f}",
                     "image_base64": None,
-                    "is_active": bool(item["is_active"])
+                    "status": item["status"]
                 }
                 
                 # Convert image BLOB to base64 if it exists
@@ -178,7 +178,7 @@ def init_item_routes(app):
             sql_query = """
                 SELECT item_id, name, price, description, image 
                 FROM Item_Listing 
-                WHERE is_active = 1 
+                WHERE status = 'active'
                 ORDER BY item_id DESC 
                 LIMIT 4
             """
@@ -234,10 +234,6 @@ def init_item_routes(app):
             return jsonify({"error": "Not logged in"}), 401
 
         status = request.args.get('status', 'active').lower()
-        if status == 'sold':
-            is_active = 0
-        else:
-            is_active = 1  # default to active items
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         
@@ -246,9 +242,9 @@ def init_item_routes(app):
                 SELECT il.item_id, il.name, il.price, il.image 
                 FROM Item_Listing il
                 WHERE il.user_id = %s
-                AND il.is_active = %s
+                AND il.status = %s
             """
-            cursor.execute(sql_query, (user_id, is_active))
+            cursor.execute(sql_query, (user_id, status))
             results = cursor.fetchall()
             
             processed_results = []
@@ -339,7 +335,7 @@ def init_item_routes(app):
             # Update only if the item belongs to the user
             sql_update = """
                 UPDATE Item_Listing
-                SET is_active = 0
+                SET status = 'sold'
                 WHERE item_id = %s AND user_id = %s
             """
             cursor.execute(sql_update, (item_id, user_id))

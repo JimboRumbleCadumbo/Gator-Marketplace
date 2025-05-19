@@ -45,7 +45,6 @@ def init_posting_routes(app):
                 'rental_option': 1 if request.form.get('rentalOption') == 'true' else 0,
                 'description': request.form.get('description'),
                 'user_id': user_id,
-                'is_active': 1,
                 'item_id': max_item_id
             }
 
@@ -68,9 +67,9 @@ def init_posting_routes(app):
             # Database insertion
             query = """
             INSERT INTO Item_Listing 
-            (item_id, name, price, category_id, quality, rental_option, description, image, user_id, is_active)
+            (item_id, name, price, category_id, quality, rental_option, description, image, user_id)
             VALUES (%(item_id)s, %(name)s, %(price)s, %(category_id)s, %(quality)s, 
-                    %(rental_option)s, %(description)s, %(image)s, %(user_id)s, %(is_active)s)
+                    %(rental_option)s, %(description)s, %(image)s, %(user_id)s)
             """
             params = {**item_data, 'image': image_binary}
             
