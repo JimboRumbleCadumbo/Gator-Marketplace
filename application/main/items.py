@@ -1,15 +1,26 @@
+"""
+This module provides item routes for the Gator Savvy application.
+"""
 import base64
 from flask import Flask, request, jsonify, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 
 def init_item_routes(app):
+    """
+    Initialize item routes and MySQL configuration for the Flask application.
+    
+    :param app: Flask application instance
+    :return: None
+    """
     mysql = app.config.get('MYSQL_CONNECTION')
 
     @app.route('/api/item', methods=['GET'])
     def get_item():
         """
         API endpoint to fetch item details by ID.
+        
+        :return: JSON response with item details
         """
         item_id = request.args.get('id')
         if not item_id:
@@ -60,6 +71,11 @@ def init_item_routes(app):
     
     @app.route('/api/wishlist/toggle', methods=['POST'])
     def toggle_wishlist():
+        """
+        API endpoint to add or remove an item from the wishlist.
+        
+        :return: JSON response with wishlist status
+        """
         data = request.get_json()
         user_id = data.get('user_id')
         item_id = data.get('item_id')
@@ -97,6 +113,11 @@ def init_item_routes(app):
 
     @app.route('/api/wishlist/check', methods=['GET'])
     def check_wishlist():
+        """
+        API endpoint to check if an item is in the wishlist.
+        
+        :return: JSON response with wishlist status
+        """
         user_id = request.args.get('user_id')
         item_id = request.args.get('item_id')
 
@@ -118,8 +139,7 @@ def init_item_routes(app):
         """
         API endpoint for fetching liked items for the logged-in user.
         
-        Returns:
-            JSON response with liked items
+        :return: JSON response with liked items
         """
         user_id = session.get('user_id')
         if not user_id:
@@ -172,6 +192,11 @@ def init_item_routes(app):
 
     @app.route('/api/featured-items', methods=['GET'])
     def get_featured_items():
+        """
+        API endpoint for fetching featured items.
+        
+        :return: JSON response with featured items
+        """
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         
         try:
@@ -223,11 +248,7 @@ def init_item_routes(app):
         """
         API endpoint for fetching items posted by the logged-in user.
 
-        Query param:
-        - status: 'active' (default) or 'sold'
-
-        Returns:
-            JSON response with user's posted items filtered by status.
+        :return: JSON response with user's posted items
         """
         user_id = session.get('user_id')
         if not user_id:
@@ -280,6 +301,9 @@ def init_item_routes(app):
     def delete_user_item(item_id):
         """
         API endpoint to delete a user's posted item and associated likes in Wishlist.
+        
+        :param item_id: ID of the item to delete
+        :return: JSON response with deletion status
         """
         user_id = session.get('user_id')
         if not user_id:
@@ -325,6 +349,12 @@ def init_item_routes(app):
 
     @app.route('/api/user-items/<int:item_id>/sold', methods=['POST'])
     def mark_item_as_sold(item_id):
+        """
+        API endpoint to mark an item as sold.
+        
+        :param item_id: ID of the item to mark as sold
+        :return: JSON response with success message
+        """
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({"error": "Not logged in"}), 401

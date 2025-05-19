@@ -1,3 +1,6 @@
+"""
+This module provides posting routes for the Gator Savvy application.
+"""
 from flask import request, jsonify, session
 
 # Category mapping based on the database values
@@ -10,10 +13,20 @@ CATEGORY_MAP = {
 }
 
 def init_posting_routes(app):
+    """
+    Initialize posting routes and MySQL configuration for the Flask application.
+    
+    :param app: Flask application instance
+    """
     mysql = app.config.get('MYSQL_CONNECTION')
     
     @app.route('/api/create-listing', methods=['POST'])
     def create_listing():
+        """
+        API endpoint to create a new item listing.
+        
+        :return: JSON response with listing details
+        """
         try:
             # Get category ID from the category name
             category_name = request.form.get('category')

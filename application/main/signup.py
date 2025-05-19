@@ -1,3 +1,6 @@
+"""
+This module provides signup routes for the Gator Savvy application.
+"""
 from flask import Blueprint, request, jsonify, current_app
 import bcrypt
 
@@ -5,6 +8,11 @@ signup_bp = Blueprint('signup', __name__)
 
 @signup_bp.route('/signup', methods=['POST'])
 def signup():
+    """
+    API endpoint for user signup.
+    
+    :return: JSON response with signup status
+    """
     data = request.get_json()
 
     email = data.get('email')

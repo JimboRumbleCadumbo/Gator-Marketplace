@@ -1,3 +1,7 @@
+"""
+Main module for the Gator Savvy application.
+"""
+
 from flask import Flask, render_template, session
 import os
 from main import search, postings, items, auth, messaging
@@ -46,6 +50,11 @@ MAX_CONCURRENT_REQUESTS = 50
 
 @app.before_request
 def limit_concurrent_requests():
+    """
+    Limit the number of concurrent requests to a maximum of 50.
+
+    :return: None
+    """
     global current_requests
     with lock:
         print("Current request count:", current_requests)
@@ -55,6 +64,13 @@ def limit_concurrent_requests():
 
 @app.after_request
 def decrement_concurrent_requests(response):
+    """
+    Decrement the concurrent request count after each request.
+
+    :param response: The response object returned by the route functions
+
+    :return: The response object
+    """
     global current_requests
     with lock:
         current_requests = max(current_requests - 1, 0)
@@ -63,6 +79,13 @@ def decrement_concurrent_requests(response):
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
+    """
+    Catch-all route to render the index.html template.
+
+    :param path: The requested path
+
+    :return: The rendered index.html template
+    """
     user_id = session.get('user_id')
     user_name = session.get('user_name', '')
     user_icon = None

@@ -1,10 +1,25 @@
+"""
+This module provides message routes for the Gator Savvy application.
+"""
 from flask import request, jsonify, session
 from datetime import datetime
 import MySQLdb
 
-def init_message_routes(app, mysql):
+def init_message_routes(app, mysql):    
+    """
+    Initialize message routes.
+    
+    :param app: Flask application instance
+    :param mysql: MySQL database connection
+    :return: None
+    """
     @app.route('/api/messages', methods=['POST'])
     def send_message():
+        """
+        API endpoint to send a message.
+        
+        :return: JSON response with message details
+        """
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({'success': False, 'error': 'Not authenticated'}), 401
@@ -37,6 +52,11 @@ def init_message_routes(app, mysql):
 
     @app.route('/api/messages/fetchAllContact', methods=['GET'])
     def fetch_all_contact():
+        """
+        API endpoint to fetch all messages for a user.
+        
+        :return: JSON response with message details
+        """
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({'success': False, 'error': 'Not authenticated'}), 401
@@ -79,6 +99,12 @@ def init_message_routes(app, mysql):
 
     @app.route('/api/messages/<int:other_user_id>', methods=['GET'])
     def get_message_history(other_user_id):
+        """
+        API endpoint to fetch message history between two users.
+        
+        :param other_user_id: ID of the other user
+        :return: JSON response with message details
+        """
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({'success': False, 'error': 'Not authenticated'}), 401

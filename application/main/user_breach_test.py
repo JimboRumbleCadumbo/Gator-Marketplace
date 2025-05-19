@@ -1,4 +1,5 @@
 """
+    This test is to check if the server is under attack.
     Command to run the test: 
         locust -f user_breach_test.py --headless -u 1000 -r 60 --host http://localhost:5000
     Meaning: to run 1000 users with 60 requests per minute

@@ -1,13 +1,28 @@
+"""
+This module provides authentication routes for the Gator Savvy application.
+"""
 from flask import request, jsonify, session
 import bcrypt
 import base64
 from MySQLdb.cursors import DictCursor
 
 def init_auth_routes(app):
+    """
+    Initialize authentication routes and MySQL configuration for the Flask application.
+
+    :param app: Flask application instance
+    
+    :return: None
+    """
     mysql = app.config.get('MYSQL_CONNECTION')
 
     @app.route('/api/login', methods=['POST'])
     def login():
+        """
+        API endpoint for user login.
+        
+        :return: JSON response with login status
+        """
         data = request.get_json()
         email = data.get('email')
         password = data.get('password')
@@ -39,48 +54,55 @@ def init_auth_routes(app):
 
     @app.route('/api/signup', methods=['POST'])
     def signup():
-            data = request.get_json()
-            email = data.get('email')
-            password = data.get('password')
-            confirm_password = data.get('confirmPassword')
-            full_name = data.get('full_name')
-            user_name = data.get('user_name')
+        """
+        API endpoint for user signup.
+        
+        :return: JSON response with signup status        
+        """
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+        confirm_password = data.get('confirmPassword')
+        full_name = data.get('full_name')
+        user_name = data.get('user_name')
 
-            if not email or not password or not full_name or not user_name:
-                return jsonify({"error": "All fields are required"}), 400
+        if not email or not password or not full_name or not user_name:
+            return jsonify({"error": "All fields are required"}), 400
 
-            if not (email.endswith("@sfsu.edu") or email.endswith("@mail.sfsu.edu")):
-                return jsonify({"error": "Must use an @sfsu.edu or @mail.sfsu.edu email"}), 400
+        if not (email.endswith("@sfsu.edu") or email.endswith("@mail.sfsu.edu")):
+            return jsonify({"error": "Must use an @sfsu.edu or @mail.sfsu.edu email"}), 400
 
-            if password != confirm_password:
-                return jsonify({"error": "Passwords do not match"}), 400
+        if password != confirm_password:
+            return jsonify({"error": "Passwords do not match"}), 400
 
-            cursor = mysql.connection.cursor()
+        cursor = mysql.connection.cursor()
 
-            # Check for duplicates
-            cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
-            if cursor.fetchone():
-                return jsonify({"error": "Email already exists"}), 409
+        # Check for duplicates
+        cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"error": "Email already exists"}), 409
 
-            cursor.execute("SELECT * FROM User WHERE user_name = %s", (user_name,))
-            if cursor.fetchone():
-                return jsonify({"error": "Username already taken"}), 409
+        cursor.execute("SELECT * FROM User WHERE user_name = %s", (user_name,))
+        if cursor.fetchone():
+            return jsonify({"error": "Username already taken"}), 409
 
-            # Hash and insert
-            hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-            cursor.execute(
-                "INSERT INTO User (email, password_hash, full_name, user_name, role) VALUES (%s, %s, %s, %s, %s)",
-                (email, hashed_pw, full_name, user_name, 'user')
-            )
-            mysql.connection.commit()
-            cursor.close()
+        # Hash and insert
+        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        cursor.execute(
+            "INSERT INTO User (email, password_hash, full_name, user_name, role) VALUES (%s, %s, %s, %s, %s)",
+            (email, hashed_pw, full_name, user_name, 'user')
+        )
+        mysql.connection.commit()
+        cursor.close()
 
-            return jsonify({"message": "Account created successfully"}), 201
+        return jsonify({"message": "Account created successfully"}), 201
 
     @app.route('/api/logout', methods=['POST'])
     def logout():
         """
         API endpoint for user logout.
+        
+        :return: JSON response with logout status
         """
         session.clear()
         return jsonify({"message": "Logout successful"})
@@ -89,6 +111,8 @@ def init_auth_routes(app):
     def check_session():
         """
         API endpoint to check if the user is logged in.
+        
+        :return: JSON response with login status
         """
         user_id = session.get('user_id')
         if user_id:
@@ -105,6 +129,9 @@ def init_auth_routes(app):
     def get_user_info(user_id):
         """
         API endpoint to fetch user information by user_id.
+        
+        :param user_id: ID of the user to fetch information for
+        :return: JSON response with user information
         """
         mysql = app.config.get('MYSQL_CONNECTION')
         cursor = mysql.connection.cursor()
@@ -156,6 +183,8 @@ def init_auth_routes(app):
     def update_user_info():
         """
         API endpoint to update user information (display name, description, password, and profile icon).
+        
+        :return: JSON response with update status
         """
         user_id = session.get('user_id')
         if not user_id:

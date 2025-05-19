@@ -1,3 +1,7 @@
+"""
+This module provides search routes for the Gator Savvy application.
+"""
+
 from flask import Flask, request, jsonify 
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
@@ -18,8 +22,7 @@ def init_search_routes(app):
     """
     Initialize search routes and MySQL configuration for the Flask application.
     
-    Args:
-        app: Flask application instance
+    :param app: Flask application instance
     """
     # Get the shared MySQL connection
     mysql = app.config.get('MYSQL_CONNECTION')
@@ -40,8 +43,7 @@ def init_search_routes(app):
         """
         API endpoint for searching items with optional filtering by category.
         
-        Returns:
-            JSON response with search results
+        :return: JSON response with search results
         """
         data = request.get_json()
         query = data.get('query', '')
