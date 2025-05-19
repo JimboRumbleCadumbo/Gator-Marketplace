@@ -51,7 +51,7 @@ def init_message_routes(app, mysql):
                   c.item_id,
                   u.user_name,
                   il.name      AS item_name,
-                  il.is_active
+                  il.status    AS item_status
                 FROM (
                   SELECT DISTINCT
                     CASE WHEN sender_id=%s THEN receiver_id ELSE sender_id END AS contact_id,

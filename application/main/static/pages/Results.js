@@ -49,6 +49,7 @@ export default {
         //Added to make sure searchresults are reset if you hit home page
         const route = VueRouter.useRoute();
         const searchData = Vue.inject("searchData");
+        console.log("searchData", searchData);
 
         const filteredResults = Vue.ref([]);
 
