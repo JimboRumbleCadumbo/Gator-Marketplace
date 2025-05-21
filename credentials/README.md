@@ -9,9 +9,9 @@
 <pre>
 1. Server URL or IP
     Public IPv4:
-        35.94.172.233
+        35.90.3.231
     Public IPv4 DNS:
-        ec2-35-94-172-233.us-west-2.compute.amazonaws.com
+        ec2-35-90-3-231.us-west-2.compute.amazonaws.com
 2. SSH username
     ubuntu
 3. SSH password or key.
@@ -34,7 +34,7 @@
     Loggin into DB instance: 
         0) **USE MYSQL WORKBENCH OR OTHER 3RD PARTY MYSQL GUI**
         1) Type in the following info
-            - SSH Hostname: ec2-35-94-172-233.us-west-2.compute.amazonaws.com (Port 22)
+            - SSH Hostname: ec2-35-90-3-231.us-west-2.compute.amazonaws.com (Port 22)
             - SSH Username: ubuntu
             - SSH Password: (None)
             - SSH Keyfile: (use "team5ubtu.pem")
