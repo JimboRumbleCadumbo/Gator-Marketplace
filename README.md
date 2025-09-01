@@ -1,24 +1,12 @@
-# csc648 Repository
+# Gator Marketplace
 
-## Please when ready add your teams application URL or IP to the repository description. This will help with grading. Teams are expected to keep this value up to date.
+Gator Marketplace is a marketplace web application for SFSU students and 
+faculty to buy, sell, rent items, and get exclusive student deals. Whether it’s textbooks, clothes, tech, or everyday essentials, students can find what they needat affordable prices from other students or SFSU-affiliated groups/services.   
 
-## Please do the following steps before completing Milestone 0.
-1. Change the name of the repository. All that needs to change is the NN to your respective team number. Team numbers whose value is less than 10, please pad with a 0. Ex team 1 is Team01 team 11 is Team11. Please make sure to also remove the username from the repository as well. Teams with incorrectly name repository will have points deducted from their milestone 0 grades.
-      - Please follow the naming convention assigned by your instructor.
-
-1. PLEASE REMOVE THE USERNAME FROM THE REPOSITORY NAME!!!
-
-2. Add ALL members of your team to this repository. For it to count, they must ACCEPT the invite.
-
-3. Fill out the table below
-
-
-| Student Name | School Email | GitHub Username |
-|    :---:     |     :---:     |     :---:       |
-| David Cabanela | dcabanel@mail.sfsu.edu | davidcabanela |
-| David (Jun) Chang | dchang6@mail.sfsu.edu | JunN0tJune |
-| Alexis Perez      | aperez75@sfsu.edu              | Alexis283 |
-| Athan Cheung      | acheung4@mail.sfsu.edu     | athanc2 |
-| Yu-Ming Chen      | ychen88@sfsu.edu              | JimboRumbleCadumbo | 
-
-## NO code needs to be stored in the root of your repository. You may rename the application folder if you like to your team's application name. But all source code related to your team's application should be stored inside the application folder.
+| Student Name | School Email | GitHub Username | Role |
+|    :---:     |     :---:     |     :---:      |     :---:     | 
+| David Cabanela | dcabanel@mail.sfsu.edu | davidcabanela | GitHub Master |
+| David (Jun) Chang | dchang6@mail.sfsu.edu | JunN0tJune | Backend Lead |
+| Alexis Perez      | aperez75@sfsu.edu              | Alexis283 | Frontend Lead |
+| Athan Cheung      | acheung4@mail.sfsu.edu     | athanc2 | Frontend Technicion |
+| Yu-Ming Chen      | ychen88@sfsu.edu              | JimboRumbleCadumbo | Team Lead |
